@@ -1,0 +1,15 @@
+{
+  "require": {
+    "j7mbo/twitter-api-php": "1.*",
+    "vladkens/vk": "0.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.*",
+    "squizlabs/php_codesniffer": "2.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "SocialRSS\\": "src/"
+    }
+  }
+}
