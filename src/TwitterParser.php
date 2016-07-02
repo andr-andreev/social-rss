@@ -41,7 +41,7 @@ class TwitterParser extends Parser
         $feedItem->setLink(self::URL . "{$tweet['user']['screen_name']}/status/{$tweet['id_str']}");
 
         $avatar = $this->makeImg($tweet['user']['profile_image_url_https'], self::URL . $tweet['user']['screen_name']);
-        $content = $this->parseContent($tweet);
+        $content = isset($tweet['quoted_status']) ? $this->parseContent($tweet) . $this->parseQuote($tweet['quoted_status']) : $this->parseContent($tweet);
         $feedItem->setDescription($this->makeBlock($avatar, $content));
 
         $feedItem->setAuthor($tweet['user']['name']);
@@ -77,6 +77,12 @@ class TwitterParser extends Parser
                     $item['url'],
                     '') .
                 PHP_EOL . $this->makeImg($item['media_url_https'], $item['expanded_url']);
+            },
+            'symbols' => function ($text, $item) {
+                return $this->replaceContent(
+                    $text,
+                    '$' . $item['text'],
+                    $this->makeLink(self::URL . "search?q=%24{$item['text']}", '$' . $item['text']));
             }
         ];
 
@@ -84,7 +90,7 @@ class TwitterParser extends Parser
 
         foreach ($tweet['entities'] as $type => $items) {
             foreach ($items as $item) {
-                $text = $map[$type]($text, $item);
+                $text = isset($map[$type]) ? $map[$type]($text, $item) : $text . PHP_EOL . "[Tweet contains unknown entity type $type]";
             }
         }
 
@@ -95,5 +101,14 @@ class TwitterParser extends Parser
     {
         $quotedSearch = preg_quote($search, '/');
         return preg_replace("/({$quotedSearch})(?=[^>]*(<|$))/", $replace, $text, 1);
+    }
+
+    private function parseQuote($quote)
+    {
+        $avatar = $this->makeLink(self::URL . "{$quote['user']['screen_name']}/status/{$quote['id_str']}", "{$quote['user']['name']}");
+        $content = $this->parseContent($quote);
+        $quotedBlock = "<blockquote>" . $avatar . '<br>' . $content . "</blockquote>";
+
+        return $quotedBlock;
     }
 }

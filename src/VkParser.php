@@ -205,22 +205,22 @@ class VkParser extends Parser
             },
         ];
 
-        if (array_key_exists($item['type'], $map)) {
-            $title = $this->users[$item['source_id']]['name'];
-            $titleType = $map[$item['type']]['title'] ?: '';
-            if (!empty($titleType)) {
-                $title .= ": $titleType";
-            }
-
-            $link = $map[$item['type']]['link']($item) ?: '';
-            $description = $map[$item['type']]['description']($item) ?: '';
-        } else {
+        if (!isset($map[$item['type']])) {
             return;
         }
 
+        $title = $this->users[$item['source_id']]['name'];
+        $titleType = $map[$item['type']]['title'] ?: '';
+        if (!empty($titleType)) {
+            $title .= ": $titleType";
+        }
+
+        $link = $map[$item['type']]['link']($item) ?: '';
+        $description = $map[$item['type']]['description']($item) ?: '';
+
         if (isset($item['attachments'])) {
             $attachments = array_map(function ($attachment) use ($attachmentMap) {
-                return $attachmentMap[$attachment['type']]($attachment);
+                return isset($attachmentMap[$attachment['type']]) ? $attachmentMap[$attachment['type']]($attachment) : "[Item contains unknown attachment type {$attachment['type']}]";
             }, $item['attachments']);
 
             $description .= PHP_EOL . implode(PHP_EOL, $attachments);

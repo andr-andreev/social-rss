@@ -16,7 +16,7 @@ abstract class Parser
     {
         foreach ($this->socialFeed as $feedItem) {
             $item = $this->generateItem($feedItem);
-            if (!is_null($item)) {
+            if ($item instanceof Item) {
                 $this->feed->addItem($item);
             }
         }
