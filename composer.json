@@ -1,7 +1,8 @@
 {
   "require": {
     "j7mbo/twitter-api-php": "1.*",
-    "vladkens/vk": "0.*"
+    "vladkens/vk": "0.*",
+    "guzzlehttp/guzzle": "~6.0"
   },
   "require-dev": {
     "phpunit/phpunit": "5.*",

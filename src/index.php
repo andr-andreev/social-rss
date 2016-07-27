@@ -5,7 +5,7 @@ require_once '../vendor/autoload.php';
 
 $feed = new Feed;
 
-$map = ['twitter' => 'TwitterParser', 'vk' => 'VkParser'];
+$map = ['instagram' => 'InstagramParser', 'twitter' => 'TwitterParser', 'vk' => 'VkParser'];
 
 $source = isset($_GET['source']) ? $_GET['source'] : '';
 array_key_exists($source, $map) ? $className = __NAMESPACE__ . '\\' . $map[$source] : exit('Invalid source');

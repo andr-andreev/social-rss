@@ -1,5 +1,5 @@
 ## php-social-rss ##
-Read your social networks timeline as an RSS-feed. Currently php-social-rss supports Twitter and VK.
+Read your social networks timeline as an RSS-feed. Currently php-social-rss supports Instagram, Twitter and VK.
 
 ### Requirements ###
 * PHP >= 5.6
@@ -17,6 +17,12 @@ Copy `.env.example` to `.env` and configure it as seen below.
 ```bash
 $ cp .env.example .env
 ```
+#### Instagram ####
+Due to [new Instagram API update](https://www.instagram.com/developer/changelog/) there is no ability to get users feed via the API (deprecation of `/users/self/feed` endpoint).
+
+This script uses embedded JSON data from Instagram web page.
+
+1. Save Instagram account `Username` and `Password` to `.env`
 
 #### Twitter ####
 1. Create an application: https://apps.twitter.com/app/new
@@ -31,6 +37,10 @@ $ cp .env.example .env
 5. Open https://oauth.vk.com/access_token?client_id={APP_ID}&client_secret={API_SECRET}&code={CODE}&redirect_uri=http://oauth.vk.com/blank.html. Save `access_token` to `.env`
 
 ### Usage ###
+Instagram feed:
+```
+http://example.com/index.php?source=instagram
+```
 Twitter feed:
 ```
 http://example.com/index.php?source=twitter
@@ -45,3 +55,6 @@ You can run the test suite:
 ```bash
 $ ./vendor/bin/phpunit
 ```
+
+### Disclaimer ###
+Please note that using this script may be against social networks Terms of Service.

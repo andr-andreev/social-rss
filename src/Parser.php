@@ -24,9 +24,9 @@ abstract class Parser
 
     abstract protected function generateItem($item);
 
-    protected function makeBlock($left, $right)
+    protected function makeBlock($avatar, $content)
     {
-        return "<div style='overflow: hidden'><div style='float: left; margin-right: 5px'>{$left}</div><div style='float: left'>{$right}</div></div>";
+        return "<div style='display: flex;'><div style='flex: 1; max-width: 50px; margin-right: 10px;'>{$avatar}</div><div style='flex: 1;'>{$content}</div></div>";
     }
 
     protected function makeImg($img, $link = null)
@@ -34,6 +34,11 @@ abstract class Parser
         $middlePart = "<img src='{$img}' />";
 
         return empty($link) ? $middlePart : $this->makeLink($link, $middlePart);
+    }
+
+    protected function makeVideo($video, $img = '')
+    {
+        return "<video src='$video' poster='$img' controls></video>";
     }
 
     protected function makeLink($href, $text)
