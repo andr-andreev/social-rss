@@ -1,5 +1,20 @@
 ## php-social-rss ##
-Read your social networks timeline as an RSS-feed. Currently php-social-rss supports Instagram, Twitter and VK.
+Read your social networks timeline in different formats.
+
+[![Build Status](https://travis-ci.org/andr-andreev/php-social-rss.svg?branch=master)](https://travis-ci.org/andr-andreev/php-social-rss)
+[![Code Climate](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/gpa.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss)
+[![Issue Count](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/issue_count.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss)
+[![Test Coverage](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/coverage.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss/coverage)
+
+#### Supported networks ####
+* [Instagram](https://www.instagram.com/)
+* [Twitter](https://twitter.com/)
+* [VK](https://vk.com/)
+
+#### Output formats ####
+* RSS 2.0
+* JSON
+* YAML
 
 ### Requirements ###
 * PHP >= 5.6
@@ -9,7 +24,7 @@ Read your social networks timeline as an RSS-feed. Currently php-social-rss supp
 ```bash
 $ git clone https://github.com/andr-andreev/php-social-rss.git
 $ cd php-social-rss
-$ composer install
+$ make install
 ```
 
 ### Configuration ###
@@ -37,23 +52,15 @@ This script uses embedded JSON data from Instagram web page.
 5. Open https://oauth.vk.com/access_token?client_id={APP_ID}&client_secret={API_SECRET}&code={CODE}&redirect_uri=http://oauth.vk.com/blank.html. Save `access_token` to `.env`
 
 ### Usage ###
-Instagram feed:
 ```
-http://example.com/index.php?source=instagram
+http://example.com/web/index.php?source={source}&output={format}
 ```
-Twitter feed:
-```
-http://example.com/index.php?source=twitter
-```
-VK feed:
-```
-http://example.com/index.php?source=vk
-```
+where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss`, `json`, or `yaml`
 
 ### Tests ###
 You can run the test suite:
 ```bash
-$ ./vendor/bin/phpunit
+$ make test
 ```
 
 ### Disclaimer ###

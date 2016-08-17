@@ -1,0 +1,54 @@
+<?php
+
+
+namespace SocialRss\Parser;
+
+trait ParserTrait
+{
+    private $regex = '/(^|){{pattern}}(\w*[[:alnum:]\@]+\w*)/u';
+
+    protected function makeImg($img, $link = null)
+    {
+        $middlePart = "<img src='{$img}' />";
+
+        return empty($link) ? $middlePart : $this->makeLink($link, $middlePart);
+    }
+
+    protected function makeVideo($video, $img = '')
+    {
+        return "<video src='$video' poster='$img' controls></video>";
+    }
+
+    protected function makeLink($href, $text)
+    {
+        return "<a href='{$href}'>$text</a>";
+    }
+
+
+    protected function getParsedByPattern($pattern, $string)
+    {
+        $symbol = str_replace('{string}', '', $pattern);
+        preg_match_all('/(^|)' . $symbol . '(\w*[[:alnum:]]+\w*)/u', $string, $out);
+
+        $array = $out[2];
+
+        return $array;
+    }
+
+    private function parseByPattern($pattern, $template, $string)
+    {
+        $regex = str_replace('{{pattern}}', $pattern, $this->regex);
+
+        $replacement = str_replace('{{string}}', '\2', $template);
+
+        return preg_replace($regex, $replacement, $string);
+    }
+
+    protected function makeBlock($avatar, $content)
+    {
+        return "<div style='display: flex;'>" .
+        "<div style='width: 50px; margin-right: 10px;'>{$avatar}</div>" .
+        "<div>{$content}</div>" .
+        "</div>";
+    }
+}

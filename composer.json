@@ -1,16 +1,27 @@
 {
+  "name": "andr-andreev/php-social-rss",
+  "description": "PHP Social RSS",
+  "type": "project",
+  "homepage": "https://github.com/andr-andreev/php-social-rss",
+  "authors": [
+    {
+      "name": "Andrey Andreev"
+    }
+  ],
   "require": {
     "j7mbo/twitter-api-php": "1.*",
     "vladkens/vk": "0.*",
-    "guzzlehttp/guzzle": "~6.0"
+    "guzzlehttp/guzzle": "~6.0",
+    "zendframework/zend-feed": "2.*"
   },
   "require-dev": {
     "phpunit/phpunit": "5.*",
-    "squizlabs/php_codesniffer": "2.*"
+    "squizlabs/php_codesniffer": "2.*",
+    "codeclimate/php-test-reporter": "dev-master"
   },
   "autoload": {
     "psr-4": {
-      "SocialRSS\\": "src/"
+      "SocialRss\\": "src/"
     }
   }
 }
