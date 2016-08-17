@@ -1,6 +1,6 @@
 <?php
 
-namespace SocialRss\Parser\Twitter;
+namespace SocialRss\Parser\Vk;
 
 class VkParserTest extends \PHPUnit_Framework_TestCase
 {

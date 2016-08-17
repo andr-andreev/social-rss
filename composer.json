@@ -1,5 +1,6 @@
 {
   "name": "andr-andreev/php-social-rss",
+  "license": "GPL-3.0",
   "description": "PHP Social RSS",
   "type": "project",
   "homepage": "https://github.com/andr-andreev/php-social-rss",

@@ -3,11 +3,11 @@
 
 namespace SocialRss\Parser\Vk;
 
-use SocialRss\Parser\Vk\VkParserTrait;
+use SocialRss\Parser\ParserTrait;
 
 class AttachmentParser
 {
-    use \SocialRss\Parser\ParserTrait;
+    use ParserTrait;
     use VkParserTrait;
     const URL = 'https://vk.com/';
 
@@ -90,21 +90,21 @@ class AttachmentParser
 
     private function makeLinkAttach($attachment)
     {
-        $attachParsed = PHP_EOL . 'Ссылка: ' . $this->makeLink(
+        $link = PHP_EOL . 'Ссылка: ' . $this->makeLink(
                 $attachment['link']['url'],
                 $attachment['link']['title']
             );
 
         if (isset($attachment['link']['image_src'])) {
-            $attachParsed .= $this->makeBlock($this->makeImg(
+            $description = $this->makeBlock($this->makeImg(
                 $attachment['link']['image_src'],
                 $attachment['link']['url']
             ), $attachment['link']['description']);
         } else {
-            $attachParsed .= PHP_EOL . $attachment['link']['description'];
+            $description = PHP_EOL . $attachment['link']['description'];
         }
 
-        return $attachParsed;
+        return $link . $description;
     }
 
     private function makeNote($attachment)

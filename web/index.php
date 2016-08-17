@@ -1,6 +1,9 @@
 <?php
+
 namespace SocialRss;
 
+use SocialRss\Parser\Parser;
+use SocialRss\Format\Format;
 use SocialRss\Exception\SocialRssException;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -14,8 +17,8 @@ if (!isset($config[$source])) {
     throw new SocialRssException("No config found for $source source");
 }
 
-$parser = new Parser\Parser($source, $config[$source]);
-$writer = new Format\Format($output);
+$parser = new Parser($source, $config[$source]);
+$writer = new Format($output);
 
 $feed = $parser->getFeed();
 

@@ -63,7 +63,7 @@ class VkParser implements ParserInterface
         }
 
         $items = array_filter($items, function ($item) {
-            return $item !== null;
+            return (!empty($item));
         });
 
         return [
@@ -80,28 +80,37 @@ class VkParser implements ParserInterface
         $attachmentParser = new AttachmentParser($item);
 
         if (!$postParser->isParserTypeAvailable()) {
-            return;
+            return [];
         }
 
         $title = $postParser->parser->getTitle();
         $link = $postParser->parser->getLink();
-        $description = $postParser->parser->getDescription();
+        $content = $postParser->parser->getDescription();
         $quote = $postParser->parser->getQuote();
 
         $attachments = $attachmentParser->parseAttachments();
 
         if (!empty($quote)) {
+            // Swap user and repost contents
             $tmp = $quote['content'];
-            $quote['content'] = $description;
-            $description = $tmp;
-
-            $quote['content'] .= PHP_EOL . $attachments;
-        } else {
-            $description .= PHP_EOL . $attachments;
+            $quote['content'] = $content;
+            $content = $tmp;
         }
 
-        $content = nl2br(trim($description));
+        $contentAddition = '';
+        $quoteContentAddition = '';
+
+        if (!empty($quote)) {
+            $quoteContentAddition = $attachments;
+        } else {
+            $contentAddition = $attachments;
+        }
+
+        $content .= PHP_EOL . $contentAddition;
+        $content = nl2br(trim($content));
+
         if (isset($quote['content'])) {
+            $quote['content'] .= PHP_EOL . $quoteContentAddition;
             $quote['content'] = nl2br(trim($quote['content']));
         }
 

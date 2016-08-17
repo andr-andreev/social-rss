@@ -60,12 +60,12 @@ class TwitterParser implements ParserInterface
 
     protected function parseItem($item)
     {
+        $tweet = $item;
+        $titlePart = "";
+
         if (isset($item['retweeted_status'])) {
             $tweet = $item['retweeted_status'];
-            $retweetPart = " (RT by {$item['user']['name']})";
-        } else {
-            $tweet = $item;
-            $retweetPart = "";
+            $titlePart = " (RT by {$item['user']['name']})";
         }
 
         $parsed = $this->parseContent($tweet);
@@ -78,7 +78,7 @@ class TwitterParser implements ParserInterface
         ] : [];
 
         return [
-            'title' => $tweet['user']['name'] . $retweetPart,
+            'title' => $tweet['user']['name'] . $titlePart,
             'link' => self::URL . "{$tweet['user']['screen_name']}/status/{$tweet['id_str']}",
             'content' => $parsed['content'],
             'date' => strtotime($item['created_at']),
