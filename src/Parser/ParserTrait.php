@@ -3,10 +3,19 @@
 
 namespace SocialRss\Parser;
 
+/**
+ * Class ParserTrait
+ * @package SocialRss\Parser
+ */
 trait ParserTrait
 {
     private $regex = '/(^|){{pattern}}(\w*[[:alnum:]\@]+\w*)/u';
 
+    /**
+     * @param $img
+     * @param null $link
+     * @return string
+     */
     protected function makeImg($img, $link = null)
     {
         $middlePart = "<img src='{$img}' />";
@@ -14,17 +23,32 @@ trait ParserTrait
         return empty($link) ? $middlePart : $this->makeLink($link, $middlePart);
     }
 
+    /**
+     * @param $video
+     * @param string $img
+     * @return string
+     */
     protected function makeVideo($video, $img = '')
     {
         return "<video src='$video' poster='$img' controls></video>";
     }
 
+    /**
+     * @param $href
+     * @param $text
+     * @return string
+     */
     protected function makeLink($href, $text)
     {
         return "<a href='{$href}'>$text</a>";
     }
 
 
+    /**
+     * @param $pattern
+     * @param $string
+     * @return mixed
+     */
     protected function getParsedByPattern($pattern, $string)
     {
         $symbol = str_replace('{string}', '', $pattern);
@@ -35,6 +59,12 @@ trait ParserTrait
         return $array;
     }
 
+    /**
+     * @param $pattern
+     * @param $template
+     * @param $string
+     * @return mixed
+     */
     private function parseByPattern($pattern, $template, $string)
     {
         $regex = str_replace('{{pattern}}', $pattern, $this->regex);
@@ -44,6 +74,11 @@ trait ParserTrait
         return preg_replace($regex, $replacement, $string);
     }
 
+    /**
+     * @param $avatar
+     * @param $content
+     * @return string
+     */
     protected function makeBlock($avatar, $content)
     {
         return "<div style='display: flex;'>" .

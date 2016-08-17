@@ -2,11 +2,17 @@
 
 namespace SocialRss\Parser\Twitter;
 
+use SocialRss\Parser\Parser;
+
+/**
+ * Class TwitterParserTest
+ * @package SocialRss\Parser\Twitter
+ */
 class TwitterParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testParseFeed()
     {
-        $parser = new \SocialRss\Parser\Parser('twitter', [
+        $parser = new Parser('twitter', [
             'consumer_key' => '',
             'consumer_secret' => '',
             'oauth_access_token' => '',

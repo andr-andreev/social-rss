@@ -8,6 +8,10 @@ use SocialRss\Parser\ParserInterface;
 use SocialRss\Parser\ParserTrait;
 use SocialRss\Exception\SocialRssException;
 
+/**
+ * Class InstagramParser
+ * @package SocialRss\Parser\Instagram
+ */
 class InstagramParser implements ParserInterface
 {
     use ParserTrait;
@@ -24,6 +28,10 @@ class InstagramParser implements ParserInterface
     private $cookies;
     private $config;
 
+    /**
+     * InstagramParser constructor.
+     * @param $config
+     */
     public function __construct($config)
     {
 
@@ -33,6 +41,10 @@ class InstagramParser implements ParserInterface
         $this->config = $config;
     }
 
+    /**
+     * @return mixed
+     * @throws SocialRssException
+     */
     public function getFeed()
     {
         // Due to new Instagram API update there is no ability to get users feed via the API
@@ -83,6 +95,10 @@ class InstagramParser implements ParserInterface
         return json_decode($instagramJson, true)['entry_data']['FeedPage'][0]['feed']['media']['nodes'];
     }
 
+    /**
+     * @param $feed
+     * @return array
+     */
     public function parseFeed($feed)
     {
         $items = array_reduce($feed, function ($carry, $item) {
@@ -102,6 +118,10 @@ class InstagramParser implements ParserInterface
         ];
     }
 
+    /**
+     * @param $item
+     * @return array
+     */
     private function parseItem($item)
     {
         if (!isset($item['caption'])) {
@@ -122,6 +142,10 @@ class InstagramParser implements ParserInterface
         ];
     }
 
+    /**
+     * @param $item
+     * @return string
+     */
     private function parseContent($item)
     {
         $location = $item['location']['name'];
@@ -153,6 +177,10 @@ class InstagramParser implements ParserInterface
         return nl2br(trim($content));
     }
 
+    /**
+     * @param $url
+     * @return string
+     */
     private function cleanUrl($url)
     {
         // Remove unnecessary query string

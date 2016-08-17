@@ -3,12 +3,21 @@
 
 namespace SocialRss\Format;
 
+use SocialRss\Parser\ParserTrait;
 use Zend\Feed\Writer\Feed;
 
+/**
+ * Class RssFormat
+ * @package SocialRss\Format
+ */
 class RssFormat implements FormatInterface
 {
-    use \SocialRss\Parser\ParserTrait;
+    use ParserTrait;
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function format($data)
     {
         $feed = new Feed;

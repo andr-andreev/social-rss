@@ -3,18 +3,31 @@
 
 namespace SocialRss\Parser\Vk\Posts;
 
+/**
+ * Class FriendPost
+ * @package SocialRss\Parser\Vk\Posts
+ */
 class FriendPost extends AbstractPost implements PostInterface
 {
+    /**
+     * @return string
+     */
     public function getTitle()
     {
         return $this->getUserName() . ': новые друзья';
     }
 
+    /**
+     * @return string
+     */
     public function getLink()
     {
         return self::URL . "friends?id={$this->users[$this->item['source_id']]['id']}";
     }
 
+    /**
+     * @return string
+     */
     public function getDescription()
     {
         if (!isset($this->item['friends'])) {

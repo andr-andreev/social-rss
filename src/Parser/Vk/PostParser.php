@@ -3,6 +3,10 @@
 
 namespace SocialRss\Parser\Vk;
 
+/**
+ * Class PostParser
+ * @package SocialRss\Parser\Vk
+ */
 class PostParser
 {
     public $parser;
@@ -20,6 +24,11 @@ class PostParser
         'video' => Posts\VideoPost::class,
     ];
 
+    /**
+     * PostParser constructor.
+     * @param $item
+     * @param $users
+     */
     public function __construct($item, $users)
     {
         $this->item = $item;
@@ -33,6 +42,9 @@ class PostParser
         }
     }
 
+    /**
+     * @return bool
+     */
     public function isParserTypeAvailable()
     {
         return isset($this->typeMap[$this->item['type']]);

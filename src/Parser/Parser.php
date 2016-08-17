@@ -4,6 +4,10 @@ namespace SocialRss\Parser;
 
 use SocialRss\Exception\SocialRssException;
 
+/**
+ * Class Parser
+ * @package SocialRss\Parser
+ */
 class Parser
 {
     const PARSERS_MAP = [
@@ -18,6 +22,12 @@ class Parser
     protected $feed;
 
 
+    /**
+     * Parser constructor.
+     * @param $parser
+     * @param $config
+     * @throws SocialRssException
+     */
     public function __construct($parser, $config)
     {
         $map = self::PARSERS_MAP;
@@ -29,11 +39,18 @@ class Parser
         $this->parser = new $map[$parser]($config);
     }
 
+    /**
+     * @return mixed
+     */
     public function getFeed()
     {
         return $this->parser->getFeed();
     }
 
+    /**
+     * @param $feed
+     * @return mixed
+     */
     public function parseFeed($feed)
     {
         return $this->parser->parseFeed($feed);

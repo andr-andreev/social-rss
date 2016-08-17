@@ -3,11 +3,18 @@
 
 namespace SocialRss\Format;
 
+use SocialRss\Parser\Parser;
+use Symfony\Component\Yaml\Yaml;
+
+/**
+ * Class YamlFormatTest
+ * @package SocialRss\Format
+ */
 class YamlFormatTest extends \PHPUnit_Framework_TestCase
 {
     public function testYamlFormat()
     {
-        $parser = new \SocialRss\Parser\Parser('twitter', [
+        $parser = new Parser('twitter', [
             'consumer_key' => '',
             'consumer_secret' => '',
             'oauth_access_token' => '',
@@ -20,6 +27,6 @@ class YamlFormatTest extends \PHPUnit_Framework_TestCase
 
         $out = $writer->format($parsedFeed);
 
-        $this->assertInternalType('array', \Symfony\Component\Yaml\Yaml::parse($out));
+        $this->assertInternalType('array', Yaml::parse($out));
     }
 }

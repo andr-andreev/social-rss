@@ -5,9 +5,12 @@ namespace SocialRss\Parser\Vk;
 use SocialRss\Exception\SocialRssException;
 use SocialRss\Parser\ParserInterface;
 use VK\VK;
-use SocialRss\Parser\Vk\Attachments\Attachment;
 use SocialRss\Parser\ParserTrait;
 
+/**
+ * Class VkParser
+ * @package SocialRss\Parser\Vk
+ */
 class VkParser implements ParserInterface
 {
     use ParserTrait;
@@ -21,11 +24,19 @@ class VkParser implements ParserInterface
 
     private $vkClient;
 
+    /**
+     * VkParser constructor.
+     * @param $config
+     */
     public function __construct($config)
     {
         $this->vkClient = new VK($config['app_id'], $config['api_secret'], $config['access_token']);
     }
 
+    /**
+     * @return mixed
+     * @throws SocialRssException
+     */
     public function getFeed()
     {
         try {
@@ -41,8 +52,14 @@ class VkParser implements ParserInterface
         return $socialFeed['response'];
     }
 
+    /**
+     * @param $feed
+     * @return array
+     */
     public function parseFeed($feed)
     {
+
+        $users = [];
         foreach ($feed['profiles'] as $profile) {
             $uid = $profile['uid'];
             $users[$uid] = $profile;
@@ -73,6 +90,11 @@ class VkParser implements ParserInterface
         ];
     }
 
+    /**
+     * @param $item
+     * @param $users
+     * @return array
+     */
     protected function parseItem($item, $users)
     {
         $postParser = new PostParser($item, $users);

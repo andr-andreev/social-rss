@@ -2,11 +2,17 @@
 
 namespace SocialRss\Parser\Instagram;
 
+use SocialRss\Parser\Parser;
+
+/**
+ * Class InstagramParserTest
+ * @package SocialRss\Parser\Instagram
+ */
 class InstagramParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testParseFeed()
     {
-        $parser = new \SocialRss\Parser\Parser('instagram', ['username' => '', 'password' => '']);
+        $parser = new Parser('instagram', ['username' => '', 'password' => '']);
         $feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/instagram.json'), true);
 
         // test when no caption provided

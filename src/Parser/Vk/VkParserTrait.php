@@ -3,8 +3,16 @@
 
 namespace SocialRss\Parser\Vk;
 
+/**
+ * Class VkParserTrait
+ * @package SocialRss\Parser\Vk
+ */
 trait VkParserTrait
 {
+    /**
+     * @param $text
+     * @return mixed
+     */
     protected function parseContent($text)
     {
         // Match URLs
@@ -34,6 +42,10 @@ trait VkParserTrait
         return $text;
     }
 
+    /**
+     * @param $items
+     * @return string
+     */
     protected function makePhotos($items)
     {
         $photos = array_filter($items, function ($photo) {
@@ -50,6 +62,10 @@ trait VkParserTrait
         return implode(PHP_EOL, $photos);
     }
 
+    /**
+     * @param $userId
+     * @return mixed
+     */
     protected function makeFriends($userId)
     {
         return $this->makeLink(
@@ -58,6 +74,10 @@ trait VkParserTrait
         );
     }
 
+    /**
+     * @param $attachment
+     * @return string
+     */
     protected function makeVideoTrait($attachment)
     {
         $videoLink = self::URL . "video{$attachment['owner_id']}_{$attachment['vid']}";

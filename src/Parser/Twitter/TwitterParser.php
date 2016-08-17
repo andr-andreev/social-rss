@@ -6,6 +6,10 @@ use \TwitterAPIExchange;
 use SocialRss\Parser\ParserInterface;
 use SocialRss\Parser\ParserTrait;
 
+/**
+ * Class TwitterParser
+ * @package SocialRss\Parser\Twitter
+ */
 class TwitterParser implements ParserInterface
 {
     use ParserTrait;
@@ -18,11 +22,19 @@ class TwitterParser implements ParserInterface
 
     private $twitterClient;
 
+    /**
+     * TwitterParser constructor.
+     * @param $config
+     */
     public function __construct($config)
     {
         $this->twitterClient = new TwitterAPIExchange($config);
     }
 
+    /**
+     * @return mixed
+     * @throws SocialRssException
+     */
     public function getFeed()
     {
         $twitterJson = $this->twitterClient
@@ -39,6 +51,10 @@ class TwitterParser implements ParserInterface
         return $feed;
     }
 
+    /**
+     * @param $feed
+     * @return array
+     */
     public function parseFeed($feed)
     {
         $items = array_reduce($feed, function ($carry, $item) {
@@ -58,6 +74,10 @@ class TwitterParser implements ParserInterface
         ];
     }
 
+    /**
+     * @param $item
+     * @return array
+     */
     protected function parseItem($item)
     {
         $tweet = $item;
@@ -92,6 +112,10 @@ class TwitterParser implements ParserInterface
         ];
     }
 
+    /**
+     * @param $tweet
+     * @return array
+     */
     private function parseContent($tweet)
     {
         $tags = [];
@@ -152,6 +176,12 @@ class TwitterParser implements ParserInterface
         ];
     }
 
+    /**
+     * @param $text
+     * @param $search
+     * @param $replace
+     * @return mixed
+     */
     private function replaceContent($text, $search, $replace)
     {
         $quotedSearch = preg_quote($search, '/');

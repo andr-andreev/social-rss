@@ -2,11 +2,17 @@
 
 namespace SocialRss\Parser\Vk;
 
+use SocialRss\Parser\Parser;
+
+/**
+ * Class VkParserTest
+ * @package SocialRss\Parser\Vk
+ */
 class VkParserTest extends \PHPUnit_Framework_TestCase
 {
     public function testParseFeed()
     {
-        $parser = new \SocialRss\Parser\Parser('vk', ['app_id' => '', 'api_secret' => '', 'access_token' => '']);
+        $parser = new Parser('vk', ['app_id' => '', 'api_secret' => '', 'access_token' => '']);
         $feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/vk.json'), true);
 
         $parsedFeed = $parser->parseFeed($feed);

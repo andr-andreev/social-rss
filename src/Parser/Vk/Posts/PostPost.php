@@ -3,23 +3,39 @@
 
 namespace SocialRss\Parser\Vk\Posts;
 
+/**
+ * Class PostPost
+ * @package SocialRss\Parser\Vk\Posts
+ */
 class PostPost extends AbstractPost implements PostInterface
 {
+    /**
+     * @return mixed
+     */
     public function getTitle()
     {
         return $this->getUserName();
     }
 
+    /**
+     * @return string
+     */
     public function getLink()
     {
         return self::URL . "wall{$this->users[$this->item['source_id']]['id']}_{$this->item['post_id']}";
     }
 
+    /**
+     * @return mixed
+     */
     public function getDescription()
     {
         return $this->parseContent($this->item['text']);
     }
 
+    /**
+     * @return array
+     */
     public function getQuote()
     {
         $title = '';

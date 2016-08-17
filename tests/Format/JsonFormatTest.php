@@ -3,11 +3,17 @@
 
 namespace SocialRss\Format;
 
+use SocialRss\Parser\Parser;
+
+/**
+ * Class JsonFormatTest
+ * @package SocialRss\Format
+ */
 class JsonFormatTest extends \PHPUnit_Framework_TestCase
 {
     public function testJsonFormat()
     {
-        $parser = new \SocialRss\Parser\Parser('twitter', [
+        $parser = new Parser('twitter', [
             'consumer_key' => '',
             'consumer_secret' => '',
             'oauth_access_token' => '',
