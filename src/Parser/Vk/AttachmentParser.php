@@ -95,16 +95,16 @@ class AttachmentParser
                 $attachment['link']['title']
             );
 
+        $description = $attachment['link']['description'];
+
         if (isset($attachment['link']['image_src'])) {
             $description = $this->makeBlock($this->makeImg(
                 $attachment['link']['image_src'],
                 $attachment['link']['url']
             ), $attachment['link']['description']);
-        } else {
-            $description = PHP_EOL . $attachment['link']['description'];
         }
 
-        return $link . $description;
+        return $link . PHP_EOL . $description;
     }
 
     private function makeNote($attachment)
