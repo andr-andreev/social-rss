@@ -90,21 +90,21 @@ class AttachmentParser
 
     private function makeLinkAttach($attachment)
     {
-        $link = PHP_EOL . 'Ссылка: ' . $this->makeLink(
-                $attachment['link']['url'],
-                $attachment['link']['title']
-            );
+        $linkUrl = $attachment['link']['url'];
+        $linkTitle = $attachment['link']['title'];
+
+        $link = $this->makeLink($linkUrl, $linkTitle);
 
         $description = $attachment['link']['description'];
 
         if (isset($attachment['link']['image_src'])) {
-            $description = $this->makeBlock($this->makeImg(
-                $attachment['link']['image_src'],
-                $attachment['link']['url']
-            ), $attachment['link']['description']);
+            $preview = $attachment['link']['image_src'];
+            $url = $attachment['link']['url'];
+
+            $description = $this->makeImg($preview, $url) . PHP_EOL . $description;
         }
 
-        return $link . PHP_EOL . $description;
+        return PHP_EOL . 'Ссылка: ' . $link . PHP_EOL . $description;
     }
 
     private function makeNote($attachment)
