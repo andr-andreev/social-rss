@@ -58,30 +58,37 @@ class VkParser implements ParserInterface
      */
     public function parseFeed($feed)
     {
-
-        $users = [];
-        foreach ($feed['profiles'] as $profile) {
-            $uid = $profile['uid'];
-            $users[$uid] = $profile;
+        // Get users array
+        $users = array_reduce($feed['profiles'], function ($users, $user) {
+            $uid = $user['uid'];
+            $users[$uid] = $user;
             $users[$uid]['id'] = $uid;
             $users[$uid]['name'] = "{$users[$uid]['first_name']} {$users[$uid]['last_name']}";
-        }
 
-        foreach ($feed['groups'] as $group) {
+            return $users;
+        }, []);
+
+        // Add groups to users array
+        $users = array_reduce($feed['groups'], function ($users, $group) {
             $gid = -$group['gid'];
             $users[$gid] = $group;
             $users[$gid]['id'] = $gid;
-        }
 
-        $items = [];
+            return $users;
+        }, $users);
 
-        foreach ($feed['items'] as $item) {
-            $items[] = $this->parseItem($item, $users);
-        }
+        // Parse items
+        $items = array_reduce($feed['items'], function ($items, $item) use ($users) {
+            $itemParsed = $this->parseItem($item, $users);
 
-        $items = array_filter($items, function ($item) {
-            return (!empty($item));
-        });
+            if (empty($itemParsed)) {
+                return $items;
+            }
+
+            $items[] = $itemParsed;
+
+            return $items;
+        }, []);
 
         return [
             'title' => self::NAME,

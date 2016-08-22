@@ -101,14 +101,17 @@ class InstagramParser implements ParserInterface
      */
     public function parseFeed($feed)
     {
-        $items = array_reduce($feed, function ($carry, $item) {
-            $parsedItem = $this->parseItem($item);
+        // Parse items
+        $items = array_reduce($feed, function ($items, $item) {
+            $itemParsed = $this->parseItem($item);
 
-            if (!is_null($parsedItem)) {
-                $carry[] = $parsedItem;
+            if (empty($itemParsed)) {
+                return $items;
             }
 
-            return $carry;
+            $items[] = $itemParsed;
+
+            return $items;
         }, []);
 
         return [

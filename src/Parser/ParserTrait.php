@@ -9,7 +9,7 @@ namespace SocialRss\Parser;
  */
 trait ParserTrait
 {
-    private $regex = '/(^|){{pattern}}(\w*[[:alnum:]\@]+\w*)/u';
+    private $regex = '/(^|){{pattern}}(\w*[[:alnum:]\@\.]+\w*)/u';
 
     /**
      * @param $img
