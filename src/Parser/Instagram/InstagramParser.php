@@ -51,46 +51,42 @@ class InstagramParser implements ParserInterface
         // (deprecation of /users/self/feed endpoint).
         // https://www.instagram.com/developer/changelog/
 
-        try {
-            // Open instagram homepage
-            $this->httpClient->request('GET', '/', [
-                'headers' => self::HEADERS,
-            ]);
+        // Open instagram homepage
+        $this->httpClient->request('GET', '/', [
+            'headers' => self::HEADERS,
+        ]);
 
-            // Make cookies array
-            $cookies = array_reduce($this->cookies->toArray(), function ($carry, $item) {
-                $carry[$item['Name']] = $item['Value'];
+        // Make cookies array
+        $cookies = array_reduce($this->cookies->toArray(), function ($carry, $item) {
+            $carry[$item['Name']] = $item['Value'];
 
-                return $carry;
-            }, []);
+            return $carry;
+        }, []);
 
-            // Login and get sessionid cookie
-            $loginRequest = $this->httpClient->request('POST', '/accounts/login/ajax/', [
-                'headers' => array_merge(self::HEADERS, [
-                    'X-CSRFToken' => $cookies['csrftoken'],
-                ]),
-                'form_params' => [
-                    'username' => $this->config['username'],
-                    'password' => $this->config['password']
-                ]
-            ]);
+        // Login and get sessionid cookie
+        $loginRequest = $this->httpClient->request('POST', '/accounts/login/ajax/', [
+            'headers' => array_merge(self::HEADERS, [
+                'X-CSRFToken' => $cookies['csrftoken'],
+            ]),
+            'form_params' => [
+                'username' => $this->config['username'],
+                'password' => $this->config['password']
+            ]
+        ]);
 
-            $loginBody = json_decode((string)($loginRequest->getBody()), true);
-            if ($loginBody['authenticated'] === false) {
-                throw new SocialRssException('Failed to login');
-            }
-
-            // Open homepage as a logged in user
-            $feedRequest = $this->httpClient->request('GET', '/', [
-                'headers' => self::HEADERS
-            ]);
-
-            // Find JSON data in the script tag
-            preg_match("/<script.*>window\\._sharedData = (.*?);<\\/script>/", $feedRequest->getBody(), $matches);
-            $instagramJson = $matches[1];
-        } catch (\Exception $error) {
-            throw new SocialRssException($error->getMessage());
+        $loginBody = json_decode((string)($loginRequest->getBody()), true);
+        if ($loginBody['authenticated'] === false) {
+            throw new SocialRssException('Failed to login');
         }
+
+        // Open homepage as a logged in user
+        $feedRequest = $this->httpClient->request('GET', '/', [
+            'headers' => self::HEADERS
+        ]);
+
+        // Find JSON data in the script tag
+        preg_match("/<script.*>window\\._sharedData = (.*?);<\\/script>/", $feedRequest->getBody(), $matches);
+        $instagramJson = $matches[1];
 
         return json_decode($instagramJson, true)['entry_data']['FeedPage'][0]['feed']['media']['nodes'];
     }
