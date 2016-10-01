@@ -39,14 +39,10 @@ class VkParser implements ParserInterface
      */
     public function getFeed()
     {
-        try {
-            $socialFeed = $this->vkClient->api(self::API_METHOD, self::API_PARAMETERS);
+        $socialFeed = $this->vkClient->api(self::API_METHOD, self::API_PARAMETERS);
 
-            if (isset($socialFeed['error'])) {
-                throw new SocialRssException($socialFeed['error']['error_msg']);
-            }
-        } catch (\Exception $error) {
-            throw new SocialRssException($error->getMessage());
+        if (isset($socialFeed['error'])) {
+            throw new SocialRssException($socialFeed['error']['error_msg']);
         }
 
         return $socialFeed['response'];

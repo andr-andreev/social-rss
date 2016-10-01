@@ -18,7 +18,7 @@ class TwitterParser implements ParserInterface
     const URL = 'https://twitter.com/';
 
     const API_URL = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
-    const API_PARAMETERS = '?count=100';
+    const API_PARAMETERS = '?count=100&tweet_mode=extended';
 
     private $twitterClient;
 
@@ -122,9 +122,7 @@ class TwitterParser implements ParserInterface
      */
     private function parseContent($tweet)
     {
-        $tags = [];
-
-        $map = [
+        $entities = [
             'hashtags' => function ($text, $item) use (&$tags) {
                 $tags[] = $item['text'];
 
@@ -149,12 +147,7 @@ class TwitterParser implements ParserInterface
                 );
             },
             'media' => function ($text, $item) {
-                return $this->replaceContent(
-                    $text,
-                    $item['url'],
-                    ''
-                ) .
-                PHP_EOL . $this->makeImg($item['media_url_https'], $item['expanded_url']);
+                return $text;
             },
             'symbols' => function ($text, $item) {
                 return $this->replaceContent(
@@ -165,12 +158,48 @@ class TwitterParser implements ParserInterface
             }
         ];
 
-        $text = $tweet['text'];
+        $extendedEntities = [
+            'media' => function ($text, $item) {
+                switch ($item['type']) {
+                    case 'photo':
+                        return $this->replaceContent(
+                            $text,
+                            $item['url'],
+                            ''
+                        ) .
+                        PHP_EOL . $this->makeImg($item['media_url_https'], $item['expanded_url']);
+
+                    case 'video':
+                    case 'animated_gif':
+                        return $this->replaceContent(
+                            $text,
+                            $item['url'],
+                            ''
+                        ) .
+                        PHP_EOL . $this->makeVideo($item['video_info']['variants'][0]['url'], $item['media_url_https']);
+                }
+
+                return $text . PHP_EOL . "[Tweet contains unknown media type {$item['type']}]";
+            },
+        ];
+
+        $text = $tweet['full_text'];
+        $tags = [];
+        if (!isset($tweet['extended_entities'])) {
+            $tweet['extended_entities'] = [];
+        }
 
         foreach ($tweet['entities'] as $type => $items) {
             foreach ($items as $item) {
-                $text = isset($map[$type]) ? $map[$type]($text,
+                $text = isset($entities[$type]) ? $entities[$type]($text,
                     $item) : $text . PHP_EOL . "[Tweet contains unknown entity type $type]";
+            }
+        }
+
+        foreach ($tweet['extended_entities'] as $type => $items) {
+            foreach ($items as $item) {
+                $text = isset($extendedEntities[$type]) ? $extendedEntities[$type]($text,
+                    $item) : $text . PHP_EOL . "[Tweet contains unknown extended entity type $type]";
             }
         }
 
