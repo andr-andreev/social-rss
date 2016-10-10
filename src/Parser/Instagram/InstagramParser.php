@@ -42,10 +42,11 @@ class InstagramParser implements ParserInterface
     }
 
     /**
+     * @param $username
      * @return mixed
      * @throws SocialRssException
      */
-    public function getFeed()
+    public function getFeed($username)
     {
         // Due to new Instagram API update there is no ability to get users feed via the API
         // (deprecation of /users/self/feed endpoint).
@@ -79,8 +80,9 @@ class InstagramParser implements ParserInterface
             throw new SocialRssException('Failed to login');
         }
 
-        // Open homepage as a logged in user
-        $feedRequest = $this->httpClient->request('GET', '/', [
+        $url = empty($username) ? '/' : '/' . $username;
+        // Open URL with data as a logged in user
+        $feedRequest = $this->httpClient->request('GET', $url, [
             'headers' => self::HEADERS
         ]);
 
@@ -88,8 +90,27 @@ class InstagramParser implements ParserInterface
         preg_match("/<script.*>window\\._sharedData = (.*?);<\\/script>/", $feedRequest->getBody(), $matches);
         $instagramJson = $matches[1];
 
-        return json_decode($instagramJson, true)['entry_data']['FeedPage'][0]['feed']['media']['nodes'];
+        $feed = json_decode($instagramJson, true);
+
+        return empty($username) ?
+            $feed['entry_data']['FeedPage'][0]['feed']['media']['nodes'] :
+            $this->processFeed($feed);
     }
+
+    /**
+     * @param $feed
+     * @return array
+     */
+    private function processFeed($feed)
+    {
+        $user = $feed['entry_data']['ProfilePage'][0]['user'];
+
+        return array_map(function ($item) use ($user) {
+            $item['owner'] = $user;
+            return $item;
+        }, $feed['entry_data']['ProfilePage'][0]['user']['media']['nodes']);
+    }
+
 
     /**
      * @param $feed
@@ -98,22 +119,18 @@ class InstagramParser implements ParserInterface
     public function parseFeed($feed)
     {
         // Parse items
-        $items = array_reduce($feed, function ($items, $item) {
-            $itemParsed = $this->parseItem($item);
+        $items = array_map(function ($item) {
+            return $this->parseItem($item);
+        }, $feed);
 
-            if (empty($itemParsed)) {
-                return $items;
-            }
-
-            $items[] = $itemParsed;
-
-            return $items;
-        }, []);
+        $filtered = array_filter($items, function ($item) {
+            return !empty($item);
+        });
 
         return [
             'title' => self::NAME,
             'link' => self::URL,
-            'items' => $items,
+            'items' => $filtered,
         ];
     }
 
@@ -147,10 +164,10 @@ class InstagramParser implements ParserInterface
      */
     private function parseContent($item)
     {
-        $location = $item['location']['name'];
+        $location = isset($item['location']['name']) ? $item['location']['name'] : '';
 
         // Use image or video
-        $media = $item['is_video'] ? $this->makeVideo(
+        $media = ($item['is_video'] && isset($item['video_url'])) ? $this->makeVideo(
             $item['video_url'],
             $item['display_src']
         ) : $this->makeImg(self::cleanUrl($item['display_src']));
