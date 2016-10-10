@@ -2,6 +2,7 @@
 Read your social networks timeline in different formats (RSS, JSON, YAML).
 
 PHP-social-rss fully parses API data including avatars, quotes, photos, videos, hashtags, user mentions and urls.
+
 You can read your own timeline as well as user's timelines.
 
 [![Build Status](https://travis-ci.org/andr-andreev/php-social-rss.svg?branch=master)](https://travis-ci.org/andr-andreev/php-social-rss)
