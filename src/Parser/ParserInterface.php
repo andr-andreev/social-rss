@@ -15,7 +15,11 @@ interface ParserInterface
      */
     public function __construct($config);
 
-    public function getFeed();
+    /**
+     * @param $username
+     * @return mixed
+     */
+    public function getFeed($username);
 
     /**
      * @param $feed

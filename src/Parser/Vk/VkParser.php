@@ -18,9 +18,9 @@ class VkParser implements ParserInterface
     const NAME = 'VK';
     const URL = 'https://vk.com/';
 
-    const API_METHOD = 'newsfeed.get';
-    const API_PARAMETERS = ['count' => 100];
-
+    const API_METHOD_HOME = 'newsfeed.get';
+    const API_METHOD_USER = 'wall.get';
+    const API_PARAMETERS = ['count' => 100, 'extended' => 1];
 
     private $vkClient;
 
@@ -34,18 +34,47 @@ class VkParser implements ParserInterface
     }
 
     /**
+     * @param $username
      * @return mixed
      * @throws SocialRssException
      */
-    public function getFeed()
+    public function getFeed($username)
     {
-        $socialFeed = $this->vkClient->api(self::API_METHOD, self::API_PARAMETERS);
+        if (empty($username)) {
+            $method = self::API_METHOD_HOME;
+            $parameters = self::API_PARAMETERS;
+        } else {
+            $method = self::API_METHOD_USER;
+            $parameters = array_merge(self::API_PARAMETERS, ['domain' => $username]);
+        }
+        $socialFeed = $this->vkClient->api($method, $parameters);
 
         if (isset($socialFeed['error'])) {
             throw new SocialRssException($socialFeed['error']['error_msg']);
         }
 
-        return $socialFeed['response'];
+        return empty($username) ? $socialFeed['response'] : $this->processFeed($socialFeed['response']);
+    }
+
+    /**
+     * @param $feed
+     * @return array
+     */
+    private function processFeed($feed)
+    {
+        $items = array_filter($feed['wall'], function ($item) {
+            return is_array($item);
+        });
+
+        $processedItems = array_map(function ($item) {
+            $item['type'] = $item['post_type'];
+            $item['source_id'] = $item['from_id'];
+            $item['post_id'] = $item['id'];
+
+            return $item;
+        }, $items);
+
+        return array_merge($feed, ['items' => $processedItems]);
     }
 
     /**
@@ -54,42 +83,38 @@ class VkParser implements ParserInterface
      */
     public function parseFeed($feed)
     {
-        // Get users array
-        $users = array_reduce($feed['profiles'], function ($users, $user) {
+        // Get groups array
+        $groups = array_reduce($feed['groups'], function ($groups, $group) {
+            $gid = -$group['gid'];
+            $groups[$gid] = $group;
+            $groups[$gid]['id'] = $gid;
+
+            return $groups;
+        }, []);
+
+        // Get combined groups and users array
+        $profiles = array_reduce($feed['profiles'], function ($users, $user) {
             $uid = $user['uid'];
             $users[$uid] = $user;
             $users[$uid]['id'] = $uid;
             $users[$uid]['name'] = "{$users[$uid]['first_name']} {$users[$uid]['last_name']}";
 
             return $users;
-        }, []);
-
-        // Add groups to users array
-        $users = array_reduce($feed['groups'], function ($users, $group) {
-            $gid = -$group['gid'];
-            $users[$gid] = $group;
-            $users[$gid]['id'] = $gid;
-
-            return $users;
-        }, $users);
+        }, $groups);
 
         // Parse items
-        $items = array_reduce($feed['items'], function ($items, $item) use ($users) {
-            $itemParsed = $this->parseItem($item, $users);
+        $items = array_map(function ($item) use ($profiles) {
+            return $this->parseItem($item, $profiles);
+        }, $feed['items']);
 
-            if (empty($itemParsed)) {
-                return $items;
-            }
-
-            $items[] = $itemParsed;
-
-            return $items;
-        }, []);
+        $filtered = array_filter($items, function ($item) {
+            return !empty($item);
+        });
 
         return [
             'title' => self::NAME,
             'link' => self::URL,
-            'items' => $items,
+            'items' => $filtered,
         ];
     }
 

@@ -40,11 +40,12 @@ class Parser
     }
 
     /**
+     * @param string $username
      * @return mixed
      */
-    public function getFeed()
+    public function getFeed($username = '')
     {
-        return $this->parser->getFeed();
+        return $this->parser->getFeed($username);
     }
 
     /**

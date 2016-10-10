@@ -1,7 +1,9 @@
 ## php-social-rss
-Read your social networks timeline in different formats.
+Read your social networks timeline in different formats (RSS, JSON, YAML).
 
-PHP-social-rss fully parses timelines including avatars, quotes, photos, videos, hashtags, user mentions and urls.
+PHP-social-rss fully parses API data including avatars, quotes, photos, videos, hashtags, user mentions and urls.
+
+You can read your own timeline as well as user's timelines.
 
 [![Build Status](https://travis-ci.org/andr-andreev/php-social-rss.svg?branch=master)](https://travis-ci.org/andr-andreev/php-social-rss)
 [![Code Climate](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/gpa.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss)
@@ -9,7 +11,7 @@ PHP-social-rss fully parses timelines including avatars, quotes, photos, videos,
 [![Test Coverage](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/coverage.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss/coverage)
 
 ### Supported networks / screenshots
-#### Instagram ([source post](https://www.instagram.com/p/BJZ7vyZhEI0/))
+#### Instagram ([source post](https://www.instagram.com/p/BKtyKb8BNSW/))
 ![Instagram](screenshots/instagram.png?raw=true "Instagram")
 
 #### Twitter ([source post](https://twitter.com/TwitterData/status/767372163431018496))
@@ -61,10 +63,19 @@ This script uses embedded JSON data from Instagram web page.
 5. Open https://oauth.vk.com/access_token?client_id={APP_ID}&client_secret={API_SECRET}&code={CODE}&redirect_uri=http://oauth.vk.com/blank.html. Save `access_token` to `.env`
 
 ### Usage ###
+To view your own timeline in default (RSS) format:
+```
+http://example.com/web/index.php?source={source}
+```
+To view user timeline in default (RSS) format:
+```
+http://example.com/web/index.php?source={source}&username={username}
+```
+To specify another format:
 ```
 http://example.com/web/index.php?source={source}&output={format}
 ```
-where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss`, `json`, or `yaml`
+where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss`, `json` or `yaml`
 
 ### Tests ###
 You can run the test suite:

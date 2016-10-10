@@ -9,6 +9,7 @@ use SocialRss\Exception\SocialRssException;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $source = isset($_GET['source']) ? $_GET['source'] : '';
+$username = isset($_GET['username']) ? $_GET['username'] : '';
 $output = isset($_GET['output']) ? $_GET['output'] : 'rss';
 
 $config = parse_ini_file("../.env", true);
@@ -20,7 +21,7 @@ if (!isset($config[$source])) {
 $parser = new Parser($source, $config[$source]);
 $writer = new Format($output);
 
-$feed = $parser->getFeed();
+$feed = $parser->getFeed($username);
 
 $parsedFeed = $parser->parseFeed($feed);
 

@@ -17,7 +17,8 @@ class TwitterParser implements ParserInterface
     const NAME = 'Twitter';
     const URL = 'https://twitter.com/';
 
-    const API_URL = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
+    const API_URL_HOME = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
+    const API_URL_USER = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
     const API_PARAMETERS = '?count=100&tweet_mode=extended';
 
     private $twitterClient;
@@ -32,14 +33,23 @@ class TwitterParser implements ParserInterface
     }
 
     /**
+     * @param $username
      * @return mixed
      * @throws SocialRssException
      */
-    public function getFeed()
+    public function getFeed($username)
     {
+        if (empty($username)) {
+            $url = self::API_URL_HOME;
+            $parameters = self::API_PARAMETERS;
+        } else {
+            $url = self::API_URL_USER;
+            $parameters = self::API_PARAMETERS . "&screen_name={$username}";
+        }
+
         $twitterJson = $this->twitterClient
-            ->setGetfield(self::API_PARAMETERS)
-            ->buildOauth(self::API_URL, 'GET')
+            ->setGetfield($parameters)
+            ->buildOauth($url, 'GET')
             ->performRequest();
 
         $feed = json_decode($twitterJson, true);
@@ -57,24 +67,19 @@ class TwitterParser implements ParserInterface
      */
     public function parseFeed($feed)
     {
-
         // Parse items
-        $items = array_reduce($feed, function ($items, $item) {
-            $itemParsed = $this->parseItem($item);
+        $items = array_map(function ($item) {
+            return $this->parseItem($item);
+        }, $feed);
 
-            if (empty($itemParsed)) {
-                return $items;
-            }
-
-            $items[] = $itemParsed;
-
-            return $items;
-        }, []);
+        $filtered = array_filter($items, function ($item) {
+            return !empty($item);
+        });
 
         return [
             'title' => self::NAME,
             'link' => self::URL,
-            'items' => $items,
+            'items' => $filtered,
         ];
     }
 
@@ -85,28 +90,26 @@ class TwitterParser implements ParserInterface
     protected function parseItem($item)
     {
         $tweet = $item;
-        $titlePart = "";
+        $titlePart = '';
 
         if (isset($item['retweeted_status'])) {
             $tweet = $item['retweeted_status'];
             $titlePart = " (RT by {$item['user']['name']})";
         }
 
-        $parsed = $this->parseContent($tweet);
-
         $quote = isset($tweet['quoted_status']) ? [
             'title' => $tweet['quoted_status']['user']['name'],
             'link' => self::URL .
                 "{$tweet['quoted_status']['user']['screen_name']}/status/{$tweet['quoted_status']['id_str']}",
-            'content' => $this->parseContent($tweet['quoted_status'])['content'],
+            'content' => $this->parseContent($tweet['quoted_status']),
         ] : [];
 
         return [
             'title' => $tweet['user']['name'] . $titlePart,
             'link' => self::URL . "{$tweet['user']['screen_name']}/status/{$tweet['id_str']}",
-            'content' => $parsed['content'],
+            'content' => $this->parseContent($tweet),
             'date' => strtotime($item['created_at']),
-            'tags' => $parsed['tags'],
+            'tags' => $this->parseTags($tweet),
             'author' => [
                 'name' => $tweet['user']['name'],
                 'avatar' => $tweet['user']['profile_image_url_https'],
@@ -122,10 +125,8 @@ class TwitterParser implements ParserInterface
      */
     private function parseContent($tweet)
     {
-        $entities = [
-            'hashtags' => function ($text, $item) use (&$tags) {
-                $tags[] = $item['text'];
-
+        $entitiesMap = [
+            'hashtags' => function ($text, $item) {
                 return $this->replaceContent(
                     $text,
                     "#{$item['text']}",
@@ -146,19 +147,13 @@ class TwitterParser implements ParserInterface
                     $this->makeLink($item['expanded_url'], $item['display_url'])
                 );
             },
-            'media' => function ($text, $item) {
-                return $text;
-            },
             'symbols' => function ($text, $item) {
                 return $this->replaceContent(
                     $text,
                     '$' . $item['text'],
                     $this->makeLink(self::URL . "search?q=%24{$item['text']}", '$' . $item['text'])
                 );
-            }
-        ];
-
-        $extendedEntities = [
+            },
             'media' => function ($text, $item) {
                 switch ($item['type']) {
                     case 'photo':
@@ -171,12 +166,25 @@ class TwitterParser implements ParserInterface
 
                     case 'video':
                     case 'animated_gif':
+                        $videoVariants = array_reduce($item['video_info']['variants'], function ($acc, $variant) {
+                            if ($variant['content_type'] === 'video/mp4') {
+                                $acc[] = $variant;
+                            }
+                            return $acc;
+                        }, []);
+
+                        if (empty($videoVariants)) {
+                            $media = $this->makeImg($item['media_url_https']);
+                        } else {
+                            $media = $this->makeVideo($videoVariants[0]['url'], $item['media_url_https']);
+                        }
+
                         return $this->replaceContent(
                             $text,
                             $item['url'],
                             ''
                         ) .
-                        PHP_EOL . $this->makeVideo($item['video_info']['variants'][0]['url'], $item['media_url_https']);
+                        PHP_EOL . $media;
                 }
 
                 return $text . PHP_EOL . "[Tweet contains unknown media type {$item['type']}]";
@@ -184,29 +192,47 @@ class TwitterParser implements ParserInterface
         ];
 
         $text = $tweet['full_text'];
-        $tags = [];
+
         if (!isset($tweet['extended_entities'])) {
             $tweet['extended_entities'] = [];
         }
+        $tweetEntities = array_merge($tweet['entities'], $tweet['extended_entities']);
 
-        foreach ($tweet['entities'] as $type => $items) {
-            foreach ($items as $item) {
-                $text = isset($entities[$type]) ? $entities[$type]($text,
-                    $item) : $text . PHP_EOL . "[Tweet contains unknown entity type $type]";
+        $processedEntities = array_map(function ($type, $entitiesArray) {
+            return array_map(function ($entity) use ($type) {
+                $entity['entity_type'] = $type;
+                return $entity;
+            }, $entitiesArray);
+        }, array_keys($tweetEntities), $tweetEntities);
+
+        $flatEntities = array_reduce($processedEntities, function ($acc, $entitiesArray) {
+            return !empty($entitiesArray) ? array_merge($acc, $entitiesArray) : $acc;
+        }, []);
+
+        $processedText = array_reduce($flatEntities, function ($acc, $entity) use ($entitiesMap) {
+            $type = $entity['entity_type'];
+            if (isset($entitiesMap[$type])) {
+                return $entitiesMap[$type]($acc, $entity);
             }
+            return $acc . PHP_EOL . "[Tweet contains unknown entity type {$entity['type']}]";
+        }, $text);
+
+        return nl2br(trim($processedText));
+    }
+
+    /**
+     * @param $tweet
+     * @return array
+     */
+    private function parseTags($tweet)
+    {
+        if (!isset($tweet['entities']['hashtags'])) {
+            return [];
         }
 
-        foreach ($tweet['extended_entities'] as $type => $items) {
-            foreach ($items as $item) {
-                $text = isset($extendedEntities[$type]) ? $extendedEntities[$type]($text,
-                    $item) : $text . PHP_EOL . "[Tweet contains unknown extended entity type $type]";
-            }
-        }
-
-        return [
-            'content' => nl2br(trim($text)),
-            'tags' => $tags,
-        ];
+        return array_map(function ($hashtag) {
+            return $hashtag['text'];
+        }, $tweet['entities']['hashtags']);
     }
 
     /**
@@ -218,6 +244,6 @@ class TwitterParser implements ParserInterface
     private function replaceContent($text, $search, $replace)
     {
         $quotedSearch = preg_quote($search, '/');
-        return preg_replace("/({$quotedSearch})(?=[^>]*(<|$))/", $replace, $text, 1);
+        return preg_replace("/({$quotedSearch})(\s|$)/i", $replace . ' ', $text, 1);
     }
 }
