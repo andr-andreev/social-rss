@@ -11,7 +11,7 @@ You can read your own timeline as well as user's timelines.
 [![Test Coverage](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/coverage.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss/coverage)
 
 ### Supported networks / screenshots
-#### Instagram ([source post](https://www.instagram.com/p/BJZ7vyZhEI0/))
+#### Instagram ([source post](https://www.instagram.com/p/BKtyKb8BNSW/))
 ![Instagram](screenshots/instagram.png?raw=true "Instagram")
 
 #### Twitter ([source post](https://twitter.com/TwitterData/status/767372163431018496))
