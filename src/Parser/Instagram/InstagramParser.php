@@ -87,7 +87,14 @@ class InstagramParser implements ParserInterface
         ]);
 
         // Find JSON data in the script tag
-        preg_match("/<script.*>window\\._sharedData = (.*?);<\\/script>/", $feedRequest->getBody(), $matches);
+        $reResult = preg_match(
+            "/<script.*>window\\._sharedData = (.*?);<\\/script>/",
+            $feedRequest->getBody(),
+            $matches
+        );
+        if ($reResult === 0) {
+            throw new SocialRssException('Failed to find data');
+        }
         $instagramJson = $matches[1];
 
         $feed = json_decode($instagramJson, true);

@@ -26,11 +26,11 @@ class RssFormat implements FormatInterface
         $feed->setDescription($data['title']);
         $feed->setLink($data['link']);
 
-        $items = array_reduce($data['items'], function ($carry, $item) {
+        $items = array_map(function ($item) {
             $quotedBlock = '';
             if (!empty($item['quote'])) {
-                $author = $this->makeLink($item['quote']['link'], $item['quote']['title']);
-                $quotedBlock = "<blockquote>" . $author . '<br>' . $item['quote']['content'] . "</blockquote>";
+                $quoteAuthor = $this->makeLink($item['quote']['link'], $item['quote']['title']);
+                $quotedBlock = "<blockquote>{$quoteAuthor}<br>{$item['quote']['content']}</blockquote>";
             }
 
             $avatar = $this->makeImg($item['author']['avatar'], $item['author']['link']);
@@ -40,7 +40,7 @@ class RssFormat implements FormatInterface
                 return ['term' => $tag];
             }, $item['tags']);
 
-            $carry[] = [
+            return [
                 'title' => $item['title'],
                 'link' => $item['link'],
                 'author' => [
@@ -50,8 +50,7 @@ class RssFormat implements FormatInterface
                 'dateCreated' => $item['date'],
                 'description' => $content,
             ];
-            return $carry;
-        });
+        }, $data['items']);
 
         foreach ($items as $item) {
             $entry = $feed->createEntry();

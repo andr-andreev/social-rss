@@ -125,7 +125,56 @@ class TwitterParser implements ParserInterface
      */
     private function parseContent($tweet)
     {
-        $entitiesMap = [
+        $tweetEntities = array_merge(
+            $tweet['entities'],
+            isset($tweet['extended_entities']) ? $tweet['extended_entities'] : []
+        );
+
+        $processedEntities = array_map(function ($type, $typeArray) {
+            return array_map(function ($entity) use ($type) {
+                $entity['entity_type'] = $type;
+                return $entity;
+            }, $typeArray);
+        }, array_keys($tweetEntities), $tweetEntities);
+
+        $flatEntities = array_reduce($processedEntities, function ($acc, $entitiesArray) {
+            return !empty($entitiesArray) ? array_merge($acc, $entitiesArray) : $acc;
+        }, []);
+
+        $entitiesMap = $this->getEntitiesMap();
+
+        $processedText = array_reduce($flatEntities, function ($acc, $entity) use ($entitiesMap) {
+            $type = $entity['entity_type'];
+            if (!isset($entitiesMap[$type])) {
+                return $acc . PHP_EOL . "[Tweet contains unknown entity type {$entity['type']}]";
+            }
+            return $entitiesMap[$type]($acc, $entity);
+        }, $tweet['full_text']);
+
+        return nl2br(trim($processedText));
+    }
+
+    /**
+     * @param $tweet
+     * @return array
+     */
+    private function parseTags($tweet)
+    {
+        if (!isset($tweet['entities']['hashtags'])) {
+            return [];
+        }
+
+        return array_map(function ($hashtag) {
+            return $hashtag['text'];
+        }, $tweet['entities']['hashtags']);
+    }
+
+    /**
+     * @return array
+     */
+    private function getEntitiesMap()
+    {
+        return [
             'hashtags' => function ($text, $item) {
                 return $this->replaceContent(
                     $text,
@@ -166,17 +215,15 @@ class TwitterParser implements ParserInterface
 
                     case 'video':
                     case 'animated_gif':
-                        $videoVariants = array_reduce($item['video_info']['variants'], function ($acc, $variant) {
-                            if ($variant['content_type'] === 'video/mp4') {
-                                $acc[] = $variant;
-                            }
-                            return $acc;
-                        }, []);
+                        $videoVariants = array_filter($item['video_info']['variants'], function ($variant) {
+                            return $variant['content_type'] === 'video/mp4';
+                        });
 
                         if (empty($videoVariants)) {
                             $media = $this->makeImg($item['media_url_https']);
                         } else {
-                            $media = $this->makeVideo($videoVariants[0]['url'], $item['media_url_https']);
+                            // first element in $videoVariants array
+                            $media = $this->makeVideo(reset($videoVariants)['url'], $item['media_url_https']);
                         }
 
                         return $this->replaceContent(
@@ -190,49 +237,6 @@ class TwitterParser implements ParserInterface
                 return $text . PHP_EOL . "[Tweet contains unknown media type {$item['type']}]";
             },
         ];
-
-        $text = $tweet['full_text'];
-
-        if (!isset($tweet['extended_entities'])) {
-            $tweet['extended_entities'] = [];
-        }
-        $tweetEntities = array_merge($tweet['entities'], $tweet['extended_entities']);
-
-        $processedEntities = array_map(function ($type, $entitiesArray) {
-            return array_map(function ($entity) use ($type) {
-                $entity['entity_type'] = $type;
-                return $entity;
-            }, $entitiesArray);
-        }, array_keys($tweetEntities), $tweetEntities);
-
-        $flatEntities = array_reduce($processedEntities, function ($acc, $entitiesArray) {
-            return !empty($entitiesArray) ? array_merge($acc, $entitiesArray) : $acc;
-        }, []);
-
-        $processedText = array_reduce($flatEntities, function ($acc, $entity) use ($entitiesMap) {
-            $type = $entity['entity_type'];
-            if (isset($entitiesMap[$type])) {
-                return $entitiesMap[$type]($acc, $entity);
-            }
-            return $acc . PHP_EOL . "[Tweet contains unknown entity type {$entity['type']}]";
-        }, $text);
-
-        return nl2br(trim($processedText));
-    }
-
-    /**
-     * @param $tweet
-     * @return array
-     */
-    private function parseTags($tweet)
-    {
-        if (!isset($tweet['entities']['hashtags'])) {
-            return [];
-        }
-
-        return array_map(function ($hashtag) {
-            return $hashtag['text'];
-        }, $tweet['entities']['hashtags']);
     }
 
     /**
@@ -244,6 +248,7 @@ class TwitterParser implements ParserInterface
     private function replaceContent($text, $search, $replace)
     {
         $quotedSearch = preg_quote($search, '/');
-        return preg_replace("/({$quotedSearch})(\s|$)/i", $replace . ' ', $text, 1);
+        // replace text except already replaced inside HTML tags
+        return preg_replace("/({$quotedSearch})(?=[^>]*(<|$))/i", $replace, $text, 1);
     }
 }
