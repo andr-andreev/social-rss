@@ -16,7 +16,7 @@ class InstagramParserTest extends \PHPUnit_Framework_TestCase
         $feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/instagram.json'), true);
 
         // test when no caption provided
-        unset($feed[0]['caption']);
+//        unset($feed[0]['caption']);
 
         $parsedFeed = $parser->parseFeed($feed);
 

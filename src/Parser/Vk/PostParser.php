@@ -3,12 +3,17 @@
 
 namespace SocialRss\Parser\Vk;
 
+use SocialRss\Parser\Vk\Posts\PostInterface;
+
 /**
  * Class PostParser
  * @package SocialRss\Parser\Vk
  */
 class PostParser
 {
+    /**
+     * @var PostInterface
+     */
     public $parser;
 
     private $item;

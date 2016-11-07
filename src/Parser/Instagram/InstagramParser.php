@@ -99,23 +99,47 @@ class InstagramParser implements ParserInterface
 
         $feed = json_decode($instagramJson, true);
 
-        return empty($username) ?
-            $feed['entry_data']['FeedPage'][0]['feed']['media']['nodes'] :
-            $this->processFeed($feed);
+        return empty($username) ? $this->processFeedPage($feed) : $this->processProfilePage($feed);
     }
 
     /**
      * @param $feed
      * @return array
      */
-    private function processFeed($feed)
+    private function processFeed($items)
     {
+        return array_map(function ($item) {
+            $item['caption'] = isset($item['caption']) ? $item['caption'] : '';
+            $item['location']['name'] = isset($item['location']['name']) ? $item['location']['name'] : '';
+
+            return $item;
+        }, $items);
+    }
+
+    /**
+     * @param $feed
+     * @return array
+     */
+    private function processFeedPage($feed)
+    {
+        return $this->processFeed($feed['entry_data']['FeedPage'][0]['feed']['media']['nodes']);
+    }
+
+    /**
+     * @param $feed
+     * @return array
+     */
+    private function processProfilePage($feed)
+    {
+        $items = $this->processFeed($feed['entry_data']['ProfilePage'][0]['user']['media']['nodes']);
+
         $user = $feed['entry_data']['ProfilePage'][0]['user'];
 
         return array_map(function ($item) use ($user) {
             $item['owner'] = $user;
+
             return $item;
-        }, $feed['entry_data']['ProfilePage'][0]['user']['media']['nodes']);
+        }, $items);
     }
 
 
@@ -147,10 +171,6 @@ class InstagramParser implements ParserInterface
      */
     private function parseItem($item)
     {
-        if (!isset($item['caption'])) {
-            $item['caption'] = '';
-        }
-
         return [
             'title' => $item['owner']['username'],
             'link' => self::URL . "p/{$item['code']}/",
@@ -171,21 +191,19 @@ class InstagramParser implements ParserInterface
      */
     private function parseContent($item)
     {
-        $location = isset($item['location']['name']) ? $item['location']['name'] : '';
+        $location = $item['location']['name'];
 
         // Use image or video
         $media = ($item['is_video'] && isset($item['video_url'])) ? $this->makeVideo(
             $item['video_url'],
             $item['display_src']
-        ) : $this->makeImg(self::cleanUrl($item['display_src']));
-
-        $caption = $item['caption'];
+        ) : $this->makeImg($this->cleanUrl($item['display_src']));
 
         // Match #hashtags
         $caption = $this->parseByPattern(
             '#',
             '<a href="https://www.instagram.com/explore/tags/{{string}}/">#{{string}}</a>',
-            $caption
+            $item['caption']
         );
 
         // Match @mentions

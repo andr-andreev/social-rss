@@ -89,33 +89,40 @@ class TwitterParser implements ParserInterface
      */
     protected function parseItem($item)
     {
-        $tweet = $item;
-        $titlePart = '';
+        $tweet = isset($item['retweeted_status']) ? $tweet = $item['retweeted_status'] : $item;
+
+        $parsedStatus = $this->parseStatus($tweet);
+
+        $parsedStatus['date'] = strtotime($item['created_at']);
 
         if (isset($item['retweeted_status'])) {
-            $tweet = $item['retweeted_status'];
-            $titlePart = " (RT by {$item['user']['name']})";
+            $parsedStatus['title'] .= " (RT by {$item['user']['name']})";
         }
 
-        $quote = isset($tweet['quoted_status']) ? [
-            'title' => $tweet['quoted_status']['user']['name'],
-            'link' => self::URL .
-                "{$tweet['quoted_status']['user']['screen_name']}/status/{$tweet['quoted_status']['id_str']}",
-            'content' => $this->parseContent($tweet['quoted_status']),
-        ] : [];
+        if (isset($tweet['quoted_status'])) {
+            $parsedStatus['quote'] = $this->parseStatus($tweet['quoted_status']);
+        }
 
+        return $parsedStatus;
+    }
+
+    /**
+     * @param $tweet
+     * @return array
+     */
+    private function parseStatus($tweet)
+    {
         return [
-            'title' => $tweet['user']['name'] . $titlePart,
+            'title' => $tweet['user']['name'],
             'link' => self::URL . "{$tweet['user']['screen_name']}/status/{$tweet['id_str']}",
             'content' => $this->parseContent($tweet),
-            'date' => strtotime($item['created_at']),
+            'date' => strtotime($tweet['created_at']),
             'tags' => $this->parseTags($tweet),
             'author' => [
                 'name' => $tweet['user']['name'],
                 'avatar' => $tweet['user']['profile_image_url_https'],
                 'link' => self::URL . $tweet['user']['screen_name'],
             ],
-            'quote' => $quote,
         ];
     }
 
@@ -137,9 +144,7 @@ class TwitterParser implements ParserInterface
             }, $typeArray);
         }, array_keys($tweetEntities), $tweetEntities);
 
-        $flatEntities = array_reduce($processedEntities, function ($acc, $entitiesArray) {
-            return !empty($entitiesArray) ? array_merge($acc, $entitiesArray) : $acc;
-        }, []);
+        $flatEntities = array_reduce($processedEntities, 'array_merge', []);
 
         $entitiesMap = $this->getEntitiesMap();
 
