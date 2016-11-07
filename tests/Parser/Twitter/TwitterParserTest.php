@@ -37,7 +37,7 @@ class TwitterParserTest extends \PHPUnit_Framework_TestCase
             $this->assertNotEmpty($item['author']['name']);
             $this->assertStringStartsWith('https://pbs.twimg.com/profile_images/', $item['author']['avatar']);
             $this->assertStringStartsWith('https://twitter.com/', $item['author']['link']);
-            $this->assertInternalType('array', $item['quote']);
+//            $this->assertInternalType('array', $item['quote']);
 
             if (!empty($item['quote'])) {
                 $this->assertNotEmpty($item['quote']['title']);

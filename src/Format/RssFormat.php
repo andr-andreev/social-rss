@@ -26,31 +26,7 @@ class RssFormat implements FormatInterface
         $feed->setDescription($data['title']);
         $feed->setLink($data['link']);
 
-        $items = array_map(function ($item) {
-            $quotedBlock = '';
-            if (!empty($item['quote'])) {
-                $quoteAuthor = $this->makeLink($item['quote']['link'], $item['quote']['title']);
-                $quotedBlock = "<blockquote>{$quoteAuthor}<br>{$item['quote']['content']}</blockquote>";
-            }
-
-            $avatar = $this->makeImg($item['author']['avatar'], $item['author']['link']);
-            $content = $this->makeBlock($avatar, $item['content'] . $quotedBlock);
-
-            $categories = array_map(function ($tag) {
-                return ['term' => $tag];
-            }, $item['tags']);
-
-            return [
-                'title' => $item['title'],
-                'link' => $item['link'],
-                'author' => [
-                    'name' => $item['author']['name']
-                ],
-                'categories' => $categories,
-                'dateCreated' => $item['date'],
-                'description' => $content,
-            ];
-        }, $data['items']);
+        $items = $this->processData($data);
 
         foreach ($items as $item) {
             $entry = $feed->createEntry();
@@ -66,5 +42,53 @@ class RssFormat implements FormatInterface
         }
 
         return $feed->export('rss');
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    private function processData($data)
+    {
+        return array_map(function ($item) {
+            return [
+                'title' => $item['title'],
+                'link' => $item['link'],
+                'author' => [
+                    'name' => $item['author']['name']
+                ],
+                'categories' => array_map(function ($tag) {
+                    return ['term' => $tag];
+                }, $item['tags']),
+                'dateCreated' => $item['date'],
+                'description' => $this->makeBlock(
+                    $this->makeAvatar($item),
+                    $this->makeContent($item)
+                ),
+            ];
+        }, $data['items']);
+    }
+
+    /**
+     * @param $item
+     * @return string
+     */
+    private function makeAvatar($item)
+    {
+        return $this->makeImg($item['author']['avatar'], $item['author']['link']);
+    }
+
+    /**
+     * @param $item
+     * @return string
+     */
+    private function makeContent($item)
+    {
+        if (empty($item['quote'])) {
+            return $item['content'];
+        }
+
+        $quoteAuthor = $this->makeLink($item['quote']['link'], $item['quote']['title']);
+        return $item['content'] . "<blockquote>{$quoteAuthor}<br>{$item['quote']['content']}</blockquote>";
     }
 }

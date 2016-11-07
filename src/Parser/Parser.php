@@ -16,6 +16,7 @@ class Parser
         'vk' => Vk\VkParser::class,
     ];
 
+    /** @var ParserInterface */
     private $parser;
 
     protected $socialFeed;
