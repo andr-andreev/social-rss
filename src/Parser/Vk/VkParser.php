@@ -133,8 +133,6 @@ class VkParser implements ParserInterface
             return [];
         }
 
-        $title = $postParser->parser->getTitle();
-        $link = $postParser->parser->getLink();
         $content = $postParser->parser->getDescription();
         $quote = $postParser->parser->getQuote();
 
@@ -165,8 +163,8 @@ class VkParser implements ParserInterface
         }
 
         return [
-            'title' => $title,
-            'link' => $link,
+            'title' => $postParser->parser->getTitle(),
+            'link' => $postParser->parser->getLink(),
             'content' => $content,
             'date' => $item['date'],
             'tags' => $this->getParsedByPattern('#{string}', $content),

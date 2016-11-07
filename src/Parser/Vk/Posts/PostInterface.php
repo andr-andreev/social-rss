@@ -14,4 +14,6 @@ interface PostInterface
     public function getLink();
 
     public function getDescription();
+
+    public function getQuote();
 }
