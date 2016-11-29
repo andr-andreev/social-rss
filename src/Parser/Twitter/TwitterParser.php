@@ -219,12 +219,9 @@ class TwitterParser implements ParserInterface
             'media' => function ($text, $item) {
                 switch ($item['type']) {
                     case 'photo':
-                        return $this->replaceContent(
-                                $text,
-                                $item['url'],
-                                ''
-                            ) .
-                            PHP_EOL . $this->makeImg($item['media_url_https'], $item['expanded_url']);
+                        return $this->replaceContent($text, $item['url'], '') .
+                            PHP_EOL .
+                            $this->makeImg($item['media_url_https'], $item['expanded_url']);
 
                     case 'video':
                     case 'animated_gif':
