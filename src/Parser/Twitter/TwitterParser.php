@@ -251,7 +251,7 @@ class TwitterParser implements ParserInterface
      * @param $replace
      * @return mixed
      */
-    private function replaceContent($text, $search, $replace): string
+    private function replaceContent(string $text, string $search, string $replace): string
     {
         $quotedSearch = preg_quote($search, '/');
         // replace text except already replaced inside HTML tags
