@@ -236,11 +236,7 @@ class TwitterParser implements ParserInterface
                             $media = $this->makeVideo(reset($videoVariants)['url'], $item['media_url_https']);
                         }
 
-                        return $this->replaceContent(
-                                $text,
-                                $item['url'],
-                                ''
-                            ) .
+                    return $this->replaceContent($text, $item['url'], '') .
                             PHP_EOL . $media;
                 }
 
