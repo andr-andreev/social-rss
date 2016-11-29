@@ -67,7 +67,7 @@ trait VkParserTrait
      * @param $userId
      * @return string
      */
-    protected function makeFriends(string $userId): string
+    protected function makeFriends(int $userId): string
     {
         return $this->makeLink(
             self::URL . $this->users[$userId]['screen_name'],
