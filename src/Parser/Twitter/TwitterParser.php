@@ -236,8 +236,7 @@ class TwitterParser implements ParserInterface
                             $media = $this->makeVideo(reset($videoVariants)['url'], $item['media_url_https']);
                         }
 
-                    return $this->replaceContent($text, $item['url'], '') .
-                            PHP_EOL . $media;
+                    return $this->replaceContent($text, $item['url'], '') . PHP_EOL . $media;
                 }
 
                 return $text . PHP_EOL . "[Tweet contains unknown media type {$item['type']}]";
