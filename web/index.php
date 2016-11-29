@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace SocialRss;
 
@@ -8,9 +9,9 @@ use SocialRss\Exception\SocialRssException;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$source = isset($_GET['source']) ? $_GET['source'] : '';
-$username = isset($_GET['username']) ? $_GET['username'] : '';
-$output = isset($_GET['output']) ? $_GET['output'] : 'rss';
+$source = $_GET['source'] ?? '';
+$username = $_GET['username'] ?? '';
+$output = $_GET['output'] ?? 'rss';
 
 $config = parse_ini_file("../.env", true);
 

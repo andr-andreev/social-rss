@@ -28,7 +28,7 @@ Screenshots made in [NewsBlur](https://newsblur.com/) RSS reader.
 * YAML
 
 ### Requirements
-* PHP >= 5.6
+* PHP >= 7.0
 * Composer
 
 ### Installation
