@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace SocialRss\Parser\Twitter;
 
 use SocialRss\Exception\SocialRssException;
@@ -8,6 +10,7 @@ use SocialRss\Parser\ParserTrait;
 
 /**
  * Class TwitterParser
+ *
  * @package SocialRss\Parser\Twitter
  */
 class TwitterParser implements ParserInterface
@@ -27,7 +30,7 @@ class TwitterParser implements ParserInterface
      * TwitterParser constructor.
      * @param $config
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         $this->twitterClient = new TwitterAPIExchange($config);
     }
@@ -37,7 +40,7 @@ class TwitterParser implements ParserInterface
      * @return mixed
      * @throws SocialRssException
      */
-    public function getFeed($username)
+    public function getFeed(string $username): array
     {
         if (empty($username)) {
             $url = self::API_URL_HOME;
@@ -65,7 +68,7 @@ class TwitterParser implements ParserInterface
      * @param $feed
      * @return array
      */
-    public function parseFeed($feed)
+    public function parseFeed(array $feed): array
     {
         // Parse items
         $items = array_map(function ($item) {
@@ -87,9 +90,9 @@ class TwitterParser implements ParserInterface
      * @param $item
      * @return array
      */
-    protected function parseItem($item)
+    protected function parseItem(array $item)
     {
-        $tweet = isset($item['retweeted_status']) ? $tweet = $item['retweeted_status'] : $item;
+        $tweet = $item['retweeted_status'] ?? $item;
 
         $parsedStatus = $this->parseStatus($tweet);
 
@@ -110,7 +113,7 @@ class TwitterParser implements ParserInterface
      * @param $tweet
      * @return array
      */
-    private function parseStatus($tweet)
+    private function parseStatus(array $tweet)
     {
         return [
             'title' => $tweet['user']['name'],
@@ -127,10 +130,10 @@ class TwitterParser implements ParserInterface
     }
 
     /**
-     * @param $tweet
-     * @return array
+     * @param array $tweet
+     * @return string
      */
-    private function parseContent($tweet)
+    private function parseContent(array $tweet): string
     {
         $tweetEntities = array_merge(
             $tweet['entities'],
@@ -148,13 +151,18 @@ class TwitterParser implements ParserInterface
 
         $entitiesMap = $this->getEntitiesMap();
 
-        $processedText = array_reduce($flatEntities, function ($acc, $entity) use ($entitiesMap) {
-            $type = $entity['entity_type'];
-            if (!isset($entitiesMap[$type])) {
-                return $acc . PHP_EOL . "[Tweet contains unknown entity type {$entity['type']}]";
-            }
-            return $entitiesMap[$type]($acc, $entity);
-        }, $tweet['full_text']);
+        $processedText = array_reduce(
+            $flatEntities,
+            function ($acc, $entity) use ($entitiesMap) {
+                $type = $entity['entity_type'];
+                if (!isset($entitiesMap[$type])) {
+                    return $acc . PHP_EOL .
+                        "[Tweet contains unknown entity type {$entity['type']}]";
+                }
+                return $entitiesMap[$type]($acc, $entity);
+            },
+            $tweet['full_text']
+        );
 
         return nl2br(trim($processedText));
     }
@@ -163,7 +171,7 @@ class TwitterParser implements ParserInterface
      * @param $tweet
      * @return array
      */
-    private function parseTags($tweet)
+    private function parseTags(array $tweet): array
     {
         if (!isset($tweet['entities']['hashtags'])) {
             return [];
@@ -177,7 +185,7 @@ class TwitterParser implements ParserInterface
     /**
      * @return array
      */
-    private function getEntitiesMap()
+    private function getEntitiesMap(): array
     {
         return [
             'hashtags' => function ($text, $item) {
@@ -212,11 +220,11 @@ class TwitterParser implements ParserInterface
                 switch ($item['type']) {
                     case 'photo':
                         return $this->replaceContent(
-                            $text,
-                            $item['url'],
-                            ''
-                        ) .
-                        PHP_EOL . $this->makeImg($item['media_url_https'], $item['expanded_url']);
+                                $text,
+                                $item['url'],
+                                ''
+                            ) .
+                            PHP_EOL . $this->makeImg($item['media_url_https'], $item['expanded_url']);
 
                     case 'video':
                     case 'animated_gif':
@@ -232,11 +240,11 @@ class TwitterParser implements ParserInterface
                         }
 
                         return $this->replaceContent(
-                            $text,
-                            $item['url'],
-                            ''
-                        ) .
-                        PHP_EOL . $media;
+                                $text,
+                                $item['url'],
+                                ''
+                            ) .
+                            PHP_EOL . $media;
                 }
 
                 return $text . PHP_EOL . "[Tweet contains unknown media type {$item['type']}]";
@@ -250,7 +258,7 @@ class TwitterParser implements ParserInterface
      * @param $replace
      * @return mixed
      */
-    private function replaceContent($text, $search, $replace)
+    private function replaceContent($text, $search, $replace): string
     {
         $quotedSearch = preg_quote($search, '/');
         // replace text except already replaced inside HTML tags

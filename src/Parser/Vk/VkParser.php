@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace SocialRss\Parser\Vk;
 
@@ -28,17 +29,17 @@ class VkParser implements ParserInterface
      * VkParser constructor.
      * @param $config
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         $this->vkClient = new VK($config['app_id'], $config['api_secret'], $config['access_token']);
     }
 
     /**
      * @param $username
-     * @return mixed
+     * @return array
      * @throws SocialRssException
      */
-    public function getFeed($username)
+    public function getFeed(string $username): array
     {
         if (empty($username)) {
             $method = self::API_METHOD_HOME;
@@ -60,7 +61,7 @@ class VkParser implements ParserInterface
      * @param $feed
      * @return array
      */
-    private function processFeed($feed)
+    private function processFeed(array $feed): array
     {
         $items = array_filter($feed['wall'], function ($item) {
             return is_array($item);
@@ -81,7 +82,7 @@ class VkParser implements ParserInterface
      * @param $feed
      * @return array
      */
-    public function parseFeed($feed)
+    public function parseFeed(array $feed): array
     {
         // Get groups array
         $groups = array_reduce($feed['groups'], function ($groups, $group) {
@@ -123,13 +124,13 @@ class VkParser implements ParserInterface
      * @param $users
      * @return array
      */
-    protected function parseItem($item, $users)
+    protected function parseItem(array $item, array $users): array
     {
         $postParser = new PostParser($item, $users);
 
         $attachmentParser = new AttachmentParser($item);
 
-        if (!$postParser->isParserTypeAvailable()) {
+        if (!$postParser->isParserAvailable()) {
             return [];
         }
 

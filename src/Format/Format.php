@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Format;
@@ -17,6 +18,10 @@ class Format
         'yaml' => YamlFormat::class,
     ];
 
+
+    /**
+     * @var FormatInterface
+     */
     private $writer;
 
     /**
@@ -24,7 +29,7 @@ class Format
      * @param $format
      * @throws SocialRssException
      */
-    public function __construct($format)
+    public function __construct(string $format)
     {
         $map = self::FORMATS_MAP;
 

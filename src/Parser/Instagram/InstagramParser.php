@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace SocialRss\Parser\Instagram;
 
@@ -32,9 +33,8 @@ class InstagramParser implements ParserInterface
      * InstagramParser constructor.
      * @param $config
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
-
         $this->cookies = new CookieJar;
         $this->httpClient = new Client(['base_uri' => self::URL, 'cookies' => $this->cookies]);
 
@@ -43,10 +43,10 @@ class InstagramParser implements ParserInterface
 
     /**
      * @param $username
-     * @return mixed
+     * @return array
      * @throws SocialRssException
      */
-    public function getFeed($username)
+    public function getFeed(string $username): array
     {
         // Due to new Instagram API update there is no ability to get users feed via the API
         // (deprecation of /users/self/feed endpoint).
@@ -103,14 +103,14 @@ class InstagramParser implements ParserInterface
     }
 
     /**
-     * @param $feed
+     * @param $items
      * @return array
      */
-    private function processFeed($items)
+    private function processFeed(array $items): array
     {
         return array_map(function ($item) {
-            $item['caption'] = isset($item['caption']) ? $item['caption'] : '';
-            $item['location']['name'] = isset($item['location']['name']) ? $item['location']['name'] : '';
+            $item['caption'] = $item['caption'] ?? '';
+            $item['location']['name'] = $item['location']['name'] ?? '';
 
             return $item;
         }, $items);
@@ -120,7 +120,7 @@ class InstagramParser implements ParserInterface
      * @param $feed
      * @return array
      */
-    private function processFeedPage($feed)
+    private function processFeedPage(array $feed): array
     {
         return $this->processFeed($feed['entry_data']['FeedPage'][0]['feed']['media']['nodes']);
     }
@@ -129,7 +129,7 @@ class InstagramParser implements ParserInterface
      * @param $feed
      * @return array
      */
-    private function processProfilePage($feed)
+    private function processProfilePage(array $feed): array
     {
         $items = $this->processFeed($feed['entry_data']['ProfilePage'][0]['user']['media']['nodes']);
 
@@ -147,7 +147,7 @@ class InstagramParser implements ParserInterface
      * @param $feed
      * @return array
      */
-    public function parseFeed($feed)
+    public function parseFeed(array $feed): array
     {
         // Parse items
         $items = array_map(function ($item) {
@@ -169,7 +169,7 @@ class InstagramParser implements ParserInterface
      * @param $item
      * @return array
      */
-    private function parseItem($item)
+    private function parseItem(array $item): array
     {
         return [
             'title' => $item['owner']['username'],
@@ -189,7 +189,7 @@ class InstagramParser implements ParserInterface
      * @param $item
      * @return string
      */
-    private function parseContent($item)
+    private function parseContent(array $item): string
     {
         $location = $item['location']['name'];
 
@@ -222,7 +222,7 @@ class InstagramParser implements ParserInterface
      * @param $url
      * @return string
      */
-    private function cleanUrl($url)
+    private function cleanUrl($url): string
     {
         // Remove unnecessary query string
         // https://scontent-[...].cdninstagram.com/[...].jpg?ig_cache_key=MTIzNDUxMjM0NTEyMzQ1

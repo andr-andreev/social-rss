@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser;
@@ -13,17 +14,17 @@ interface ParserInterface
      * ParserInterface constructor.
      * @param $config
      */
-    public function __construct($config);
+    public function __construct(array $config);
 
     /**
      * @param $username
      * @return mixed
      */
-    public function getFeed($username);
+    public function getFeed(string $username): array;
 
     /**
      * @param $feed
      * @return mixed
      */
-    public function parseFeed($feed);
+    public function parseFeed(array $feed): array;
 }
