@@ -147,7 +147,7 @@ class TwitterParser implements ParserInterface
             }, $typeArray);
         }, array_keys($tweetEntities), $tweetEntities);
 
-        $flatEntities = array_reduce($processedEntities, 'array_merge', []);
+        $flatEntities = array_merge(...$processedEntities);
 
         $entitiesMap = $this->getEntitiesMap();
 
@@ -249,7 +249,7 @@ class TwitterParser implements ParserInterface
      * @param $text
      * @param $search
      * @param $replace
-     * @return mixed
+     * @return string
      */
     private function replaceContent(string $text, string $search, string $replace): string
     {
