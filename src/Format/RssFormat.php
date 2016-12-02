@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Format;
@@ -18,7 +19,7 @@ class RssFormat implements FormatInterface
      * @param $data
      * @return mixed
      */
-    public function format($data)
+    public function format(array $data): string
     {
         $feed = new Feed;
 
@@ -48,7 +49,7 @@ class RssFormat implements FormatInterface
      * @param $data
      * @return array
      */
-    private function processData($data)
+    private function processData(array $data): array
     {
         return array_map(function ($item) {
             return [
@@ -73,7 +74,7 @@ class RssFormat implements FormatInterface
      * @param $item
      * @return string
      */
-    private function makeAvatar($item)
+    private function makeAvatar($item): string
     {
         return $this->makeImg($item['author']['avatar'], $item['author']['link']);
     }
@@ -82,7 +83,7 @@ class RssFormat implements FormatInterface
      * @param $item
      * @return string
      */
-    private function makeContent($item)
+    private function makeContent($item): string
     {
         if (empty($item['quote'])) {
             return $item['content'];

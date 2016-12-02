@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser\Vk\Posts;
@@ -12,7 +13,7 @@ class AudioPost extends AbstractPost implements PostInterface
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->getUserName() . ': новые аудиозаписи';
     }
@@ -20,7 +21,7 @@ class AudioPost extends AbstractPost implements PostInterface
     /**
      * @return string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return self::URL . "audios{$this->users[$this->item['source_id']]['id']}";
     }
@@ -28,7 +29,7 @@ class AudioPost extends AbstractPost implements PostInterface
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         $audios = $this->item['audio'];
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser\Vk;
@@ -53,7 +54,7 @@ class AttachmentParser
 
         $map = $this->attachmentsMap;
 
-        $attachments = array_map(function ($attachment) use ($map) {
+        $attachments = array_map(function (array $attachment) use ($map) {
             $type = $attachment['type'];
 
             if (!isset($map[$type])) {
@@ -71,7 +72,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makePhoto($attachment)
+    private function makePhoto(array $attachment): string
     {
         return $this->makeImg($attachment['photo']['src_big']);
     }
@@ -80,7 +81,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makePostedPhoto($attachment)
+    private function makePostedPhoto(array $attachment): string
     {
         return $this->makeImg($attachment['posted_photo']['photo_604']);
     }
@@ -89,7 +90,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makeVideoAttachment($attachment)
+    private function makeVideoAttachment(array $attachment): string
     {
         return $this->makeVideoTrait($attachment['video']);
     }
@@ -98,7 +99,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makeAudio($attachment)
+    private function makeAudio(array $attachment): string
     {
         return "Аудиозапись: " .
         "{$attachment['audio']['artist']} &ndash; {$attachment['audio']['title']}";
@@ -108,7 +109,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makeDoc($attachment)
+    private function makeDoc(array $attachment): string
     {
         return 'Документ: ' .
         $this->makeLink($attachment['doc']['url'], $attachment['doc']['title']);
@@ -118,7 +119,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makeGraffiti($attachment)
+    private function makeGraffiti(array $attachment): string
     {
         return 'Граффити: ' . $this->makeImg($attachment['graffiti']['photo_604']);
     }
@@ -127,7 +128,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makeLinkAttach($attachment)
+    private function makeLinkAttach(array $attachment): string
     {
         $linkUrl = $attachment['link']['url'];
         $linkTitle = $attachment['link']['title'];
@@ -150,7 +151,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makeNote($attachment)
+    private function makeNote(array $attachment): string
     {
         $noteLink = $attachment['note']['view_url'];
         $noteTitle = $attachment['note']['title'];
@@ -162,7 +163,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makeApp($attachment)
+    private function makeApp(array $attachment): string
     {
         return "Приложение: {$attachment['app']['name']}";
     }
@@ -171,7 +172,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makePoll($attachment)
+    private function makePoll(array $attachment): string
     {
 //        $answers = array_map(function ($answer) {
 //            return $answer['text'];
@@ -184,7 +185,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makePage($attachment)
+    private function makePage(array $attachment): string
     {
         $pageLink = $attachment['page']['view_url'];
         $pageTitle = $attachment['page']['title'];
@@ -196,7 +197,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makeAlbum($attachment)
+    private function makeAlbum(array $attachment): string
     {
         $albumTitle = $attachment['album']['title'];
         $albumSize = $attachment['album']['size'];
@@ -208,7 +209,7 @@ class AttachmentParser
      * @param $attachment
      * @return string
      */
-    private function makePhotosList($attachment)
+    private function makePhotosList(array $attachment): string
     {
         return '[Список фотографий]';
     }

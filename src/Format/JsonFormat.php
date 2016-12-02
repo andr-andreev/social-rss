@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Format;
@@ -17,7 +18,7 @@ class JsonFormat implements FormatInterface
      * @param $data
      * @return string
      */
-    public function format($data)
+    public function format(array $data): string
     {
         return json_encode($data, JSON_PRETTY_PRINT);
     }

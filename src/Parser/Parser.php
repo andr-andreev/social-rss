@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace SocialRss\Parser;
 
@@ -53,7 +54,7 @@ class Parser
      * @param $feed
      * @return mixed
      */
-    public function parseFeed($feed)
+    public function parseFeed(array $feed)
     {
         return $this->parser->parseFeed($feed);
     }

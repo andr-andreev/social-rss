@@ -1,10 +1,12 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser\Vk\Posts;
 
 /**
  * Class PostPost
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 class PostPost extends AbstractPost implements PostInterface
@@ -12,7 +14,7 @@ class PostPost extends AbstractPost implements PostInterface
     /**
      * @return mixed
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->getUserName();
     }
@@ -20,7 +22,7 @@ class PostPost extends AbstractPost implements PostInterface
     /**
      * @return string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return self::URL . "wall{$this->users[$this->item['source_id']]['id']}_{$this->item['post_id']}";
     }
@@ -28,7 +30,7 @@ class PostPost extends AbstractPost implements PostInterface
     /**
      * @return mixed
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->parseContent($this->item['text']);
     }
@@ -36,28 +38,21 @@ class PostPost extends AbstractPost implements PostInterface
     /**
      * @return array
      */
-    public function getQuote()
+    public function getQuote(): array
     {
-        $title = '';
-        $link = '';
-        $content = '';
-
-        if (isset($this->item['copy_owner_id'])) {
-            $title = $this->users[$this->item['copy_owner_id']]['name'];
-            $link = self::URL . $this->users[$this->item['copy_owner_id']]['screen_name'];
+        if (!isset($this->item['copy_owner_id'])) {
+            return parent::getQuote();
         }
 
         if (isset($this->item['copy_text'])) {
             $content = $this->parseContent($this->item['copy_text']);
-        }
-
-        if (empty($link)) {
-            return [];
+        } else {
+            $content = '';
         }
 
         return [
-            'title' => $title,
-            'link' => $link,
+            'title' => $this->users[$this->item['copy_owner_id']]['name'],
+            'link' => self::URL . $this->users[$this->item['copy_owner_id']]['screen_name'],
             'content' => $content,
         ];
     }

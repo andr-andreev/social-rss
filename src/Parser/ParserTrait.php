@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser;
@@ -12,25 +13,25 @@ trait ParserTrait
     private $regex = '/(^|){{pattern}}(\w*[[:alnum:]\@\.]+\w*)/u';
 
     /**
-     * @param $img
-     * @param null $link
+     * @param string $img
+     * @param string $link
      * @return string
      */
-    protected function makeImg($img, $link = null)
+    protected function makeImg(string $img, string $link = ''): string
     {
-        $middlePart = "<img src='{$img}' />";
+        $middlePart = "<img src='{$img}'>";
 
         return empty($link) ? $middlePart : $this->makeLink($link, $middlePart);
     }
 
     /**
      * @param $video
-     * @param string $img
+     * @param string $poster
      * @return string
      */
-    protected function makeVideo($video, $img = '')
+    protected function makeVideo(string $video, string $poster = ''): string
     {
-        return "<video src='$video' poster='$img' controls></video>";
+        return "<video src='$video' poster='$poster' controls></video>";
     }
 
     /**
@@ -38,7 +39,7 @@ trait ParserTrait
      * @param $text
      * @return string
      */
-    protected function makeLink($href, $text)
+    protected function makeLink(string $href, string $text): string
     {
         return "<a href='{$href}'>$text</a>";
     }
@@ -49,7 +50,7 @@ trait ParserTrait
      * @param $string
      * @return mixed
      */
-    protected function getParsedByPattern($pattern, $string)
+    protected function getParsedByPattern(string $pattern, string $string): array
     {
         $symbol = str_replace('{string}', '', $pattern);
         preg_match_all('/(^|)' . $symbol . '(\w*[[:alnum:]]+\w*)/u', $string, $out);
@@ -65,7 +66,7 @@ trait ParserTrait
      * @param $string
      * @return mixed
      */
-    private function parseByPattern($pattern, $template, $string)
+    private function parseByPattern(string $pattern, string $template, string $string): string
     {
         $regex = str_replace('{{pattern}}', $pattern, $this->regex);
 
@@ -79,11 +80,11 @@ trait ParserTrait
      * @param $content
      * @return string
      */
-    protected function makeBlock($avatar, $content)
+    protected function makeBlock(string $avatar, string $content): string
     {
         return "<div style='display: flex;'>" .
-        "<div style='width: 50px; margin-right: 10px;'>{$avatar}</div>" .
-        "<div>{$content}</div>" .
-        "</div>";
+            "<div style='width: 50px; margin-right: 10px;'>{$avatar}</div>" .
+            "<div>{$content}</div>" .
+            "</div>";
     }
 }

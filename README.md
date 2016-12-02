@@ -28,7 +28,7 @@ Screenshots made in [NewsBlur](https://newsblur.com/) RSS reader.
 * YAML
 
 ### Requirements
-* PHP >= 5.6
+* PHP >= 7.0
 * Composer
 
 ### Installation
@@ -63,17 +63,19 @@ This script uses embedded JSON data from Instagram web page.
 5. Open https://oauth.vk.com/access_token?client_id={APP_ID}&client_secret={API_SECRET}&code={CODE}&redirect_uri=http://oauth.vk.com/blank.html. Save `access_token` to `.env`
 
 ### Usage ###
+[Configure your webserver](https://www.slimframework.com/docs/start/web-servers.html), assuming `./web/` is public-accessible directory.
+
 To view your own timeline in default (RSS) format:
 ```
-http://example.com/web/index.php?source={source}
+http://example.com/{source}
 ```
 To view user timeline in default (RSS) format:
 ```
-http://example.com/web/index.php?source={source}&username={username}
+http://example.com/{source}?username={username}
 ```
 To specify another format:
 ```
-http://example.com/web/index.php?source={source}&output={format}
+http://example.com/{source}?output={format}
 ```
 where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss`, `json` or `yaml`
 

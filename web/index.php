@@ -1,28 +1,44 @@
 <?php
+declare(strict_types = 1);
 
 namespace SocialRss;
 
+use Slim\Http\Request;
+use Slim\Http\Response;
 use SocialRss\Parser\Parser;
 use SocialRss\Format\Format;
 use SocialRss\Exception\SocialRssException;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$source = isset($_GET['source']) ? $_GET['source'] : '';
-$username = isset($_GET['username']) ? $_GET['username'] : '';
-$output = isset($_GET['output']) ? $_GET['output'] : 'rss';
+$app = new \Slim\App([
+    'settings' => [
+        'displayErrorDetails' => true,
+    ]
+]);
 
-$config = parse_ini_file("../.env", true);
+$app->get('/{source}', function (Request $request, Response $response) {
+    $source = $request->getAttribute('source');
+    $params = $request->getQueryParams();
 
-if (!isset($config[$source])) {
-    throw new SocialRssException("No config found for $source source");
-}
+    $username = $params['username'] ?? '';
+    $output = $params['output'] ?? 'rss';
 
-$parser = new Parser($source, $config[$source]);
-$writer = new Format($output);
+    $config = parse_ini_file("../.env", true);
 
-$feed = $parser->getFeed($username);
+    if (!isset($config[$source])) {
+        throw new SocialRssException("No config found for $source source");
+    }
 
-$parsedFeed = $parser->parseFeed($feed);
+    $parser = new Parser($source, $config[$source]);
+    $writer = new Format($output);
 
-echo $writer->format($parsedFeed);
+    $feed = $parser->getFeed($username);
+    $parsedFeed = $parser->parseFeed($feed);
+
+    $response->getBody()->write($writer->format($parsedFeed));
+
+    return $response;
+});
+
+$app->run();

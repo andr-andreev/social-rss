@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser\Vk\Posts;
@@ -8,6 +9,7 @@ use SocialRss\Parser\Vk\VkParserTrait;
 
 /**
  * Class AbstractPost
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 class AbstractPost
@@ -22,10 +24,11 @@ class AbstractPost
 
     /**
      * AbstractPost constructor.
+     *
      * @param $item
      * @param $users
      */
-    public function __construct($item, $users)
+    public function __construct(array $item, array $users)
     {
         $this->item = $item;
         $this->users = $users;
@@ -34,7 +37,7 @@ class AbstractPost
     /**
      * @return array
      */
-    public function getQuote()
+    public function getQuote(): array
     {
         return [];
     }
@@ -42,7 +45,7 @@ class AbstractPost
     /**
      * @return mixed
      */
-    protected function getUserName()
+    protected function getUserName(): string
     {
         return $this->users[$this->item['source_id']]['name'];
     }

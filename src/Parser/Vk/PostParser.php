@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser\Vk;
@@ -50,7 +51,7 @@ class PostParser
     /**
      * @return bool
      */
-    public function isParserTypeAvailable()
+    public function isParserAvailable()
     {
         return isset($this->typeMap[$this->item['type']]);
     }

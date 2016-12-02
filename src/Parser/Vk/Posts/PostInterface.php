@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser\Vk\Posts;
@@ -9,11 +10,23 @@ namespace SocialRss\Parser\Vk\Posts;
  */
 interface PostInterface
 {
-    public function getTitle();
+    /**
+     * @return string
+     */
+    public function getTitle(): string;
 
-    public function getLink();
+    /**
+     * @return string
+     */
+    public function getLink(): string;
 
-    public function getDescription();
+    /**
+     * @return string
+     */
+    public function getDescription(): string;
 
-    public function getQuote();
+    /**
+     * @return array
+     */
+    public function getQuote(): array;
 }

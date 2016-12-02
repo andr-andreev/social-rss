@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser\Vk\Posts;
@@ -16,7 +17,7 @@ class VideoPost extends AbstractPost implements PostInterface
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->getUserName() . ': новые видеозаписи';
     }
@@ -24,7 +25,7 @@ class VideoPost extends AbstractPost implements PostInterface
     /**
      * @return string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return self::URL . "videos{$this->users[$this->item['source_id']]['id']}";
     }
@@ -32,7 +33,7 @@ class VideoPost extends AbstractPost implements PostInterface
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         $videos = $this->item['video'];
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 
 namespace SocialRss\Parser\Vk;
@@ -11,9 +12,9 @@ trait VkParserTrait
 {
     /**
      * @param $text
-     * @return mixed
+     * @return string
      */
-    protected function parseContent($text)
+    protected function parseContent(string $text): string
     {
         // Match URLs
         $text = preg_replace(
@@ -46,7 +47,7 @@ trait VkParserTrait
      * @param $items
      * @return string
      */
-    protected function makePhotos($items)
+    protected function makePhotos(array $items): string
     {
         $photos = array_filter($items, function ($photo) {
             return isset($photo['pid']);
@@ -64,9 +65,9 @@ trait VkParserTrait
 
     /**
      * @param $userId
-     * @return mixed
+     * @return string
      */
-    protected function makeFriends($userId)
+    protected function makeFriends(int $userId): string
     {
         return $this->makeLink(
             self::URL . $this->users[$userId]['screen_name'],
@@ -78,7 +79,7 @@ trait VkParserTrait
      * @param $attachment
      * @return string
      */
-    protected function makeVideoTrait($attachment)
+    protected function makeVideoTrait(array $attachment): string
     {
         $videoLink = self::URL . "video{$attachment['owner_id']}_{$attachment['vid']}";
         $videoTitle = $attachment['title'];
@@ -88,6 +89,6 @@ trait VkParserTrait
         $videoDuration = gmdate('H:i:s', $attachment['duration']);
 
         return $imagePreview . PHP_EOL .
-        "Видеозапись: $linkToVideo ($videoDuration)";
+            "Видеозапись: $linkToVideo ($videoDuration)";
     }
 }
