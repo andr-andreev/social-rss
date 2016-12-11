@@ -11,6 +11,7 @@ use SocialRss\Exception\SocialRssException;
 use SocialRss\Format\FormatFactory;
 use SocialRss\Format\FormatInterface;
 use SocialRss\Parser\ParserFactory;
+use SocialRss\Parser\ParserInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -31,8 +32,7 @@ $container['formatFactory'] = function (Container $c) {
     return new FormatFactory();
 };
 
-$app->get(
-    '/{source}', function (Request $request, Response $response) {
+$app->get('/{source}', function (Request $request, Response $response) {
     $source = $request->getAttribute('source');
     $params = $request->getQueryParams();
 
@@ -45,7 +45,7 @@ $app->get(
         throw new SocialRssException("No config found for $source source");
     }
 
-    /* @var $parser \SocialRss\Parser\ParserInterface */
+    /* @var $parser ParserInterface */
     $parser = $this->get('parserFactory')->create($source, $config[$source]);
 
     /* @var $writer FormatInterface */
@@ -57,7 +57,6 @@ $app->get(
     $response->getBody()->write($writer->format($parsedFeed));
 
     return $response;
-}
-);
+});
 
 $app->run();
