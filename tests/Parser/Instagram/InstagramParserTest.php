@@ -3,7 +3,8 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser\Instagram;
 
-use SocialRss\Parser\Parser;
+use SocialRss\Parser\ParserFactory;
+use SocialRss\Parser\ParserInterface;
 
 /**
  * Class InstagramParserTest
@@ -11,21 +12,33 @@ use SocialRss\Parser\Parser;
  */
 class InstagramParserTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ParserInterface
+     */
+    private $parser;
+    /**
+     * @var array
+     */
+    private $feed;
+
+    public function setUp()
+    {
+        $this->parser = (new ParserFactory())->create('instagram', []);
+        $this->feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/instagram.json'), true);
+    }
+
     public function testParseFeed()
     {
-        $parser = new Parser('instagram', ['username' => '', 'password' => '']);
-        $feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/instagram.json'), true);
-
         // test when no caption provided
-//        unset($feed[0]['caption']);
+        // unset($feed[0]['caption']);
 
-        $parsedFeed = $parser->parseFeed($feed);
+        $parsedFeed = $this->parser->parseFeed($this->feed);
 
         $this->assertNotEmpty($parsedFeed['title']);
         $this->assertNotEmpty($parsedFeed['link']);
         $this->assertNotEmpty($parsedFeed['items']);
 
-        $this->assertCount(count($feed), $parsedFeed['items']);
+        $this->assertCount(count($this->feed), $parsedFeed['items']);
 
         foreach ($parsedFeed['items'] as $item) {
             $this->assertNotEmpty($item['title']);

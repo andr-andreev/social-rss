@@ -23,6 +23,12 @@ class VkParser implements ParserInterface
     const API_METHOD_USER = 'wall.get';
     const API_PARAMETERS = ['count' => 100, 'extended' => 1];
 
+    const CONFIG_DEFAULT = [
+        'app_id' => '',
+        'api_secret' => '',
+        'access_token' => '',
+    ];
+
     private $vkClient;
 
     /**
@@ -31,7 +37,8 @@ class VkParser implements ParserInterface
      */
     public function __construct(array $config)
     {
-        $this->vkClient = new VK($config['app_id'], $config['api_secret'], $config['access_token']);
+        $vkConfig = array_merge(self::CONFIG_DEFAULT, $config);
+        $this->vkClient = new VK($vkConfig['app_id'], $vkConfig['api_secret'], $vkConfig['access_token']);
     }
 
     /**

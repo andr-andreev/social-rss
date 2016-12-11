@@ -24,6 +24,13 @@ class TwitterParser implements ParserInterface
     const API_URL_USER = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
     const API_PARAMETERS = '?count=100&tweet_mode=extended';
 
+    const CONFIG_DEFAULT = [
+        'consumer_key' => '',
+        'consumer_secret' => '',
+        'oauth_access_token' => '',
+        'oauth_access_token_secret' => '',
+    ];
+
     private $twitterClient;
 
     /**
@@ -32,7 +39,8 @@ class TwitterParser implements ParserInterface
      */
     public function __construct(array $config)
     {
-        $this->twitterClient = new TwitterAPIExchange($config);
+        $twitterConfig = array_merge(self::CONFIG_DEFAULT, $config);
+        $this->twitterClient = new TwitterAPIExchange($twitterConfig);
     }
 
     /**

@@ -3,7 +3,8 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser\Twitter;
 
-use SocialRss\Parser\Parser;
+use SocialRss\Parser\ParserFactory;
+use SocialRss\Parser\ParserInterface;
 
 /**
  * Class TwitterParserTest
@@ -11,23 +12,30 @@ use SocialRss\Parser\Parser;
  */
 class TwitterParserTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ParserInterface
+     */
+    private $parser;
+    /**
+     * @var array
+     */
+    private $feed;
+
+    public function setUp()
+    {
+        $this->parser = (new ParserFactory())->create('twitter', []);
+        $this->feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/twitter.json'), true);
+    }
+
     public function testParseFeed()
     {
-        $parser = new Parser('twitter', [
-            'consumer_key' => '',
-            'consumer_secret' => '',
-            'oauth_access_token' => '',
-            'oauth_access_token_secret' => '',
-        ]);
-        $feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/twitter.json'), true);
-
-        $parsedFeed = $parser->parseFeed($feed);
+        $parsedFeed = $this->parser->parseFeed($this->feed);
 
         $this->assertNotEmpty($parsedFeed['title']);
         $this->assertNotEmpty($parsedFeed['link']);
         $this->assertNotEmpty($parsedFeed['items']);
 
-        $this->assertCount(count($feed), $parsedFeed['items']);
+        $this->assertCount(count($this->feed), $parsedFeed['items']);
 
         foreach ($parsedFeed['items'] as $item) {
             $this->assertNotEmpty($item['title']);
