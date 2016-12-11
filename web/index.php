@@ -31,7 +31,8 @@ $container['formatFactory'] = function (Container $c) {
     return new FormatFactory();
 };
 
-$app->get('/{source}', function (Request $request, Response $response) {
+$app->get(
+    '/{source}', function (Request $request, Response $response) {
     $source = $request->getAttribute('source');
     $params = $request->getQueryParams();
 
@@ -56,6 +57,7 @@ $app->get('/{source}', function (Request $request, Response $response) {
     $response->getBody()->write($writer->format($parsedFeed));
 
     return $response;
-});
+}
+);
 
 $app->run();

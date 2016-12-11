@@ -8,6 +8,7 @@ use SocialRss\Parser\Vk\Posts\PostInterface;
 
 /**
  * Class PostParser
+ *
  * @package SocialRss\Parser\Vk
  */
 class PostParser
@@ -32,6 +33,7 @@ class PostParser
 
     /**
      * PostParser constructor.
+     *
      * @param $item
      * @param $users
      */

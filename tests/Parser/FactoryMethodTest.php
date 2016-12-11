@@ -11,6 +11,7 @@ use SocialRss\Parser\Vk\VkParser;
 
 /**
  * Class FactoryMethodTest
+ *
  * @package SocialRss\Parser
  */
 class FactoryMethodTest extends \PHPUnit_Framework_TestCase

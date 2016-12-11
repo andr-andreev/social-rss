@@ -35,6 +35,7 @@ class TwitterParser implements ParserInterface
 
     /**
      * TwitterParser constructor.
+     *
      * @param $config
      */
     public function __construct(array $config)
@@ -79,13 +80,17 @@ class TwitterParser implements ParserInterface
     public function parseFeed(array $feed): array
     {
         // Parse items
-        $items = array_map(function ($item) {
-            return $this->parseItem($item);
-        }, $feed);
+        $items = array_map(
+            function ($item) {
+                return $this->parseItem($item);
+            }, $feed
+        );
 
-        $filtered = array_filter($items, function ($item) {
+        $filtered = array_filter(
+            $items, function ($item) {
             return !empty($item);
-        });
+        }
+        );
 
         return [
             'title' => self::NAME,
@@ -148,12 +153,16 @@ class TwitterParser implements ParserInterface
             isset($tweet['extended_entities']) ? $tweet['extended_entities'] : []
         );
 
-        $processedEntities = array_map(function ($type, $typeArray) {
-            return array_map(function ($entity) use ($type) {
-                $entity['entity_type'] = $type;
-                return $entity;
-            }, $typeArray);
-        }, array_keys($tweetEntities), $tweetEntities);
+        $processedEntities = array_map(
+            function ($type, $typeArray) {
+                return array_map(
+                    function ($entity) use ($type) {
+                        $entity['entity_type'] = $type;
+                        return $entity;
+                    }, $typeArray
+                );
+            }, array_keys($tweetEntities), $tweetEntities
+        );
 
         $flatEntities = array_merge(...$processedEntities);
 
@@ -185,9 +194,11 @@ class TwitterParser implements ParserInterface
             return [];
         }
 
-        return array_map(function ($hashtag) {
-            return $hashtag['text'];
-        }, $tweet['entities']['hashtags']);
+        return array_map(
+            function ($hashtag) {
+                return $hashtag['text'];
+            }, $tweet['entities']['hashtags']
+        );
     }
 
     /**
@@ -233,9 +244,11 @@ class TwitterParser implements ParserInterface
 
                     case 'video':
                     case 'animated_gif':
-                        $videoVariants = array_filter($item['video_info']['variants'], function ($variant) {
+                        $videoVariants = array_filter(
+                            $item['video_info']['variants'], function ($variant) {
                             return $variant['content_type'] === 'video/mp4';
-                        });
+                        }
+                        );
 
                         if (empty($videoVariants)) {
                             $media = $this->makeImg($item['media_url_https']);

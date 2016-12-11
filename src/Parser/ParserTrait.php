@@ -6,6 +6,7 @@ namespace SocialRss\Parser;
 
 /**
  * Class ParserTrait
+ *
  * @package SocialRss\Parser
  */
 trait ParserTrait

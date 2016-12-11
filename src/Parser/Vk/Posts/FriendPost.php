@@ -6,6 +6,7 @@ namespace SocialRss\Parser\Vk\Posts;
 
 /**
  * Class FriendPost
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 class FriendPost extends AbstractPost implements PostInterface
@@ -37,13 +38,17 @@ class FriendPost extends AbstractPost implements PostInterface
 
         $friends = $this->item['friends'];
 
-        $friends = array_filter($friends, function ($friend) {
+        $friends = array_filter(
+            $friends, function ($friend) {
             return $friend['uid'];
-        });
+        }
+        );
 
-        $friends = array_map(function ($friend) {
-            return $this->makeFriends($friend['uid']);
-        }, $friends);
+        $friends = array_map(
+            function ($friend) {
+                return $this->makeFriends($friend['uid']);
+            }, $friends
+        );
 
         return implode(PHP_EOL, $friends);
     }

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
-
 /**
  * Class FactoryMethodTest
+ *
  * @package SocialRss\Format
  */
 class FactoryMethodTest extends \PHPUnit_Framework_TestCase

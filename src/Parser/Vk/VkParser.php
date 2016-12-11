@@ -10,6 +10,7 @@ use SocialRss\Parser\ParserTrait;
 
 /**
  * Class VkParser
+ *
  * @package SocialRss\Parser\Vk
  */
 class VkParser implements ParserInterface
@@ -33,6 +34,7 @@ class VkParser implements ParserInterface
 
     /**
      * VkParser constructor.
+     *
      * @param $config
      */
     public function __construct(array $config)
@@ -70,17 +72,21 @@ class VkParser implements ParserInterface
      */
     private function processFeed(array $feed): array
     {
-        $items = array_filter($feed['wall'], function ($item) {
+        $items = array_filter(
+            $feed['wall'], function ($item) {
             return is_array($item);
-        });
+        }
+        );
 
-        $processedItems = array_map(function ($item) {
-            $item['type'] = $item['post_type'];
-            $item['source_id'] = $item['from_id'];
-            $item['post_id'] = $item['id'];
+        $processedItems = array_map(
+            function ($item) {
+                $item['type'] = $item['post_type'];
+                $item['source_id'] = $item['from_id'];
+                $item['post_id'] = $item['id'];
 
-            return $item;
-        }, $items);
+                return $item;
+            }, $items
+        );
 
         return array_merge($feed, ['items' => $processedItems]);
     }
@@ -92,32 +98,40 @@ class VkParser implements ParserInterface
     public function parseFeed(array $feed): array
     {
         // Get groups array
-        $groups = array_reduce($feed['groups'], function ($groups, $group) {
+        $groups = array_reduce(
+            $feed['groups'], function ($groups, $group) {
             $gid = -$group['gid'];
             $groups[$gid] = $group;
             $groups[$gid]['id'] = $gid;
 
             return $groups;
-        }, []);
+        }, []
+        );
 
         // Get combined groups and users array
-        $profiles = array_reduce($feed['profiles'], function ($users, $user) {
+        $profiles = array_reduce(
+            $feed['profiles'], function ($users, $user) {
             $uid = $user['uid'];
             $users[$uid] = $user;
             $users[$uid]['id'] = $uid;
             $users[$uid]['name'] = "{$users[$uid]['first_name']} {$users[$uid]['last_name']}";
 
             return $users;
-        }, $groups);
+        }, $groups
+        );
 
         // Parse items
-        $items = array_map(function ($item) use ($profiles) {
-            return $this->parseItem($item, $profiles);
-        }, $feed['items']);
+        $items = array_map(
+            function ($item) use ($profiles) {
+                return $this->parseItem($item, $profiles);
+            }, $feed['items']
+        );
 
-        $filtered = array_filter($items, function ($item) {
+        $filtered = array_filter(
+            $items, function ($item) {
             return !empty($item);
-        });
+        }
+        );
 
         return [
             'title' => self::NAME,

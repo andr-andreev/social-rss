@@ -6,6 +6,7 @@ namespace SocialRss\Format;
 
 /**
  * Class FactoryMethod
+ *
  * @package SocialRss\Format
  */
 abstract class FactoryMethod

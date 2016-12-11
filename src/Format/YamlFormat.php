@@ -9,6 +9,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class YamlFormat
+ *
  * @package SocialRss\Format
  */
 class YamlFormat implements FormatInterface

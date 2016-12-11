@@ -6,6 +6,7 @@ namespace SocialRss\Parser\Vk\Posts;
 
 /**
  * Class NotePost
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 class NotePost extends AbstractPost implements PostInterface
@@ -34,9 +35,11 @@ class NotePost extends AbstractPost implements PostInterface
 
         $notes = $this->item['notes'];
 
-        $notes = array_map(function ($note) {
-            return 'Заметка: ' . $this->makeLink($note['view_url'], $note['title']);
-        }, $notes);
+        $notes = array_map(
+            function ($note) {
+                return 'Заметка: ' . $this->makeLink($note['view_url'], $note['title']);
+            }, $notes
+        );
 
         return implode(PHP_EOL, $notes);
     }

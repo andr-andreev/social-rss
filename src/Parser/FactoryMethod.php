@@ -6,6 +6,7 @@ namespace SocialRss\Parser;
 
 /**
  * Class FactoryMethod
+ *
  * @package SocialRss\Parser
  */
 abstract class FactoryMethod

@@ -8,6 +8,7 @@ use SocialRss\Exception\SocialRssException;
 
 /**
  * Class ParserFactory
+ *
  * @package SocialRss\Parser
  */
 class ParserFactory extends FactoryMethod

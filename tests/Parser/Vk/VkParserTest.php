@@ -8,6 +8,7 @@ use SocialRss\Parser\ParserInterface;
 
 /**
  * Class VkParserTest
+ *
  * @package SocialRss\Parser\Vk
  */
 class VkParserTest extends \PHPUnit_Framework_TestCase

@@ -6,6 +6,7 @@ namespace SocialRss\Parser\Vk\Posts;
 
 /**
  * Class AudioPost
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 class AudioPost extends AbstractPost implements PostInterface
@@ -33,13 +34,17 @@ class AudioPost extends AbstractPost implements PostInterface
     {
         $audios = $this->item['audio'];
 
-        $audios = array_filter($audios, function ($audio) {
+        $audios = array_filter(
+            $audios, function ($audio) {
             return isset($audio['title']);
-        });
+        }
+        );
 
-        $audios = array_map(function ($audio) {
-            return "Аудиозапись: {$audio['artist']} &ndash; {$audio['title']}";
-        }, $audios);
+        $audios = array_map(
+            function ($audio) {
+                return "Аудиозапись: {$audio['artist']} &ndash; {$audio['title']}";
+            }, $audios
+        );
 
         return implode(PHP_EOL, $audios);
     }

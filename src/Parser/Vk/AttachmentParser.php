@@ -8,6 +8,7 @@ use SocialRss\Parser\ParserTrait;
 
 /**
  * Class AttachmentParser
+ *
  * @package SocialRss\Parser\Vk
  */
 class AttachmentParser
@@ -36,6 +37,7 @@ class AttachmentParser
 
     /**
      * AttachmentParser constructor.
+     *
      * @param $item
      */
     public function __construct($item)
@@ -54,16 +56,18 @@ class AttachmentParser
 
         $map = $this->attachmentsMap;
 
-        $attachments = array_map(function (array $attachment) use ($map) {
-            $type = $attachment['type'];
+        $attachments = array_map(
+            function (array $attachment) use ($map) {
+                $type = $attachment['type'];
 
-            if (!isset($map[$type])) {
-                return "[Item contains unknown attachment type {$attachment['type']}]";
-            }
+                if (!isset($map[$type])) {
+                    return "[Item contains unknown attachment type {$attachment['type']}]";
+                }
 
-            $method = $map[$type];
-            return $this->$method($attachment);
-        }, $this->item['attachments']);
+                $method = $map[$type];
+                return $this->$method($attachment);
+            }, $this->item['attachments']
+        );
 
         return implode(PHP_EOL, $attachments);
     }
@@ -174,9 +178,9 @@ class AttachmentParser
      */
     private function makePoll(array $attachment): string
     {
-//        $answers = array_map(function ($answer) {
-//            return $answer['text'];
-//        }, $attachment['poll']['answers']);
+        //        $answers = array_map(function ($answer) {
+        //            return $answer['text'];
+        //        }, $attachment['poll']['answers']);
 
         return "Опрос: {$attachment['poll']['question']}";
     }

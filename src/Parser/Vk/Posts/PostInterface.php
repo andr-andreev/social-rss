@@ -6,6 +6,7 @@ namespace SocialRss\Parser\Vk\Posts;
 
 /**
  * Interface PostInterface
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 interface PostInterface

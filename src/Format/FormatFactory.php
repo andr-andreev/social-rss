@@ -8,6 +8,7 @@ use SocialRss\Exception\SocialRssException;
 
 /**
  * Class FormatFactory
+ *
  * @package SocialRss\Format
  */
 class FormatFactory extends FactoryMethod

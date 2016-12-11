@@ -6,6 +6,7 @@ namespace SocialRss\Format;
 
 /**
  * Interface FormatInterface
+ *
  * @package SocialRss\Format
  */
 interface FormatInterface

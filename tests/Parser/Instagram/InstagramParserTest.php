@@ -8,6 +8,7 @@ use SocialRss\Parser\ParserInterface;
 
 /**
  * Class InstagramParserTest
+ *
  * @package SocialRss\Parser\Instagram
  */
 class InstagramParserTest extends \PHPUnit_Framework_TestCase

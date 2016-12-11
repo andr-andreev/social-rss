@@ -11,6 +11,7 @@ use SocialRss\Exception\SocialRssException;
 
 /**
  * Class InstagramParser
+ *
  * @package SocialRss\Parser\Instagram
  */
 class InstagramParser implements ParserInterface
@@ -31,6 +32,7 @@ class InstagramParser implements ParserInterface
 
     /**
      * InstagramParser constructor.
+     *
      * @param $config
      */
     public function __construct(array $config)
@@ -53,27 +55,35 @@ class InstagramParser implements ParserInterface
         // https://www.instagram.com/developer/changelog/
 
         // Open instagram homepage
-        $this->httpClient->request('GET', '/', [
+        $this->httpClient->request(
+            'GET', '/', [
             'headers' => self::HEADERS,
-        ]);
+            ]
+        );
 
         // Make cookies array
-        $cookies = array_reduce($this->cookies->toArray(), function ($carry, $item) {
+        $cookies = array_reduce(
+            $this->cookies->toArray(), function ($carry, $item) {
             $carry[$item['Name']] = $item['Value'];
 
             return $carry;
-        }, []);
+        }, []
+        );
 
         // Login and get sessionid cookie
-        $loginRequest = $this->httpClient->request('POST', '/accounts/login/ajax/', [
-            'headers' => array_merge(self::HEADERS, [
+        $loginRequest = $this->httpClient->request(
+            'POST', '/accounts/login/ajax/', [
+                'headers' => array_merge(
+                    self::HEADERS, [
                 'X-CSRFToken' => $cookies['csrftoken'],
-            ]),
+                    ]
+                ),
             'form_params' => [
                 'username' => $this->config['username'],
                 'password' => $this->config['password']
             ]
-        ]);
+            ]
+        );
 
         $loginBody = json_decode((string)($loginRequest->getBody()), true);
         if ($loginBody['authenticated'] === false) {
@@ -82,9 +92,11 @@ class InstagramParser implements ParserInterface
 
         $url = empty($username) ? '/' : '/' . $username;
         // Open URL with data as a logged in user
-        $feedRequest = $this->httpClient->request('GET', $url, [
+        $feedRequest = $this->httpClient->request(
+            'GET', $url, [
             'headers' => self::HEADERS
-        ]);
+            ]
+        );
 
         // Find JSON data in the script tag
         $reResult = preg_match(
@@ -108,12 +120,14 @@ class InstagramParser implements ParserInterface
      */
     private function processFeed(array $items): array
     {
-        return array_map(function ($item) {
-            $item['caption'] = $item['caption'] ?? '';
-            $item['location']['name'] = $item['location']['name'] ?? '';
+        return array_map(
+            function ($item) {
+                $item['caption'] = $item['caption'] ?? '';
+                $item['location']['name'] = $item['location']['name'] ?? '';
 
-            return $item;
-        }, $items);
+                return $item;
+            }, $items
+        );
     }
 
     /**
@@ -135,11 +149,13 @@ class InstagramParser implements ParserInterface
 
         $user = $feed['entry_data']['ProfilePage'][0]['user'];
 
-        return array_map(function ($item) use ($user) {
-            $item['owner'] = $user;
+        return array_map(
+            function ($item) use ($user) {
+                $item['owner'] = $user;
 
-            return $item;
-        }, $items);
+                return $item;
+            }, $items
+        );
     }
 
 
@@ -150,13 +166,17 @@ class InstagramParser implements ParserInterface
     public function parseFeed(array $feed): array
     {
         // Parse items
-        $items = array_map(function ($item) {
-            return $this->parseItem($item);
-        }, $feed);
+        $items = array_map(
+            function ($item) {
+                return $this->parseItem($item);
+            }, $feed
+        );
 
-        $filtered = array_filter($items, function ($item) {
+        $filtered = array_filter(
+            $items, function ($item) {
             return !empty($item);
-        });
+        }
+        );
 
         return [
             'title' => self::NAME,

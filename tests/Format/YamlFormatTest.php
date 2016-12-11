@@ -9,6 +9,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class YamlFormatTest
+ *
  * @package SocialRss\Format
  */
 class YamlFormatTest extends \PHPUnit_Framework_TestCase

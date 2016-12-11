@@ -8,6 +8,7 @@ use SocialRss\Parser\ParserFactory;
 
 /**
  * Class RssFormatTest
+ *
  * @package SocialRss\Format
  */
 class RssFormatTest extends \PHPUnit_Framework_TestCase

@@ -8,6 +8,7 @@ use SocialRss\Parser\ParserFactory;
 
 /**
  * Class JsonFormatTest
+ *
  * @package SocialRss\Format
  */
 class JsonFormatTest extends \PHPUnit_Framework_TestCase
