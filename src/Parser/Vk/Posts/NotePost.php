@@ -32,14 +32,11 @@ class NotePost extends AbstractPost implements PostInterface
      */
     public function getDescription(): string
     {
-
         $notes = $this->item['notes'];
 
-        $notes = array_map(
-            function ($note) {
-                return 'Заметка: ' . $this->makeLink($note['view_url'], $note['title']);
-            }, $notes
-        );
+        $notes = array_map(function ($note) {
+            return 'Заметка: ' . $this->makeLink($note['view_url'], $note['title']);
+        }, $notes);
 
         return implode(PHP_EOL, $notes);
     }

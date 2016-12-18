@@ -5,7 +5,6 @@ namespace SocialRss\Parser;
 
 use SocialRss\Exception\SocialRssException;
 
-
 /**
  * Class ParserFactory
  *

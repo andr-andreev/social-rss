@@ -50,20 +50,16 @@ trait VkParserTrait
      */
     protected function makePhotos(array $items): string
     {
-        $photos = array_filter(
-            $items, function ($photo) {
+        $photos = array_filter($items, function ($photo) {
             return isset($photo['pid']);
-        }
-        );
+        });
 
-        $photos = array_map(
-            function ($photo) {
+        $photos = array_map(function ($photo) {
                 return $this->makeImg(
                     $photo['src_big'],
                     self::URL . "photo{$photo['owner_id']}_{$photo['pid']}"
                 );
-            }, $photos
-        );
+        }, $photos);
 
         return implode(PHP_EOL, $photos);
     }

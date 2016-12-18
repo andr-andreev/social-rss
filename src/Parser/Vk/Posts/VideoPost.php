@@ -38,17 +38,13 @@ class VideoPost extends AbstractPost implements PostInterface
     {
         $videos = $this->item['video'];
 
-        $videos = array_filter(
-            $videos, function ($video) {
+        $videos = array_filter($videos, function ($video) {
             return isset($video['title']);
-        }
-        );
+        });
 
-        $videos = array_map(
-            function ($video) {
-                return $this->makeVideoTrait($video);
-            }, $videos
-        );
+        $videos = array_map(function ($video) {
+            return $this->makeVideoTrait($video);
+        }, $videos);
 
         return implode(PHP_EOL, $videos);
     }

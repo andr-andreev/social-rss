@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser;
 
-
 use SocialRss\Parser\Instagram\InstagramParser;
 use SocialRss\Parser\Twitter\TwitterParser;
 use SocialRss\Parser\Vk\VkParser;

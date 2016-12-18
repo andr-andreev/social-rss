@@ -56,18 +56,16 @@ class AttachmentParser
 
         $map = $this->attachmentsMap;
 
-        $attachments = array_map(
-            function (array $attachment) use ($map) {
-                $type = $attachment['type'];
+        $attachments = array_map(function (array $attachment) use ($map) {
+            $type = $attachment['type'];
 
-                if (!isset($map[$type])) {
-                    return "[Item contains unknown attachment type {$attachment['type']}]";
-                }
+            if (!isset($map[$type])) {
+                return "[Item contains unknown attachment type {$attachment['type']}]";
+            }
 
-                $method = $map[$type];
-                return $this->$method($attachment);
-            }, $this->item['attachments']
-        );
+            $method = $map[$type];
+            return $this->$method($attachment);
+        }, $this->item['attachments']);
 
         return implode(PHP_EOL, $attachments);
     }
@@ -106,7 +104,7 @@ class AttachmentParser
     private function makeAudio(array $attachment): string
     {
         return "Аудиозапись: " .
-        "{$attachment['audio']['artist']} &ndash; {$attachment['audio']['title']}";
+            "{$attachment['audio']['artist']} &ndash; {$attachment['audio']['title']}";
     }
 
     /**
@@ -116,7 +114,7 @@ class AttachmentParser
     private function makeDoc(array $attachment): string
     {
         return 'Документ: ' .
-        $this->makeLink($attachment['doc']['url'], $attachment['doc']['title']);
+            $this->makeLink($attachment['doc']['url'], $attachment['doc']['title']);
     }
 
     /**

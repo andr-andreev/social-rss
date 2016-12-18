@@ -5,7 +5,6 @@ namespace SocialRss\Format;
 
 use SocialRss\Exception\SocialRssException;
 
-
 /**
  * Class FormatFactory
  *

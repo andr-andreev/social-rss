@@ -52,27 +52,23 @@ class RssFormat implements FormatInterface
      */
     private function processData(array $data): array
     {
-        return array_map(
-            function ($item) {
-                return [
+        return array_map(function ($item) {
+            return [
                 'title' => $item['title'],
                 'link' => $item['link'],
                 'author' => [
                     'name' => $item['author']['name']
                 ],
-                    'categories' => array_map(
-                        function ($tag) {
-                            return ['term' => $tag];
-                        }, $item['tags']
-                    ),
+                'categories' => array_map(function ($tag) {
+                    return ['term' => $tag];
+                }, $item['tags']),
                 'dateCreated' => $item['date'],
                 'description' => $this->makeBlock(
                     $this->makeAvatar($item),
                     $this->makeContent($item)
                 ),
-                ];
-            }, $data['items']
-        );
+            ];
+        }, $data['items']);
     }
 
     /**
