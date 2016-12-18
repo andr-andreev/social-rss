@@ -8,6 +8,7 @@ use SocialRss\Parser\Vk\VkParserTrait;
 
 /**
  * Class VideoPost
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 class VideoPost extends AbstractPost implements PostInterface

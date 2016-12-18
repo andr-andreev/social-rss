@@ -11,6 +11,7 @@ use SocialRss\Exception\SocialRssException;
 
 /**
  * Class InstagramParser
+ *
  * @package SocialRss\Parser\Instagram
  */
 class InstagramParser implements ParserInterface
@@ -31,6 +32,7 @@ class InstagramParser implements ParserInterface
 
     /**
      * InstagramParser constructor.
+     *
      * @param $config
      */
     public function __construct(array $config)
@@ -66,9 +68,10 @@ class InstagramParser implements ParserInterface
 
         // Login and get sessionid cookie
         $loginRequest = $this->httpClient->request('POST', '/accounts/login/ajax/', [
-            'headers' => array_merge(self::HEADERS, [
-                'X-CSRFToken' => $cookies['csrftoken'],
-            ]),
+                'headers' => array_merge(
+                    self::HEADERS,
+                    ['X-CSRFToken' => $cookies['csrftoken']]
+                ),
             'form_params' => [
                 'username' => $this->config['username'],
                 'password' => $this->config['password']

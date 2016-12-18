@@ -24,15 +24,24 @@ class TwitterParser implements ParserInterface
     const API_URL_USER = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
     const API_PARAMETERS = '?count=100&tweet_mode=extended';
 
+    const CONFIG_DEFAULT = [
+        'consumer_key' => '',
+        'consumer_secret' => '',
+        'oauth_access_token' => '',
+        'oauth_access_token_secret' => '',
+    ];
+
     private $twitterClient;
 
     /**
      * TwitterParser constructor.
+     *
      * @param $config
      */
     public function __construct(array $config)
     {
-        $this->twitterClient = new TwitterAPIExchange($config);
+        $twitterConfig = array_merge(self::CONFIG_DEFAULT, $config);
+        $this->twitterClient = new TwitterAPIExchange($twitterConfig);
     }
 
     /**
@@ -151,18 +160,14 @@ class TwitterParser implements ParserInterface
 
         $entitiesMap = $this->getEntitiesMap();
 
-        $processedText = array_reduce(
-            $flatEntities,
-            function ($acc, $entity) use ($entitiesMap) {
-                $type = $entity['entity_type'];
-                if (!isset($entitiesMap[$type])) {
-                    return $acc . PHP_EOL .
-                        "[Tweet contains unknown entity type {$entity['type']}]";
-                }
-                return $entitiesMap[$type]($acc, $entity);
-            },
-            $tweet['full_text']
-        );
+        $processedText = array_reduce($flatEntities, function ($acc, $entity) use ($entitiesMap) {
+            $type = $entity['entity_type'];
+            if (!isset($entitiesMap[$type])) {
+                return $acc . PHP_EOL .
+                    "[Tweet contains unknown entity type {$entity['type']}]";
+            }
+            return $entitiesMap[$type]($acc, $entity);
+        }, $tweet['full_text']);
 
         return nl2br(trim($processedText));
     }

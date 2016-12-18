@@ -6,12 +6,14 @@ namespace SocialRss\Parser;
 
 /**
  * Interface ParserInterface
+ *
  * @package SocialRss\Parser
  */
 interface ParserInterface
 {
     /**
      * ParserInterface constructor.
+     *
      * @param $config
      */
     public function __construct(array $config);

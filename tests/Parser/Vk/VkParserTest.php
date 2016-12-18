@@ -3,26 +3,41 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser\Vk;
 
-use SocialRss\Parser\Parser;
+use SocialRss\Parser\ParserFactory;
+use SocialRss\Parser\ParserInterface;
 
 /**
  * Class VkParserTest
+ *
  * @package SocialRss\Parser\Vk
  */
 class VkParserTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ParserInterface
+     */
+    private $parser;
+    /**
+     * @var array
+     */
+    private $feed;
+
+    public function setUp()
+    {
+        $this->parser = (new ParserFactory())
+            ->create('vk', []);
+        $this->feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/vk.json'), true);
+    }
+
     public function testParseFeed()
     {
-        $parser = new Parser('vk', ['app_id' => '', 'api_secret' => '', 'access_token' => '']);
-        $feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/vk.json'), true);
-
-        $parsedFeed = $parser->parseFeed($feed);
+        $parsedFeed = $this->parser->parseFeed($this->feed);
 
         $this->assertNotEmpty($parsedFeed['title']);
         $this->assertNotEmpty($parsedFeed['link']);
         $this->assertNotEmpty($parsedFeed['items']);
 
-//        $this->assertCount(9, $parsedFeed['items']);
+        // $this->assertCount(9, $parsedFeed['items']);
 
         foreach ($parsedFeed['items'] as $item) {
             $this->assertNotEmpty($item['title']);

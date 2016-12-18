@@ -8,6 +8,7 @@ use SocialRss\Parser\ParserTrait;
 
 /**
  * Class AttachmentParser
+ *
  * @package SocialRss\Parser\Vk
  */
 class AttachmentParser
@@ -36,6 +37,7 @@ class AttachmentParser
 
     /**
      * AttachmentParser constructor.
+     *
      * @param $item
      */
     public function __construct($item)
@@ -102,7 +104,7 @@ class AttachmentParser
     private function makeAudio(array $attachment): string
     {
         return "Аудиозапись: " .
-        "{$attachment['audio']['artist']} &ndash; {$attachment['audio']['title']}";
+            "{$attachment['audio']['artist']} &ndash; {$attachment['audio']['title']}";
     }
 
     /**
@@ -112,7 +114,7 @@ class AttachmentParser
     private function makeDoc(array $attachment): string
     {
         return 'Документ: ' .
-        $this->makeLink($attachment['doc']['url'], $attachment['doc']['title']);
+            $this->makeLink($attachment['doc']['url'], $attachment['doc']['title']);
     }
 
     /**
@@ -174,9 +176,9 @@ class AttachmentParser
      */
     private function makePoll(array $attachment): string
     {
-//        $answers = array_map(function ($answer) {
-//            return $answer['text'];
-//        }, $attachment['poll']['answers']);
+        //        $answers = array_map(function ($answer) {
+        //            return $answer['text'];
+        //        }, $attachment['poll']['answers']);
 
         return "Опрос: {$attachment['poll']['question']}";
     }

@@ -6,6 +6,7 @@ namespace SocialRss\Parser\Vk;
 
 /**
  * Class VkParserTrait
+ *
  * @package SocialRss\Parser\Vk
  */
 trait VkParserTrait
@@ -54,10 +55,10 @@ trait VkParserTrait
         });
 
         $photos = array_map(function ($photo) {
-            return $this->makeImg(
-                $photo['src_big'],
-                self::URL . "photo{$photo['owner_id']}_{$photo['pid']}"
-            );
+                return $this->makeImg(
+                    $photo['src_big'],
+                    self::URL . "photo{$photo['owner_id']}_{$photo['pid']}"
+                );
         }, $photos);
 
         return implode(PHP_EOL, $photos);

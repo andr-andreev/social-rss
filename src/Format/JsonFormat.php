@@ -8,6 +8,7 @@ use SocialRss\Parser\ParserTrait;
 
 /**
  * Class JsonFormat
+ *
  * @package SocialRss\Format
  */
 class JsonFormat implements FormatInterface

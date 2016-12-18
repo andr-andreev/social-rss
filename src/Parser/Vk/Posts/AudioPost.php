@@ -6,6 +6,7 @@ namespace SocialRss\Parser\Vk\Posts;
 
 /**
  * Class AudioPost
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 class AudioPost extends AbstractPost implements PostInterface

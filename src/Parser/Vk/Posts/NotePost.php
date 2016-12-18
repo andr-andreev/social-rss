@@ -6,6 +6,7 @@ namespace SocialRss\Parser\Vk\Posts;
 
 /**
  * Class NotePost
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 class NotePost extends AbstractPost implements PostInterface
@@ -31,7 +32,6 @@ class NotePost extends AbstractPost implements PostInterface
      */
     public function getDescription(): string
     {
-
         $notes = $this->item['notes'];
 
         $notes = array_map(function ($note) {

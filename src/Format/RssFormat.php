@@ -9,6 +9,7 @@ use Zend\Feed\Writer\Feed;
 
 /**
  * Class RssFormat
+ *
  * @package SocialRss\Format
  */
 class RssFormat implements FormatInterface

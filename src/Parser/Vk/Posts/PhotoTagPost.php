@@ -6,6 +6,7 @@ namespace SocialRss\Parser\Vk\Posts;
 
 /**
  * Class PhotoTagPost
+ *
  * @package SocialRss\Parser\Vk\Posts
  */
 class PhotoTagPost extends AbstractPost implements PostInterface
