@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser\Twitter;
 
+use PHPUnit\Framework\TestCase;
 use SocialRss\Parser\ParserFactory;
 use SocialRss\Parser\ParserInterface;
 
@@ -11,7 +12,7 @@ use SocialRss\Parser\ParserInterface;
  *
  * @package SocialRss\Parser\Twitter
  */
-class TwitterParserTest extends \PHPUnit_Framework_TestCase
+class TwitterParserTest extends TestCase
 {
     /**
      * @var ParserInterface

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser;
 
+use PHPUnit\Framework\TestCase;
 use SocialRss\Parser\Instagram\InstagramParser;
 use SocialRss\Parser\Twitter\TwitterParser;
 use SocialRss\Parser\Vk\VkParser;
@@ -13,7 +14,7 @@ use SocialRss\Parser\Vk\VkParser;
  *
  * @package SocialRss\Parser
  */
-class FactoryMethodTest extends \PHPUnit_Framework_TestCase
+class FactoryMethodTest extends TestCase
 {
     public function testCanCreateInstagramParser()
     {
