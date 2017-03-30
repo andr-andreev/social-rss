@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
+use PHPUnit\Framework\TestCase;
 use SocialRss\Parser\ParserFactory;
 
 /**
@@ -11,7 +12,7 @@ use SocialRss\Parser\ParserFactory;
  *
  * @package SocialRss\Format
  */
-class RssFormatTest extends \PHPUnit_Framework_TestCase
+class RssFormatTest extends TestCase
 {
     public function testRssFormat()
     {

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
+use PHPUnit\Framework\TestCase;
 use SocialRss\Parser\ParserFactory;
 use Symfony\Component\Yaml\Yaml;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @package SocialRss\Format
  */
-class YamlFormatTest extends \PHPUnit_Framework_TestCase
+class YamlFormatTest extends TestCase
 {
     public function testYamlFormat()
     {

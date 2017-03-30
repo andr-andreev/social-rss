@@ -125,7 +125,20 @@ class InstagramParser implements ParserInterface
      */
     private function processFeedPage(array $feed): array
     {
-        return $this->processFeed($feed['entry_data']['FeedPage'][0]['feed']['media']['nodes']);
+        $nodes = $feed['entry_data']['FeedPage'][0]['graphql']['user']['edge_web_feed_timeline']['edges'];
+
+        $processedNodes = array_map(function ($node) {
+            $nodeData = $node['node'];
+            $newData = [
+                'code' => $nodeData['shortcode'],
+                'display_src' => $nodeData['display_url'],
+                'caption' => $nodeData['edge_media_to_caption']['edges'][0]['node']['text'] ?? '',
+            ];
+
+            return array_merge($nodeData, $newData);
+        }, $nodes);
+
+        return $processedNodes;
     }
 
     /**

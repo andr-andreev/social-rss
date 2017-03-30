@@ -1,15 +1,16 @@
 <?php
 declare(strict_types = 1);
 
-
 namespace SocialRss\Format;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class FactoryMethodTest
  *
  * @package SocialRss\Format
  */
-class FactoryMethodTest extends \PHPUnit_Framework_TestCase
+class FactoryMethodTest extends TestCase
 {
     public function testCanCreateJsonFormat()
     {
