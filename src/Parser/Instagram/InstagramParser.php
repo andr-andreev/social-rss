@@ -127,16 +127,20 @@ class InstagramParser implements ParserInterface
     {
         $nodes = $feed['entry_data']['FeedPage'][0]['graphql']['user']['edge_web_feed_timeline']['edges'];
 
+        $filteredNodes = array_filter($nodes, function ($node) {
+            return isset($node['node']['shortcode']); // filter nodes without content
+        });
+
         $processedNodes = array_map(function ($node) {
             $nodeData = $node['node'];
             $newData = [
                 'code' => $nodeData['shortcode'],
-                'display_src' => $nodeData['display_url'],
+                'display_src' => $nodeData['display_url'] ?? '',
                 'caption' => $nodeData['edge_media_to_caption']['edges'][0]['node']['text'] ?? '',
             ];
 
             return array_merge($nodeData, $newData);
-        }, $nodes);
+        }, $filteredNodes);
 
         return $processedNodes;
     }
@@ -213,7 +217,7 @@ class InstagramParser implements ParserInterface
         $media = ($item['is_video'] && isset($item['video_url'])) ? $this->makeVideo(
             $item['video_url'],
             $item['display_src']
-        ) : $this->makeImg($this->cleanUrl($item['display_src']));
+        ) : $this->makeImg($item['display_src']);
 
         // Match #hashtags
         $caption = $this->parseByPattern(
@@ -232,16 +236,5 @@ class InstagramParser implements ParserInterface
         $content = $location . PHP_EOL . $media . PHP_EOL . $caption;
 
         return nl2br(trim($content));
-    }
-
-    /**
-     * @param $url
-     * @return string
-     */
-    private function cleanUrl($url): string
-    {
-        // Remove unnecessary query string
-        // https://scontent-[...].cdninstagram.com/[...].jpg?ig_cache_key=MTIzNDUxMjM0NTEyMzQ1
-        return strtok($url, '?');
     }
 }
