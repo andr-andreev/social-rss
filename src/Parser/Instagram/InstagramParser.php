@@ -134,6 +134,7 @@ class InstagramParser implements ParserInterface
         $processedNodes = array_map(function ($node) {
             $nodeData = $node['node'];
             $newData = [
+                'date' => $nodeData['taken_at_timestamp'],
                 'code' => $nodeData['shortcode'],
                 'display_src' => $nodeData['display_url'] ?? '',
                 'caption' => $nodeData['edge_media_to_caption']['edges'][0]['node']['text'] ?? '',
