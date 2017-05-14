@@ -1,8 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace SocialRss;
+namespace SocialRssApp;
 
+use Monolog\Handler\NativeMailerHandler;
+use Monolog\Handler\NullHandler;
+use Monolog\Logger;
 use Slim\App;
 use Slim\Container;
 use Slim\Http\Request;
@@ -39,6 +42,25 @@ $container['parserFactory'] = function (Container $c) {
 // Register formatFactory
 $container['formatFactory'] = function (Container $c) {
     return new FormatFactory();
+};
+
+// Register monolog
+$container['logger'] = function ($c) {
+    $logger = new Logger('logger');
+    $config = $c['settings'];
+
+    $handler = new NullHandler();
+    if ($config['logger']['enabled']) {
+        $handler = new NativeMailerHandler($config['logger']['email'], 'PHP Social RSS error', $config['logger']['email']);
+    }
+
+    $logger->pushHandler($handler);
+
+    return $logger;
+};
+
+$container['errorHandler'] = function ($c) {
+    return new Handler\Error($c['logger'], $c['settings']['displayErrorDetails']);
 };
 
 // Render PHP template

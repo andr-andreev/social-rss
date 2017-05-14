@@ -17,7 +17,8 @@
     "vladkens/vk": "0.*",
     "guzzlehttp/guzzle": "~6.0",
     "zendframework/zend-feed": "^2.7",
-    "symfony/yaml": "^3.2"
+    "symfony/yaml": "^3.2",
+    "monolog/monolog": "^1.22"
   },
   "require-dev": {
     "phpunit/phpunit": "^6.0",
@@ -26,7 +27,8 @@
   },
   "autoload": {
     "psr-4": {
-      "SocialRss\\": "src/"
+      "SocialRss\\": "src/",
+      "SocialRssApp\\": "web/"
     }
   },
   "scripts": {
