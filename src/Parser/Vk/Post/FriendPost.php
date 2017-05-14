@@ -2,12 +2,15 @@
 declare(strict_types = 1);
 
 
-namespace SocialRss\Parser\Vk\Posts;
+namespace SocialRss\Parser\Vk\Post;
+
+use SocialRss\Helper\Html;
+use SocialRss\Parser\Vk\VkParser;
 
 /**
  * Class FriendPost
  *
- * @package SocialRss\Parser\Vk\Posts
+ * @package SocialRss\Parser\Vk\Post
  */
 class FriendPost extends AbstractPost implements PostInterface
 {
@@ -24,7 +27,7 @@ class FriendPost extends AbstractPost implements PostInterface
      */
     public function getLink(): string
     {
-        return self::URL . "friends?id={$this->users[$this->item['source_id']]['id']}";
+        return VkParser::getUrl() . "friends?id={$this->getUser()->getId()}";
     }
 
     /**
@@ -36,14 +39,21 @@ class FriendPost extends AbstractPost implements PostInterface
             return '';
         }
 
+        $users = $this->users;
+
         $friends = $this->item['friends'];
 
         $friends = array_filter($friends, function ($friend) {
             return $friend['uid'];
         });
 
-        $friends = array_map(function ($friend) {
-            return $this->makeFriends($friend['uid']);
+        $friends = array_map(function ($friend) use ($users) {
+            $user = $users->getUserById($friend['uid']);
+
+            return Html::link(
+                VkParser::getUrl() . $user->getScreenName(),
+                $user->getName() . PHP_EOL . Html::img($user->getPhotoUrl())
+            );
         }, $friends);
 
         return implode(PHP_EOL, $friends);

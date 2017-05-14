@@ -4,7 +4,21 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser\Vk;
 
-use SocialRss\Parser\ParserTrait;
+use SocialRss\Parser\Vk\Attachment\AlbumAttachment;
+use SocialRss\Parser\Vk\Attachment\AppAttachment;
+use SocialRss\Parser\Vk\Attachment\AttachmentInterface;
+use SocialRss\Parser\Vk\Attachment\AudioAttachment;
+use SocialRss\Parser\Vk\Attachment\DocumentAttachment;
+use SocialRss\Parser\Vk\Attachment\GraffitiAttachment;
+use SocialRss\Parser\Vk\Attachment\LinkAttachment;
+use SocialRss\Parser\Vk\Attachment\NoteAttachment;
+use SocialRss\Parser\Vk\Attachment\PageAttachment;
+use SocialRss\Parser\Vk\Attachment\PhotoAttachment;
+use SocialRss\Parser\Vk\Attachment\PhotosListAttachment;
+use SocialRss\Parser\Vk\Attachment\PollAttachment;
+use SocialRss\Parser\Vk\Attachment\PostedPhotoAttachment;
+use SocialRss\Parser\Vk\Attachment\UnknownAttachment;
+use SocialRss\Parser\Vk\Attachment\VideoAttachment;
 
 /**
  * Class AttachmentParser
@@ -13,26 +27,22 @@ use SocialRss\Parser\ParserTrait;
  */
 class AttachmentParser
 {
-    use ParserTrait;
-    use VkParserTrait;
-    const URL = 'https://vk.com/';
-
     private $item;
 
     private $attachmentsMap = [
-        'photo' => 'makePhoto',
-        'posted_photo' => 'makePostedPhoto',
-        'video' => 'makeVideoAttachment',
-        'audio' => 'makeAudio',
-        'doc' => 'makeDoc',
-        'graffiti' => 'makeGraffiti',
-        'link' => 'makeLinkAttach',
-        'note' => 'makeNote',
-        'app' => 'makeApp',
-        'poll' => 'makePoll',
-        'page' => 'makePage',
-        'album' => 'makeAlbum',
-        'photos_list' => 'makePhotosList',
+        'photo' => PhotoAttachment::class,
+        'posted_photo' => PostedPhotoAttachment::class,
+        'video' => VideoAttachment::class,
+        'audio' => AudioAttachment::class,
+        'doc' => DocumentAttachment::class,
+        'graffiti' => GraffitiAttachment::class,
+        'link' => LinkAttachment::class,
+        'note' => NoteAttachment::class,
+        'app' => AppAttachment::class,
+        'poll' => PollAttachment::class,
+        'page' => PageAttachment::class,
+        'album' => AlbumAttachment::class,
+        'photos_list' => PhotosListAttachment::class,
     ];
 
     /**
@@ -48,23 +58,16 @@ class AttachmentParser
     /**
      * @return string
      */
-    public function parseAttachments()
+    public function getAttachmentsOutput(): string
     {
         if (!isset($this->item['attachments'])) {
             return '';
         }
 
-        $map = $this->attachmentsMap;
+        $attachments = array_map(function (array $attachment) {
+            $attachmentParser = $this->createParser($attachment);
 
-        $attachments = array_map(function (array $attachment) use ($map) {
-            $type = $attachment['type'];
-
-            if (!isset($map[$type])) {
-                return "[Item contains unknown attachment type {$attachment['type']}]";
-            }
-
-            $method = $map[$type];
-            return $this->$method($attachment);
+            return $attachmentParser->getAttachmentOutput();
         }, $this->item['attachments']);
 
         return implode(PHP_EOL, $attachments);
@@ -72,147 +75,18 @@ class AttachmentParser
 
     /**
      * @param $attachment
-     * @return string
+     * @return AttachmentInterface
      */
-    private function makePhoto(array $attachment): string
+    private function createParser($attachment): AttachmentInterface
     {
-        return $this->makeImg($attachment['photo']['src_big']);
-    }
+        $map = $this->attachmentsMap;
+        $type = $attachment['type'];
 
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makePostedPhoto(array $attachment): string
-    {
-        return $this->makeImg($attachment['posted_photo']['photo_604']);
-    }
+        $className = $map[$type] ?? UnknownAttachment::class;
 
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makeVideoAttachment(array $attachment): string
-    {
-        return $this->makeVideoTrait($attachment['video']);
-    }
+        /** @var Attachment\AttachmentInterface $attachmentParser */
+        $attachmentParser = new $className($attachment);
 
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makeAudio(array $attachment): string
-    {
-        return "Аудиозапись: " .
-            "{$attachment['audio']['artist']} &ndash; {$attachment['audio']['title']}";
-    }
-
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makeDoc(array $attachment): string
-    {
-        return 'Документ: ' .
-            $this->makeLink($attachment['doc']['url'], $attachment['doc']['title']);
-    }
-
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makeGraffiti(array $attachment): string
-    {
-        return 'Граффити: ' . $this->makeImg($attachment['graffiti']['photo_604']);
-    }
-
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makeLinkAttach(array $attachment): string
-    {
-        $linkUrl = $attachment['link']['url'];
-        $linkTitle = $attachment['link']['title'];
-
-        $link = $this->makeLink($linkUrl, $linkTitle);
-
-        $description = $attachment['link']['description'];
-
-        if (isset($attachment['link']['image_src'])) {
-            $preview = $attachment['link']['image_src'];
-            $url = $attachment['link']['url'];
-
-            $description = $this->makeImg($preview, $url) . PHP_EOL . $description;
-        }
-
-        return PHP_EOL . 'Ссылка: ' . $link . PHP_EOL . $description;
-    }
-
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makeNote(array $attachment): string
-    {
-        $noteLink = $attachment['note']['view_url'];
-        $noteTitle = $attachment['note']['title'];
-
-        return 'Заметка: ' . $this->makeLink($noteLink, $noteTitle);
-    }
-
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makeApp(array $attachment): string
-    {
-        return "Приложение: {$attachment['app']['name']}";
-    }
-
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makePoll(array $attachment): string
-    {
-        //        $answers = array_map(function ($answer) {
-        //            return $answer['text'];
-        //        }, $attachment['poll']['answers']);
-
-        return "Опрос: {$attachment['poll']['question']}";
-    }
-
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makePage(array $attachment): string
-    {
-        $pageLink = $attachment['page']['view_url'];
-        $pageTitle = $attachment['page']['title'];
-
-        return 'Страница: ' . $this->makeLink($pageLink, $pageTitle);
-    }
-
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makeAlbum(array $attachment): string
-    {
-        $albumTitle = $attachment['album']['title'];
-        $albumSize = $attachment['album']['size'];
-
-        return "Альбом: $albumTitle ($albumSize фото)";
-    }
-
-    /**
-     * @param $attachment
-     * @return string
-     */
-    private function makePhotosList(array $attachment): string
-    {
-        return '[Список фотографий]';
+        return $attachmentParser;
     }
 }

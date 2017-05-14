@@ -2,12 +2,15 @@
 declare(strict_types = 1);
 
 
-namespace SocialRss\Parser\Vk\Posts;
+namespace SocialRss\Parser\Vk\Post;
+
+use SocialRss\Parser\Vk\Helper;
+use SocialRss\Parser\Vk\VkParser;
 
 /**
  * Class PhotoTagPost
  *
- * @package SocialRss\Parser\Vk\Posts
+ * @package SocialRss\Parser\Vk\Post
  */
 class PhotoTagPost extends AbstractPost implements PostInterface
 {
@@ -24,7 +27,7 @@ class PhotoTagPost extends AbstractPost implements PostInterface
      */
     public function getLink(): string
     {
-        return self::URL . $this->users[$this->item['source_id']]['screen_name'];
+        return VkParser::getUrl() . $this->getUser()->getScreenName();
     }
 
     /**
@@ -32,7 +35,6 @@ class PhotoTagPost extends AbstractPost implements PostInterface
      */
     public function getDescription(): string
     {
-
-        return $this->makePhotos($this->item['photo_tags']);
+        return Helper::makePhotos($this->item['photo_tags']);
     }
 }
