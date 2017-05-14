@@ -33,27 +33,26 @@ class TwitterParserTest extends TestCase
     {
         $parsedFeed = $this->parser->parseFeed($this->feed);
 
-        $this->assertNotEmpty($parsedFeed['title']);
-        $this->assertNotEmpty($parsedFeed['link']);
-        $this->assertNotEmpty($parsedFeed['items']);
+        $this->assertNotEmpty($parsedFeed->getTitle());
+        $this->assertNotEmpty($parsedFeed->getLink());
+        $this->assertNotEmpty($parsedFeed->getItems());
 
-        $this->assertCount(count($this->feed), $parsedFeed['items']);
+        $this->assertCount(count($this->feed), $parsedFeed->getItems());
 
-        foreach ($parsedFeed['items'] as $item) {
-            $this->assertNotEmpty($item['title']);
-            $this->assertStringStartsWith('https://twitter.com/', $item['link']);
-            $this->assertNotEmpty($item['content']);
-            $this->assertNotEmpty($item['date']);
-            $this->assertInternalType('array', $item['tags']);
-            $this->assertNotEmpty($item['author']['name']);
-            $this->assertStringStartsWith('https://pbs.twimg.com/profile_images/', $item['author']['avatar']);
-            $this->assertStringStartsWith('https://twitter.com/', $item['author']['link']);
-            //            $this->assertInternalType('array', $item['quote']);
+        foreach ($parsedFeed->getItems() as $item) {
+            $this->assertNotEmpty($item->getTitle());
+            $this->assertStringStartsWith('https://twitter.com/', $item->getLink());
+            $this->assertNotEmpty($item->getContent());
+            $this->assertNotEmpty($item->getDate());
+            $this->assertInternalType('array', $item->getTags());
+            $this->assertNotEmpty($item->getAuthor()->getName());
+            $this->assertStringStartsWith('https://pbs.twimg.com/profile_images/', $item->getAuthor()->getAvatar());
+            $this->assertStringStartsWith('https://twitter.com/', $item->getAuthor()->getLink());
 
-            if (!empty($item['quote'])) {
-                $this->assertNotEmpty($item['quote']['title']);
-                $this->assertStringStartsWith('https://twitter.com/', $item['quote']['link']);
-                $this->assertNotEmpty($item['quote']['content']);
+            if ($item->getQuote()) {
+                $this->assertNotEmpty($item->getQuote()->getTitle());
+                $this->assertStringStartsWith('https://twitter.com/', $item->getQuote()->getLink());
+                $this->assertNotEmpty($item->getQuote()->getContent());
             }
         }
     }

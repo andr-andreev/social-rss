@@ -34,27 +34,26 @@ class VkParserTest extends TestCase
     {
         $parsedFeed = $this->parser->parseFeed($this->feed);
 
-        $this->assertNotEmpty($parsedFeed['title']);
-        $this->assertNotEmpty($parsedFeed['link']);
-        $this->assertNotEmpty($parsedFeed['items']);
+        $this->assertNotEmpty($parsedFeed->getTitle());
+        $this->assertNotEmpty($parsedFeed->getLink());
+        $this->assertNotEmpty($parsedFeed->getItems());
 
         // $this->assertCount(9, $parsedFeed['items']);
 
-        foreach ($parsedFeed['items'] as $item) {
-            $this->assertNotEmpty($item['title']);
-            $this->assertStringStartsWith('https://vk.com/', $item['link']);
-            $this->assertArrayHasKey('content', $item);
-            $this->assertNotEmpty($item['date']);
-            $this->assertInternalType('array', $item['tags']);
-            $this->assertNotEmpty($item['author']['name']);
-            $this->assertContains('vk.', $item['author']['avatar']);
-            $this->assertStringStartsWith('https://vk.com/', $item['author']['link']);
-            $this->assertInternalType('array', $item['quote']);
+        foreach ($parsedFeed->getItems() as $item) {
+            $this->assertNotEmpty($item->getTitle());
+            $this->assertStringStartsWith('https://vk.com/', $item->getLink());
+            $this->assertNotEmpty($item->getContent());
+            $this->assertNotEmpty($item->getDate());
+            $this->assertInternalType('array', $item->getTags());
+            $this->assertNotEmpty($item->getAuthor()->getName());
+            $this->assertContains('vk.', $item->getAuthor()->getAvatar());
+            $this->assertStringStartsWith('https://vk.com/', $item->getAuthor()->getLink());
 
-            if (!empty($item['quote'])) {
-                $this->assertNotEmpty($item['quote']['title']);
-                $this->assertStringStartsWith('https://vk.com/', $item['quote']['link']);
-                $this->assertNotEmpty($item['quote']['content']);
+            if ($item->getQuote()) {
+                $this->assertNotEmpty($item->getQuote()->getTitle());
+                $this->assertStringStartsWith('https://vk.com/', $item->getQuote()->getLink());
+                $this->assertNotEmpty($item->getQuote()->getContent());
             }
         }
     }
