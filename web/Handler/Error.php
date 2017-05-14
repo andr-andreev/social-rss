@@ -37,7 +37,7 @@ final class Error extends \Slim\Handlers\Error
      */
     public function __invoke(Request $request, Response $response, \Exception $exception)
     {
-        $this->logger->critical($exception->getMessage());
+        $this->logger->critical($exception);
 
         return parent::__invoke($request, $response, $exception);
     }
