@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\ParsedFeed;
 
-
 /**
  * Class ParsedFeedItem
  * @package SocialRss\ParsedFeed
@@ -39,6 +38,7 @@ class ParsedFeedItem
         ParsedFeedItemAuthor $author = null
     )
     {
+    
         $this->title = $title;
         $this->link = $link;
         $this->content = $content;

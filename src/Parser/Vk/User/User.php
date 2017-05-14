@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Vk\User;
 
-
 /**
  * Class User
  * @package SocialRss\Parser\Vk\User
@@ -71,5 +70,4 @@ class User
     {
         return intval(abs($id));
     }
-
 }

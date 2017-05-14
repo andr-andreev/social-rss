@@ -71,5 +71,4 @@ class RssFormat implements FormatInterface
 
         return $out;
     }
-
 }

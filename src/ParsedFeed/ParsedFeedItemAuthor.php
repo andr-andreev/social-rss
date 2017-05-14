@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\ParsedFeed;
 
-
 /**
  * Class ParsedFeedItemAuthor
  * @package SocialRss\ParsedFeed
@@ -51,6 +50,4 @@ class ParsedFeedItemAuthor
     {
         return $this->link;
     }
-
-
 }

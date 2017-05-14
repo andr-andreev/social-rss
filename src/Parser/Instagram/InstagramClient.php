@@ -99,6 +99,4 @@ class InstagramClient implements ClientInterface
 
         return $feed;
     }
-
-
 }

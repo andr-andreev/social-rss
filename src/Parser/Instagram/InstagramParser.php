@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser\Instagram;
 
-
 use SocialRss\Parser\AbstractParser;
 use SocialRss\Parser\Feed\FeedInterface;
 use SocialRss\Parser\FeedItem\FeedItemInterface;
@@ -70,5 +69,4 @@ class InstagramParser extends AbstractParser implements ParserInterface
     {
         return new InstagramFeedItem($item);
     }
-
 }

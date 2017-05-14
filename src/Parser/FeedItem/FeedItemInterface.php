@@ -6,7 +6,6 @@ namespace SocialRss\Parser\FeedItem;
 
 use SocialRss\ParsedFeed\ParsedFeedItem;
 
-
 /**
  * Interface FeedItemInterface
  * @package SocialRss\Parser\FeedItem

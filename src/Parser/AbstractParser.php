@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser;
 
-
 use SocialRss\ParsedFeed\BaseParsedFeedCollection;
 use SocialRss\ParsedFeed\ParsedFeedItem;
 use SocialRss\ParsedFeed\ParsedFeedItemAuthor;
@@ -77,5 +76,4 @@ abstract class AbstractParser implements ParserInterface
     {
         return new BaseFeed($feed);
     }
-
 }

@@ -36,7 +36,6 @@ class VkClient implements ClientInterface
     {
         $vkConfig = array_merge(self::CONFIG_DEFAULT, $config);
         $this->vkClient = new VK($vkConfig['app_id'], $vkConfig['api_secret'], $vkConfig['access_token']);
-
     }
 
     /**
@@ -61,6 +60,4 @@ class VkClient implements ClientInterface
 
         return $socialFeed['response'];
     }
-
-
 }

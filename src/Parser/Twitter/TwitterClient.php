@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Twitter;
 
-
 use SocialRss\Exception\SocialRssException;
 use SocialRss\Parser\Client\ClientInterface;
 

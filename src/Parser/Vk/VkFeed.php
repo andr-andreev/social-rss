@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Vk;
 
-
 use SocialRss\Parser\Feed\BaseFeed;
 use SocialRss\Parser\Feed\FeedInterface;
 use SocialRss\Parser\Vk\User\User;
@@ -98,6 +97,4 @@ class VkFeed extends BaseFeed implements FeedInterface
             $this->users->addUser($user);
         }
     }
-
-
 }

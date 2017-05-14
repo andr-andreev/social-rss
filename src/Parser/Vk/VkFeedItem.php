@@ -9,7 +9,6 @@ use SocialRss\ParsedFeed\ParsedFeedItem;
 use SocialRss\Parser\FeedItem\FeedItemInterface;
 use SocialRss\Parser\Vk\User\UserCollection;
 
-
 /**
  * Class VkFeedItem
  * @package SocialRss\Parser\Vk
@@ -144,6 +143,5 @@ class VkFeedItem implements FeedItemInterface
     public function getQuote():?ParsedFeedItem
     {
         return $this->getTexts()['quote'];
-
     }
 }

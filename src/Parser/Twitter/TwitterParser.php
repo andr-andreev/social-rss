@@ -60,5 +60,4 @@ class TwitterParser extends AbstractParser implements ParserInterface
     {
         return new TwitterFeedItem($item);
     }
-
 }

@@ -6,7 +6,6 @@ namespace SocialRss\Format;
 
 use SocialRss\ParsedFeed\BaseParsedFeedCollection;
 
-
 /**
  * Interface FormatInterface
  *

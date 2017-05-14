@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Vk\Post;
 
-
 /**
  * Class CopyPost
  *
@@ -19,5 +18,4 @@ class CopyPost extends PostPost implements PostInterface
     {
         return $this->getUserName() . ' (репост)';
     }
-
 }

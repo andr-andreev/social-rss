@@ -25,7 +25,6 @@ class VkParser extends AbstractParser implements ParserInterface
     public function __construct(array $config)
     {
         $this->vkClient = new VkClient($config);
-
     }
 
     /**

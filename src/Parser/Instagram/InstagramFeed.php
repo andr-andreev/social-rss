@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Instagram;
 
-
 use SocialRss\Exception\SocialRssException;
 use SocialRss\Parser\Feed\BaseFeed;
 use SocialRss\Parser\Feed\FeedInterface;
@@ -98,6 +97,4 @@ class InstagramFeed extends BaseFeed implements FeedInterface
             return $item;
         }, $items);
     }
-
-
 }

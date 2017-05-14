@@ -8,7 +8,6 @@ use SocialRss\Helper\Html;
 use SocialRss\ParsedFeed\ParsedFeedItem;
 use SocialRss\Parser\FeedItem\FeedItemInterface;
 
-
 /**
  * Class InstagramFeedItem
  * @package SocialRss\Parser\Instagram

@@ -6,7 +6,6 @@ namespace SocialRss\Parser\Vk\Post;
 
 use SocialRss\ParsedFeed\ParsedFeedItem;
 
-
 /**
  * Interface PostInterface
  *

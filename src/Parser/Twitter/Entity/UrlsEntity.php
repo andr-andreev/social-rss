@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Twitter\Entity;
 
-
 use SocialRss\Helper\Html;
 
 /**

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Vk\User;
 
-
 /**
  * Class UserCollection
  * @package SocialRss\Parser\Vk\User
@@ -36,5 +35,4 @@ class UserCollection extends \ArrayObject
 
         return $this->users[$normalizedUserId];
     }
-
 }

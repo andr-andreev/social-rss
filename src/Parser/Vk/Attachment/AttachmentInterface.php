@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Vk\Attachment;
 
-
 /**
  * Interface AttachmentInterface
  * @package SocialRss\Parser\Vk\Attachment
