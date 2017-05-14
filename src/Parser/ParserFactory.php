@@ -1,9 +1,7 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SocialRss\Parser;
-
-use SocialRss\Exception\SocialRssException;
 
 /**
  * Class ParserFactory
@@ -26,5 +24,13 @@ class ParserFactory extends FactoryMethod
         }
 
         return new $map[$type]($config);
+    }
+
+    /**
+     * @return array
+     */
+    public function getParsersList(): array
+    {
+        return parent::PARSERS;
     }
 }
