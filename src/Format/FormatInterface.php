@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
+use SocialRss\ParsedFeed\BaseParsedFeedCollection;
+
+
 /**
  * Interface FormatInterface
  *
@@ -15,5 +18,5 @@ interface FormatInterface
      * @param $data
      * @return mixed
      */
-    public function format(array $data): string;
+    public function format(BaseParsedFeedCollection $data): string;
 }

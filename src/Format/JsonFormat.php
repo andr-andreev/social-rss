@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
-use SocialRss\Parser\ParserTrait;
+use SocialRss\ParsedFeed\BaseParsedFeedCollection;
+
 
 /**
  * Class JsonFormat
@@ -13,14 +14,13 @@ use SocialRss\Parser\ParserTrait;
  */
 class JsonFormat implements FormatInterface
 {
-    use ParserTrait;
 
     /**
      * @param $data
      * @return string
      */
-    public function format(array $data): string
+    public function format(BaseParsedFeedCollection $data): string
     {
-        return json_encode($data, JSON_PRETTY_PRINT);
+        return json_encode($data->toArray(), JSON_PRETTY_PRINT);
     }
 }

@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
-use SocialRss\Parser\ParserTrait;
+use SocialRss\Helper\Html;
+use SocialRss\ParsedFeed\BaseParsedFeedCollection;
+use SocialRss\ParsedFeed\ParsedFeedItem;
 use Zend\Feed\Writer\Feed;
 
 /**
@@ -14,31 +16,36 @@ use Zend\Feed\Writer\Feed;
  */
 class RssFormat implements FormatInterface
 {
-    use ParserTrait;
-
     /**
      * @param $data
      * @return mixed
      */
-    public function format(array $data): string
+    public function format(BaseParsedFeedCollection $data): string
     {
         $feed = new Feed;
 
-        $feed->setTitle($data['title']);
-        $feed->setDescription($data['title']);
-        $feed->setLink($data['link']);
+        $feed->setTitle($data->getTitle());
+        $feed->setDescription($data->getTitle());
+        $feed->setLink($data->getLink());
 
-        $items = $this->processData($data);
+//        $items = $this->processData($data);
 
-        foreach ($items as $item) {
+        foreach ($data->getItems() as $item) {
             $entry = $feed->createEntry();
 
-            $entry->setTitle($item['title']);
-            $entry->setLink($item['link']);
-            $entry->addAuthor($item['author']);
-            $entry->addCategories($item['categories']);
-            $entry->setDateCreated($item['dateCreated']);
-            $entry->setDescription($item['description']);
+            $entry->setTitle($item->getTitle());
+            $entry->setLink($item->getLink());
+            $entry->addAuthor([
+                'name' => $item->getAuthor()->getName(),
+            ]);
+            $entry->addCategories(array_map(function ($tag) {
+                return ['term' => $tag];
+            }, $item->getTags()));
+            $entry->setDateCreated($item->getDate());
+            $entry->setDescription(Html::makeBlock(
+                Html::makeAvatar($item->getAuthor()->getAvatar(), $item->getAuthor()->getLink()),
+                $this->makeContent($item)
+            ));
 
             $feed->addEntry($entry);
         }
@@ -47,50 +54,22 @@ class RssFormat implements FormatInterface
     }
 
     /**
-     * @param $data
-     * @return array
-     */
-    private function processData(array $data): array
-    {
-        return array_map(function ($item) {
-            return [
-                'title' => $item['title'],
-                'link' => $item['link'],
-                'author' => [
-                    'name' => $item['author']['name']
-                ],
-                'categories' => array_map(function ($tag) {
-                    return ['term' => $tag];
-                }, $item['tags']),
-                'dateCreated' => $item['date'],
-                'description' => $this->makeBlock(
-                    $this->makeAvatar($item),
-                    $this->makeContent($item)
-                ),
-            ];
-        }, $data['items']);
-    }
-
-    /**
-     * @param $item
+     * @param ParsedFeedItem $item
      * @return string
      */
-    private function makeAvatar($item): string
+    private function makeContent(ParsedFeedItem $item)
     {
-        return $this->makeImg($item['author']['avatar'], $item['author']['link']);
-    }
+        $out = $item->getContent();
 
-    /**
-     * @param $item
-     * @return string
-     */
-    private function makeContent($item): string
-    {
-        if (empty($item['quote'])) {
-            return $item['content'];
+        if ($item->getQuote()) {
+            $quote = $item->getQuote();
+
+            $quoteAuthorLink = Html::link($quote->getLink(), $quote->getTitle());
+            $quoteContent = $quote->getContent();
+            $out .= Html::blockquote("{$quoteAuthorLink}<br>{$quoteContent}");
         }
 
-        $quoteAuthor = $this->makeLink($item['quote']['link'], $item['quote']['title']);
-        return $item['content'] . "<blockquote>{$quoteAuthor}<br>{$item['quote']['content']}</blockquote>";
+        return $out;
     }
+
 }

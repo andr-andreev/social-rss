@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
-use SocialRss\Exception\SocialRssException;
-
 /**
  * Class FormatFactory
  *
