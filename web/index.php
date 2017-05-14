@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SocialRss;
 
@@ -7,6 +7,7 @@ use Slim\App;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Views\PhpRenderer;
 use SocialRss\Exception\SocialRssException;
 use SocialRss\Format\FormatFactory;
 use SocialRss\Format\FormatInterface;
@@ -22,6 +23,14 @@ $app = new App(['settings' => $config]);
 // Retrieve container instance
 $container = $app->getContainer();
 
+$container['view'] = function (Container $container) {
+    $templateVariables = [
+        'router' => $container->get('router')
+    ];
+
+    return new PhpRenderer(__DIR__ . '/../views/', $templateVariables);
+};
+
 // Register parserFactory
 $container['parserFactory'] = function (Container $c) {
     return new ParserFactory();
@@ -31,6 +40,16 @@ $container['parserFactory'] = function (Container $c) {
 $container['formatFactory'] = function (Container $c) {
     return new FormatFactory();
 };
+
+// Render PHP template
+$app->get('/', function (Request $request, Response $response, $args) {
+    /** @var $parserFactory ParserFactory */
+    $parserFactory = $this->get('parserFactory');
+
+    return $this->view->render($response, 'index.php', [
+        'parsers' => $parserFactory->getParsersList(),
+    ]);
+})->setName('index');
 
 $app->get('/{source}', function (Request $request, Response $response) {
     $source = $request->getAttribute('source');
@@ -45,10 +64,10 @@ $app->get('/{source}', function (Request $request, Response $response) {
         throw new SocialRssException("No config found for $source source");
     }
 
-    /* @var $parser ParserInterface */
+    /** @var ParserInterface $parser */
     $parser = $this->get('parserFactory')->create($source, $config[$source]);
 
-    /* @var $writer FormatInterface */
+    /** @var FormatInterface $writer */
     $writer = $this->get('formatFactory')->create($output);
 
     $feed = $parser->getFeed($username);
@@ -57,6 +76,6 @@ $app->get('/{source}', function (Request $request, Response $response) {
     $response->getBody()->write($writer->format($parsedFeed));
 
     return $response;
-});
+})->setName('parser');
 
 $app->run();
