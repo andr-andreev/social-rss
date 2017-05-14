@@ -20,6 +20,7 @@ class PostParser
 
     private $typeMap = [
         'post' => Post\PostPost::class,
+        'copy' => Post\CopyPost::class,
         'photo' => Post\PhotoPost::class,
         'photo_tag' => Post\PhotoTagPost::class,
         'friend' => Post\FriendPost::class,
