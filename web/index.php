@@ -19,7 +19,7 @@ use SocialRss\Parser\ParserInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$config = parse_ini_file("../.env", true, INI_SCANNER_TYPED);
+$config = parse_ini_file('../.env', true, INI_SCANNER_TYPED);
 
 $app = new App(['settings' => $config]);
 

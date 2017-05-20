@@ -12,7 +12,7 @@ use SocialRss\Parser\Vk\VkParser;
  *
  * @package SocialRss\Parser\Vk\Post
  */
-class FriendPost extends AbstractPost implements PostInterface
+class FriendPost extends AbstractPost
 {
     /**
      * @return string

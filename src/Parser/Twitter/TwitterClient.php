@@ -29,6 +29,8 @@ class TwitterClient implements ClientInterface
     /**
      * TwitterClient constructor.
      * @param array $config
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function __construct(array $config)
     {
@@ -41,6 +43,7 @@ class TwitterClient implements ClientInterface
     /**
      * @param $username
      * @return mixed
+     * @throws \Exception
      * @throws SocialRssException
      */
     public function getFeed(string $username): array
@@ -61,7 +64,7 @@ class TwitterClient implements ClientInterface
 
         $feed = json_decode($twitterJson, true);
 
-        if (isset($feed['errors']) && isset($feed['errors'][0]['message'])) {
+        if (isset($feed['errors'][0]['message'])) {
             throw new SocialRssException($feed['errors'][0]['message']);
         }
 

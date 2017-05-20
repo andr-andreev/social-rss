@@ -11,7 +11,7 @@ use SocialRss\Parser\Vk\VkParser;
  *
  * @package SocialRss\Parser\Vk\Post
  */
-class AudioPost extends AbstractPost implements PostInterface
+class AudioPost extends AbstractPost
 {
     /**
      * @return string

@@ -8,7 +8,7 @@ namespace SocialRss\Parser\Vk\Attachment;
  * Class UnknownAttachment
  * @package SocialRss\Parser\Vk\Attachment
  */
-class UnknownAttachment extends AbstractAttachment implements AttachmentInterface
+class UnknownAttachment extends AbstractAttachment
 {
 
     /**

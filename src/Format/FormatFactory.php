@@ -13,6 +13,7 @@ class FormatFactory extends FactoryMethod
     /**
      * @param string $type
      * @return FormatInterface
+     * @throws \InvalidArgumentException
      */
     protected function createFormat(string $type): FormatInterface
     {

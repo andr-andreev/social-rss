@@ -31,6 +31,7 @@ class VkClient implements ClientInterface
      * InstagramClient constructor.
      *
      * @param $config
+     * @throws \VK\VKException
      */
     public function __construct(array $config)
     {

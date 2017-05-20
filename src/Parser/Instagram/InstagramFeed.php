@@ -6,24 +6,13 @@ namespace SocialRss\Parser\Instagram;
 
 use SocialRss\Exception\SocialRssException;
 use SocialRss\Parser\Feed\BaseFeed;
-use SocialRss\Parser\Feed\FeedInterface;
 
 /**
  * Class InstagramFeed
  * @package SocialRss\Parser\Instagram
  */
-class InstagramFeed extends BaseFeed implements FeedInterface
+class InstagramFeed extends BaseFeed
 {
-    private $feed;
-
-    /**
-     * InstagramFeed constructor.
-     * @param $feed
-     */
-    public function __construct(array $feed)
-    {
-        $this->feed = $feed;
-    }
 
     /**
      * @return array
@@ -33,7 +22,8 @@ class InstagramFeed extends BaseFeed implements FeedInterface
     {
         if (isset($this->feed['entry_data']['FeedPage'])) {
             return $this->processFeedPage();
-        } elseif (isset($this->feed['entry_data']['ProfilePage'])) {
+        }
+        if (isset($this->feed['entry_data']['ProfilePage'])) {
             return $this->processProfilePage();
         }
 

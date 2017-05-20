@@ -8,7 +8,7 @@ namespace SocialRss\Parser\Vk\Attachment;
  * Class PhotosListAttachment
  * @package SocialRss\Parser\Vk\Attachment
  */
-class PhotosListAttachment extends AbstractAttachment implements AttachmentInterface
+class PhotosListAttachment extends AbstractAttachment
 {
 
     /**

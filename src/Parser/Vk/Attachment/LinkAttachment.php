@@ -10,7 +10,7 @@ use SocialRss\Helper\Html;
  * Class LinkAttachment
  * @package SocialRss\Parser\Vk\Attachment
  */
-class LinkAttachment extends AbstractAttachment implements AttachmentInterface
+class LinkAttachment extends AbstractAttachment
 {
 
     /**

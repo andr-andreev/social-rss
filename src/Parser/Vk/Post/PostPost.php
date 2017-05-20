@@ -13,7 +13,7 @@ use SocialRss\Parser\Vk\VkParser;
  *
  * @package SocialRss\Parser\Vk\Post
  */
-class PostPost extends AbstractPost implements PostInterface
+class PostPost extends AbstractPost
 {
     /**
      * @return mixed

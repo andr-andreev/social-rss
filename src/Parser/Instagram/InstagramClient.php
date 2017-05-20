@@ -73,7 +73,7 @@ class InstagramClient implements ClientInterface
             ]
         ]);
 
-        $loginBody = json_decode((string)($loginRequest->getBody()), true);
+        $loginBody = json_decode((string)$loginRequest->getBody(), true);
         if ($loginBody['authenticated'] === false) {
             throw new SocialRssException('Failed to login');
         }
@@ -95,8 +95,6 @@ class InstagramClient implements ClientInterface
         }
         $instagramJson = $matches[1];
 
-        $feed = json_decode($instagramJson, true);
-
-        return $feed;
+        return json_decode($instagramJson, true);
     }
 }

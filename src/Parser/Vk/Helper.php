@@ -30,7 +30,7 @@ class Helper
         preg_match_all('/\\[(.*?)\\]/', $text, $matches);
         foreach ($matches[0] as $key => $match) {
             $list = explode('|', $matches[1][$key]);
-            if (count($list) == 2) {
+            if (count($list) === 2) {
                 list($userId, $tag) = $list;
                 $text = str_replace($match, Html::link(VkParser::getUrl() . $userId, $tag), $text);
             }

@@ -10,7 +10,7 @@ use SocialRss\Parser\Vk\Helper;
  * Class VideoAttachment
  * @package SocialRss\Parser\Vk\Attachment
  */
-class VideoAttachment extends AbstractAttachment implements AttachmentInterface
+class VideoAttachment extends AbstractAttachment
 {
 
     /**

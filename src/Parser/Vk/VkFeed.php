@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SocialRss\Parser\Vk;
 
 use SocialRss\Parser\Feed\BaseFeed;
-use SocialRss\Parser\Feed\FeedInterface;
 use SocialRss\Parser\Vk\User\User;
 use SocialRss\Parser\Vk\User\UserCollection;
 
@@ -13,9 +12,8 @@ use SocialRss\Parser\Vk\User\UserCollection;
  * Class VkFeed
  * @package SocialRss\Parser\Vk
  */
-class VkFeed extends BaseFeed implements FeedInterface
+class VkFeed extends BaseFeed
 {
-    private $feed;
     private $users;
 
     /**
@@ -24,7 +22,7 @@ class VkFeed extends BaseFeed implements FeedInterface
      */
     public function __construct(array $feed)
     {
-        $this->feed = $feed;
+        parent::__construct($feed);
         $this->users = new UserCollection();
 
         $this->populateUsers();

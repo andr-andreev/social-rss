@@ -6,14 +6,13 @@ namespace SocialRss\Parser\Instagram;
 use SocialRss\Parser\AbstractParser;
 use SocialRss\Parser\Feed\FeedInterface;
 use SocialRss\Parser\FeedItem\FeedItemInterface;
-use SocialRss\Parser\ParserInterface;
 
 /**
  * Class InstagramParser
  *
  * @package SocialRss\Parser\Instagram
  */
-class InstagramParser extends AbstractParser implements ParserInterface
+class InstagramParser extends AbstractParser
 {
     private $instagramClient;
 
@@ -29,6 +28,7 @@ class InstagramParser extends AbstractParser implements ParserInterface
     /**
      * @param string $username
      * @return array
+     * @throws \SocialRss\Exception\SocialRssException
      */
     public function getFeed(string $username): array
     {

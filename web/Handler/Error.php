@@ -21,6 +21,7 @@ final class Error extends \Slim\Handlers\Error
     /**
      * Error constructor.
      * @param Logger $logger
+     * @param bool $displayErrorDetails
      */
     public function __construct(Logger $logger, bool $displayErrorDetails)
     {
@@ -34,6 +35,7 @@ final class Error extends \Slim\Handlers\Error
      * @param Response $response
      * @param \Exception $exception
      * @return Response
+     * @throws \UnexpectedValueException
      */
     public function __invoke(Request $request, Response $response, \Exception $exception)
     {

@@ -15,7 +15,7 @@ class MediaVideoEntity extends AbstractEntity implements EntityInterface
     /**
      * @return string
      */
-    public function getParsedContent()
+    public function getParsedContent(): string
     {
         $videoVariants = array_filter($this->item['video_info']['variants'], function ($variant) {
             return $variant['content_type'] === 'video/mp4';

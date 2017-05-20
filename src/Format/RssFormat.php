@@ -19,6 +19,7 @@ class RssFormat implements FormatInterface
     /**
      * @param $data
      * @return mixed
+     * @throws \Zend\Feed\Writer\Exception\InvalidArgumentException
      */
     public function format(BaseParsedFeedCollection $data): string
     {
@@ -57,7 +58,7 @@ class RssFormat implements FormatInterface
      * @param ParsedFeedItem $item
      * @return string
      */
-    private function makeContent(ParsedFeedItem $item)
+    private function makeContent(ParsedFeedItem $item): string
     {
         $out = $item->getContent();
 

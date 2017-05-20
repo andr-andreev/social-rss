@@ -9,13 +9,13 @@ namespace SocialRss\Parser\Vk\Post;
  *
  * @package SocialRss\Parser\Vk\Post
  */
-class CopyPost extends PostPost implements PostInterface
+class CopyPost extends PostPost
 {
     /**
      * @return string
      */
     public function getTitle(): string
     {
-        return $this->getUserName() . ' (репост)';
+        return parent::getTitle() . ' (репост)';
     }
 }

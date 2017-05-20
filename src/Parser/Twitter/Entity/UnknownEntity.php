@@ -13,7 +13,7 @@ class UnknownEntity extends AbstractEntity implements EntityInterface
     /**
      * @return string
      */
-    public function getParsedContent()
+    public function getParsedContent(): string
     {
         return $this->text . PHP_EOL . "[Tweet contains unknown entity type {$this->item['type']}]";
     }

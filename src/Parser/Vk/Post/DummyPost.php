@@ -11,7 +11,7 @@ use SocialRss\Parser\Vk\VkParser;
  *
  * @package SocialRss\Parser\Vk\Post
  */
-class DummyPost extends AbstractPost implements PostInterface
+class DummyPost extends AbstractPost
 {
     /**
      * @return string

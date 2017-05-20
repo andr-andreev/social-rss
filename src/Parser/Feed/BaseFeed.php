@@ -10,7 +10,7 @@ namespace SocialRss\Parser\Feed;
  */
 class BaseFeed implements FeedInterface
 {
-    private $feed;
+    protected $feed;
 
     /**
      * BaseFeed constructor.

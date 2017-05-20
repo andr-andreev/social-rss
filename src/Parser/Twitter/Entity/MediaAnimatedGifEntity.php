@@ -8,7 +8,7 @@ namespace SocialRss\Parser\Twitter\Entity;
  * Class MediaAnimatedGifEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class MediaAnimatedGifEntity extends MediaVideoEntity implements EntityInterface
+class MediaAnimatedGifEntity extends MediaVideoEntity
 {
 
 }

@@ -62,7 +62,7 @@ class VkFeedItem implements FeedItemInterface
     /**
      * @return array
      */
-    private function getTexts()
+    private function getTexts(): array
     {
         $content = $this->postParser->getDescription();
         $quote = $this->postParser->getQuote();
@@ -102,7 +102,7 @@ class VkFeedItem implements FeedItemInterface
      */
     public function getDate(): \DateTime
     {
-        return \DateTime::createFromFormat('U', strval($this->item['date']));
+        return \DateTime::createFromFormat('U', (string)$this->item['date']);
     }
 
     /**

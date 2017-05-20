@@ -39,7 +39,7 @@ abstract class AbstractParser implements ParserInterface
      * @param $item
      * @return ParsedFeedItem
      */
-    public function parseFeedItem($item)
+    public function parseFeedItem($item): \SocialRss\ParsedFeed\ParsedFeedItem
     {
         $feedItem = $this->createFeedItemParser($item);
 

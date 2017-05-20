@@ -64,7 +64,7 @@ class TwitterFeedItem implements FeedItemInterface
     {
         $tweetEntities = array_merge(
             $this->tweet['entities'],
-            isset($this->tweet['extended_entities']) ? $this->tweet['extended_entities'] : []
+            $this->tweet['extended_entities'] ?? []
         );
 
         $processedEntities = array_map(function ($type, $typeArray) {
@@ -89,10 +89,10 @@ class TwitterFeedItem implements FeedItemInterface
 
         $processedText = array_reduce($flatEntities, function ($acc, $entity) use ($entitiesMap) {
             $type = $entity['entity_type'];
-            $class = isset($entitiesMap[$type]) ? $entitiesMap[$type] : UnknownEntity::class;
+            $class = $entitiesMap[$type] ?? UnknownEntity::class;
 
             /** @var \SocialRss\Parser\Twitter\Entity\EntityInterface $entityParser */
-            $entityParser = (new $class($entity, $acc));
+            $entityParser = new $class($entity, $acc);
 
             return $entityParser->getParsedContent();
         }, $this->tweet['full_text']);

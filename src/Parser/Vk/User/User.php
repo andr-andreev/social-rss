@@ -68,6 +68,6 @@ class User
      */
     public static function normalizeId($id): int
     {
-        return intval(abs($id));
+        return (int)abs($id);
     }
 }

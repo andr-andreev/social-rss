@@ -56,9 +56,7 @@ class Html
         $symbol = str_replace('{string}', '', $pattern);
         preg_match_all('/(^|)' . $symbol . '(\w*[[:alnum:]]+\w*)/u', $string, $out);
 
-        $array = $out[2];
-
-        return $array;
+        return $out[2];
     }
 
     /**
@@ -106,7 +104,7 @@ class Html
      * @param $html
      * @return string
      */
-    public static function blockquote($html)
+    public static function blockquote($html): string
     {
         return "<blockquote>{$html}</blockquote>";
     }

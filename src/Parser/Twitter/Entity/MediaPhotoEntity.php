@@ -15,7 +15,7 @@ class MediaPhotoEntity extends AbstractEntity implements EntityInterface
     /**
      * @return string
      */
-    public function getParsedContent()
+    public function getParsedContent(): string
     {
         return $this->replaceContent($this->text, $this->item['url'], '') .
             PHP_EOL .

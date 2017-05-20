@@ -5,14 +5,13 @@ namespace SocialRss\Parser\Twitter;
 
 use SocialRss\Parser\AbstractParser;
 use SocialRss\Parser\FeedItem\FeedItemInterface;
-use SocialRss\Parser\ParserInterface;
 
 /**
  * Class TwitterParser
  *
  * @package SocialRss\Parser\Twitter
  */
-class TwitterParser extends AbstractParser implements ParserInterface
+class TwitterParser extends AbstractParser
 {
     private $twitterClient;
 
@@ -29,6 +28,7 @@ class TwitterParser extends AbstractParser implements ParserInterface
     /**
      * @param string $username
      * @return array
+     * @throws \SocialRss\Exception\SocialRssException
      */
     public function getFeed(string $username): array
     {

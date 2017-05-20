@@ -8,7 +8,7 @@ namespace SocialRss\Parser\Vk\Attachment;
  * Class AudioAttachment
  * @package SocialRss\Parser\Vk\Attachment
  */
-class AudioAttachment extends AbstractAttachment implements AttachmentInterface
+class AudioAttachment extends AbstractAttachment
 {
 
     /**
@@ -16,7 +16,7 @@ class AudioAttachment extends AbstractAttachment implements AttachmentInterface
      */
     public function getAttachmentOutput(): string
     {
-        return "Аудиозапись: " .
+        return 'Аудиозапись: ' .
             "{$this->attachment['audio']['artist']} &ndash; {$this->attachment['audio']['title']}";
     }
 }

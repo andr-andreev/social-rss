@@ -14,6 +14,7 @@ class ParserFactory extends FactoryMethod
      * @param string $type
      * @param array $config
      * @return ParserInterface
+     * @throws \InvalidArgumentException
      */
     protected function createParser(string $type, array $config): ParserInterface
     {

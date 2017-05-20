@@ -87,7 +87,7 @@ class InstagramFeedItem implements FeedItemInterface
      */
     public function getDate(): \DateTime
     {
-        return \DateTime::createFromFormat('U', strval($this->item['date']));
+        return \DateTime::createFromFormat('U', (string)$this->item['date']);
     }
 
     /**

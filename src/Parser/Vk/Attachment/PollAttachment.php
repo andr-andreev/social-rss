@@ -8,7 +8,7 @@ namespace SocialRss\Parser\Vk\Attachment;
  * Class PollAttachment
  * @package SocialRss\Parser\Vk\Attachment
  */
-class PollAttachment extends AbstractAttachment implements AttachmentInterface
+class PollAttachment extends AbstractAttachment
 {
 
     /**
