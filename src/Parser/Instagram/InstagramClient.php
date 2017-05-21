@@ -15,11 +15,11 @@ use SocialRss\Parser\Client\ClientInterface;
  */
 class InstagramClient implements ClientInterface
 {
-    private $httpClient;
-    private $httpHeaders;
+    protected $httpClient;
+    protected $httpHeaders;
 
-    private $cookies;
-    private $config;
+    protected $cookies;
+    protected $config;
 
     /**
      * InstagramClient constructor.

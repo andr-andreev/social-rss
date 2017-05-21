@@ -14,7 +14,7 @@ use SocialRss\Parser\Vk\User\UserCollection;
  */
 class VkFeed extends BaseFeed
 {
-    private $users;
+    protected $users;
 
     /**
      * InstagramFeed constructor.

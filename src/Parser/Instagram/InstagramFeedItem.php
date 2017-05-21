@@ -14,7 +14,7 @@ use SocialRss\Parser\FeedItem\FeedItemInterface;
  */
 class InstagramFeedItem implements FeedItemInterface
 {
-    private $item;
+    protected $item;
 
     /**
      * InstagramFeedItem constructor.

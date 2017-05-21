@@ -21,8 +21,8 @@ use SocialRss\Parser\Twitter\Entity\UserMentionsEntity;
  */
 class TwitterFeedItem implements FeedItemInterface
 {
-    private $tweet;
-    private $originalTweet;
+    protected $tweet;
+    protected $originalTweet;
 
     /**
      * TwitterFeedItem constructor.

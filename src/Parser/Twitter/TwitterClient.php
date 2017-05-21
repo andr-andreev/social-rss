@@ -24,7 +24,7 @@ class TwitterClient implements ClientInterface
         'oauth_access_token_secret' => '',
     ];
 
-    private $twitterClient;
+    protected $twitterClient;
 
     /**
      * TwitterClient constructor.

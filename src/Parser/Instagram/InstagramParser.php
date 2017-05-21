@@ -14,7 +14,7 @@ use SocialRss\Parser\FeedItem\FeedItemInterface;
  */
 class InstagramParser extends AbstractParser
 {
-    private $instagramClient;
+    protected $instagramClient;
 
     /**
      * InstagramParser constructor.

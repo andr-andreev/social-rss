@@ -27,9 +27,9 @@ use SocialRss\Parser\Vk\Attachment\VideoAttachment;
  */
 class AttachmentParser
 {
-    private $item;
+    protected $item;
 
-    private $attachmentsMap = [
+    protected $attachmentsMap = [
         'photo' => PhotoAttachment::class,
         'posted_photo' => PostedPhotoAttachment::class,
         'video' => VideoAttachment::class,

@@ -15,12 +15,12 @@ use SocialRss\Parser\Vk\User\UserCollection;
  */
 class VkFeedItem implements FeedItemInterface
 {
-    private $item;
+    protected $item;
 
     /** @var UserCollection */
-    private $users;
+    protected $users;
 
-    private $postParser;
+    protected $postParser;
 
     /**
      * VkFeedItem constructor.

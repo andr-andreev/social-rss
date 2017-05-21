@@ -10,9 +10,9 @@ namespace SocialRss\ParsedFeed;
  */
 class BaseParsedFeedCollection extends \ArrayObject
 {
-    private $title;
-    private $link;
-    private $items = [];
+    protected $title;
+    protected $link;
+    protected $items = [];
 
     /**
      * BaseParsedFeedCollection constructor.
