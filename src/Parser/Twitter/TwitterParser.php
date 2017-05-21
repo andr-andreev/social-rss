@@ -19,6 +19,8 @@ class TwitterParser extends AbstractParser
      * TwitterParser constructor.
      *
      * @param $config
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function __construct(array $config)
     {

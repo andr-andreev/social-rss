@@ -20,6 +20,7 @@ class VkParser extends AbstractParser
      * VkParser constructor.
      *
      * @param $config
+     * @throws \VK\VKException
      */
     public function __construct(array $config)
     {
