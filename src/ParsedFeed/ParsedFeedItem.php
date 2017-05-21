@@ -36,9 +36,7 @@ class ParsedFeedItem
         \DateTime $date = null,
         array $tags = [],
         ParsedFeedItemAuthor $author = null
-    )
-    {
-    
+    ) {
         $this->title = $title;
         $this->link = $link;
         $this->content = $content;
