@@ -133,7 +133,7 @@ class TwitterFeedItem implements FeedItemInterface
     /**
      * @return string
      */
-    private function getOriginalAuthorName(): string
+    protected function getOriginalAuthorName(): string
     {
         return $this->originalTweet['user']['name'];
     }
@@ -175,7 +175,7 @@ class TwitterFeedItem implements FeedItemInterface
     /**
      * @return bool
      */
-    private function isQuotedStatus(): bool
+    protected function isQuotedStatus(): bool
     {
         return isset($this->tweet['quoted_status']);
     }
@@ -183,7 +183,7 @@ class TwitterFeedItem implements FeedItemInterface
     /**
      * @return bool
      */
-    private function isRetweetedStatus(): bool
+    protected function isRetweetedStatus(): bool
     {
         return isset($this->originalTweet['retweeted_status']);
     }

@@ -77,7 +77,7 @@ class AttachmentParser
      * @param $attachment
      * @return AttachmentInterface
      */
-    private function createParser($attachment): AttachmentInterface
+    protected function createParser($attachment): AttachmentInterface
     {
         $map = $this->attachmentsMap;
         $type = $attachment['type'];

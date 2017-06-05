@@ -54,7 +54,7 @@ class VkFeed extends BaseFeed
      * @param $feed
      * @return array
      */
-    private function processFeed(array $feed): array
+    protected function processFeed(array $feed): array
     {
         $items = array_filter($feed['wall'], function ($item) {
             return is_array($item);

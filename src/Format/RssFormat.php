@@ -58,7 +58,7 @@ class RssFormat implements FormatInterface
      * @param ParsedFeedItem $item
      * @return string
      */
-    private function makeContent(ParsedFeedItem $item): string
+    protected function makeContent(ParsedFeedItem $item): string
     {
         $out = $item->getContent();
 

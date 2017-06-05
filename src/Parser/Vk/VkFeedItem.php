@@ -62,7 +62,7 @@ class VkFeedItem implements FeedItemInterface
     /**
      * @return array
      */
-    private function getTexts(): array
+    protected function getTexts(): array
     {
         $content = $this->postParser->getDescription();
         $quote = $this->postParser->getQuote();
