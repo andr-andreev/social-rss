@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
-use SocialRss\Parser\ParserTrait;
+use SocialRss\ParsedFeed\BaseParsedFeedCollection;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -14,14 +14,12 @@ use Symfony\Component\Yaml\Yaml;
  */
 class YamlFormat implements FormatInterface
 {
-    use ParserTrait;
-
     /**
      * @param $data
      * @return mixed
      */
-    public function format(array $data): string
+    public function format(BaseParsedFeedCollection $data): string
     {
-        return Yaml::dump($data, 3);
+        return Yaml::dump($data->toArray(), 3);
     }
 }

@@ -21,12 +21,19 @@ class InstagramParserTest extends TestCase
     /**
      * @var array
      */
-    private $feed;
+    private $feeds;
+
+    private $fixtures = [
+        __DIR__ . '/../../fixtures/instagram.json',
+        __DIR__ . '/../../fixtures/instagram_user.json',
+    ];
 
     public function setUp()
     {
         $this->parser = (new ParserFactory())->create('instagram', []);
-        $this->feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/instagram.json'), true);
+        $this->feeds = array_map(function ($fixture) {
+            return json_decode(file_get_contents($fixture), true);
+        }, $this->fixtures);
     }
 
     public function testParseFeed()
@@ -34,23 +41,25 @@ class InstagramParserTest extends TestCase
         // test when no caption provided
         // unset($feed[0]['caption']);
 
-        $parsedFeed = $this->parser->parseFeed($this->feed);
+        foreach ($this->feeds as $feed) {
+            $parsedFeed = $this->parser->parseFeed($feed);
 
-        $this->assertNotEmpty($parsedFeed['title']);
-        $this->assertNotEmpty($parsedFeed['link']);
-        $this->assertNotEmpty($parsedFeed['items']);
+            $this->assertNotEmpty($parsedFeed->getTitle());
+            $this->assertNotEmpty($parsedFeed->getLink());
+            $this->assertNotEmpty($parsedFeed->getItems());
 
-        $this->assertCount(count($this->feed), $parsedFeed['items']);
+//            $this->assertCount(count($feed), $parsedFeed->getItems());
 
-        foreach ($parsedFeed['items'] as $item) {
-            $this->assertNotEmpty($item['title']);
-            $this->assertStringStartsWith('https://www.instagram.com/', $item['link']);
-            $this->assertNotEmpty($item['content']);
-            $this->assertNotEmpty($item['date']);
-            $this->assertInternalType('array', $item['tags']);
-            $this->assertNotEmpty($item['author']['name']);
-            $this->assertStringEndsWith('.jpg', $item['author']['avatar']);
-            $this->assertStringStartsWith('https://www.instagram.com/', $item['author']['link']);
+            foreach ($parsedFeed->getItems() as $item) {
+                $this->assertNotEmpty($item->getTitle());
+                $this->assertStringStartsWith('https://www.instagram.com/', $item->getLink());
+                $this->assertNotEmpty($item->getContent());
+                $this->assertNotEmpty($item->getDate());
+                $this->assertInternalType('array', $item->getTags());
+                $this->assertNotEmpty($item->getAuthor()->getName());
+                $this->assertStringEndsWith('.jpg', $item->getAuthor()->getAvatar());
+                $this->assertStringStartsWith('https://www.instagram.com/', $item->getAuthor()->getLink());
+            }
         }
     }
 }

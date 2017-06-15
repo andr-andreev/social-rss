@@ -1,10 +1,12 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 
 namespace SocialRss\Parser\Vk;
 
-use SocialRss\Parser\Vk\Posts\PostInterface;
+use SocialRss\Parser\Vk\Post\DummyPost;
+use SocialRss\Parser\Vk\Post\PostInterface;
+use SocialRss\Parser\Vk\User\UserCollection;
 
 /**
  * Class PostParser
@@ -13,22 +15,18 @@ use SocialRss\Parser\Vk\Posts\PostInterface;
  */
 class PostParser
 {
-    /**
-     * @var PostInterface
-     */
-    public $parser;
-
     private $item;
     private $users;
 
     private $typeMap = [
-        'post' => Posts\PostPost::class,
-        'photo' => Posts\PhotoPost::class,
-        'photo_tag' => Posts\PhotoTagPost::class,
-        'friend' => Posts\FriendPost::class,
-        'note' => Posts\NotePost::class,
-        'audio' => Posts\AudioPost::class,
-        'video' => Posts\VideoPost::class,
+        'post' => Post\PostPost::class,
+        'copy' => Post\CopyPost::class,
+        'photo' => Post\PhotoPost::class,
+        'photo_tag' => Post\PhotoTagPost::class,
+        'friend' => Post\FriendPost::class,
+        'note' => Post\NotePost::class,
+        'audio' => Post\AudioPost::class,
+        'video' => Post\VideoPost::class,
     ];
 
     /**
@@ -37,24 +35,22 @@ class PostParser
      * @param $item
      * @param $users
      */
-    public function __construct($item, $users)
+    public function __construct(array $item, UserCollection $users)
     {
         $this->item = $item;
         $this->users = $users;
-
-        $map = $this->typeMap;
-        $type = $this->item['type'];
-
-        if (isset($map[$type])) {
-            $this->parser = new $map[$type]($item, $users);
-        }
     }
 
     /**
-     * @return bool
+     * @return PostInterface
      */
-    public function isParserAvailable()
+    public function createParser(): PostInterface
     {
-        return isset($this->typeMap[$this->item['type']]);
+        $map = $this->typeMap;
+        $type = $this->item['type'];
+
+        $className = $map[$type] ?? DummyPost::class;
+
+        return new $className($this->item, $this->users);
     }
 }

@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
-use SocialRss\Exception\SocialRssException;
-
 /**
  * Class FormatFactory
  *
@@ -15,6 +13,7 @@ class FormatFactory extends FactoryMethod
     /**
      * @param string $type
      * @return FormatInterface
+     * @throws \InvalidArgumentException
      */
     protected function createFormat(string $type): FormatInterface
     {

@@ -2,14 +2,17 @@
 declare(strict_types = 1);
 
 
-namespace SocialRss\Parser\Vk\Posts;
+namespace SocialRss\Parser\Vk\Post;
+
+use SocialRss\Helper\Html;
+use SocialRss\Parser\Vk\VkParser;
 
 /**
  * Class NotePost
  *
- * @package SocialRss\Parser\Vk\Posts
+ * @package SocialRss\Parser\Vk\Post
  */
-class NotePost extends AbstractPost implements PostInterface
+class NotePost extends AbstractPost
 {
     /**
      * @return string
@@ -24,7 +27,7 @@ class NotePost extends AbstractPost implements PostInterface
      */
     public function getLink(): string
     {
-        return self::URL . "{$this->users[$this->item['source_id']]['screen_name']}";
+        return VkParser::getUrl() . "{$this->getUser()->getScreenName()}";
     }
 
     /**
@@ -35,7 +38,7 @@ class NotePost extends AbstractPost implements PostInterface
         $notes = $this->item['notes'];
 
         $notes = array_map(function ($note) {
-            return 'Заметка: ' . $this->makeLink($note['view_url'], $note['title']);
+            return 'Заметка: ' . Html::link($note['view_url'], $note['title']);
         }, $notes);
 
         return implode(PHP_EOL, $notes);

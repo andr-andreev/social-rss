@@ -2,14 +2,16 @@
 declare(strict_types = 1);
 
 
-namespace SocialRss\Parser\Vk\Posts;
+namespace SocialRss\Parser\Vk\Post;
+
+use SocialRss\Parser\Vk\VkParser;
 
 /**
  * Class AudioPost
  *
- * @package SocialRss\Parser\Vk\Posts
+ * @package SocialRss\Parser\Vk\Post
  */
-class AudioPost extends AbstractPost implements PostInterface
+class AudioPost extends AbstractPost
 {
     /**
      * @return string
@@ -24,7 +26,7 @@ class AudioPost extends AbstractPost implements PostInterface
      */
     public function getLink(): string
     {
-        return self::URL . "audios{$this->users[$this->item['source_id']]['id']}";
+        return VkParser::getUrl() . "audios{$this->getUser()->getId()}";
     }
 
     /**

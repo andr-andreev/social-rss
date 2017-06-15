@@ -2,19 +2,18 @@
 declare(strict_types = 1);
 
 
-namespace SocialRss\Parser\Vk\Posts;
+namespace SocialRss\Parser\Vk\Post;
 
-use SocialRss\Parser\Vk\VkParserTrait;
+use SocialRss\Parser\Vk\Helper;
+use SocialRss\Parser\Vk\VkParser;
 
 /**
  * Class VideoPost
  *
- * @package SocialRss\Parser\Vk\Posts
+ * @package SocialRss\Parser\Vk\Post
  */
-class VideoPost extends AbstractPost implements PostInterface
+class VideoPost extends AbstractPost
 {
-    use VkParserTrait;
-
     /**
      * @return string
      */
@@ -28,7 +27,7 @@ class VideoPost extends AbstractPost implements PostInterface
      */
     public function getLink(): string
     {
-        return self::URL . "videos{$this->users[$this->item['source_id']]['id']}";
+        return VkParser::getUrl() . "videos{$this->getUser()->getId()}";
     }
 
     /**
@@ -43,7 +42,7 @@ class VideoPost extends AbstractPost implements PostInterface
         });
 
         $videos = array_map(function ($video) {
-            return $this->makeVideoTrait($video);
+            return Helper::makeVideoTrait($video);
         }, $videos);
 
         return implode(PHP_EOL, $videos);
