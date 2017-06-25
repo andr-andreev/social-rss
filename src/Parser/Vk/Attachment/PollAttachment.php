@@ -16,10 +16,6 @@ class PollAttachment extends AbstractAttachment
      */
     public function getAttachmentOutput(): string
     {
-//        $answers = array_map(function ($answer) {
-        //            return $answer['text'];
-        //        }, $this->attachment['poll']['answers']);
-
         return "Опрос: {$this->attachment['poll']['question']}";
     }
 }

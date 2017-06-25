@@ -85,8 +85,6 @@ class AttachmentParser
         $className = $map[$type] ?? UnknownAttachment::class;
 
         /** @var Attachment\AttachmentInterface $attachmentParser */
-        $attachmentParser = new $className($attachment);
-
-        return $attachmentParser;
+        return new $className($attachment);
     }
 }

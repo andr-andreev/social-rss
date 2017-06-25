@@ -43,11 +43,9 @@ class VkFeed extends BaseFeed
         $feedItems = $feed['items'];
         $profiles = $this->users;
 
-        $processedFeedItems = array_map(function ($item) use ($profiles) {
+        return array_map(function ($item) use ($profiles) {
             return array_merge($item, ['profiles' => $profiles]);
         }, $feedItems);
-
-        return $processedFeedItems;
     }
 
     /**

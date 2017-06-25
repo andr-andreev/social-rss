@@ -56,7 +56,7 @@ class InstagramFeed extends BaseFeed
             return isset($node['node']['shortcode']); // filter nodes without content
         });
 
-        $processedNodes = array_map(function ($node) {
+        return array_map(function ($node) {
             $nodeData = $node['node'];
             $newData = [
                 'date' => $nodeData['taken_at_timestamp'],
@@ -67,8 +67,6 @@ class InstagramFeed extends BaseFeed
 
             return array_merge($nodeData, $newData);
         }, $filteredNodes);
-
-        return $processedNodes;
     }
 
     /**
