@@ -15,10 +15,10 @@ use SocialRss\Parser\Vk\User\UserCollection;
  */
 class PostParser
 {
-    private $item;
-    private $users;
+    protected $item;
+    protected $users;
 
-    private $typeMap = [
+    protected $typeMap = [
         'post' => Post\PostPost::class,
         'copy' => Post\CopyPost::class,
         'photo' => Post\PhotoPost::class,

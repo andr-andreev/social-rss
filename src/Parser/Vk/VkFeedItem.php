@@ -15,12 +15,12 @@ use SocialRss\Parser\Vk\User\UserCollection;
  */
 class VkFeedItem implements FeedItemInterface
 {
-    private $item;
+    protected $item;
 
     /** @var UserCollection */
-    private $users;
+    protected $users;
 
-    private $postParser;
+    protected $postParser;
 
     /**
      * VkFeedItem constructor.
@@ -62,7 +62,7 @@ class VkFeedItem implements FeedItemInterface
     /**
      * @return array
      */
-    private function getTexts(): array
+    protected function getTexts(): array
     {
         $content = $this->postParser->getDescription();
         $quote = $this->postParser->getQuote();

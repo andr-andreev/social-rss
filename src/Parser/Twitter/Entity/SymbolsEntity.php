@@ -11,8 +11,17 @@ use SocialRss\Parser\Twitter\TwitterParser;
  * Class SymbolsEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class SymbolsEntity extends AbstractEntity implements EntityInterface
+class SymbolsEntity extends AbstractEntity
 {
+    /**
+     * @param array $item
+     * @return bool
+     */
+    public static function isApplicable(array $item): bool
+    {
+        return static::getEntityType($item) === 'symbols';
+    }
+
     /**
      * @return string
      */

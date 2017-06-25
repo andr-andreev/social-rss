@@ -11,8 +11,17 @@ use SocialRss\Parser\Twitter\TwitterParser;
  * Class UserMentionsEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class UserMentionsEntity extends AbstractEntity implements EntityInterface
+class UserMentionsEntity extends AbstractEntity
 {
+    /**
+     * @param array $item
+     * @return bool
+     */
+    public static function isApplicable(array $item): bool
+    {
+        return static::getEntityType($item) === 'user_mentions';
+    }
+
     /**
      * @return string
      */

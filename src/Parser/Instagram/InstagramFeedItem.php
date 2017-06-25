@@ -14,7 +14,7 @@ use SocialRss\Parser\FeedItem\FeedItemInterface;
  */
 class InstagramFeedItem implements FeedItemInterface
 {
-    private $item;
+    protected $item;
 
     /**
      * InstagramFeedItem constructor.
@@ -29,7 +29,7 @@ class InstagramFeedItem implements FeedItemInterface
      * @param $item
      * @return string
      */
-    private function parseContent(array $item): string
+    protected function parseContent(array $item): string
     {
         $location = $item['location']['name'];
 

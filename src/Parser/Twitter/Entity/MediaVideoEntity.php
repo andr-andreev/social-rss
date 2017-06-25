@@ -10,8 +10,20 @@ use SocialRss\Helper\Html;
  * Class MediaVideoEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class MediaVideoEntity extends AbstractEntity implements EntityInterface
+class MediaVideoEntity extends AbstractEntity
 {
+    /**
+     * @param array $item
+     * @return bool
+     */
+    public static function isApplicable(array $item): bool
+    {
+        return in_array(static::getEntityType($item), [
+            'media_video',
+            'media_animated_gif'
+        ], true);
+    }
+
     /**
      * @return string
      */

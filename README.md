@@ -6,6 +6,7 @@ PHP-social-rss fully parses API data including avatars, quotes, photos, videos, 
 You can read your own timeline as well as user's timelines.
 
 [![Build Status](https://travis-ci.org/andr-andreev/php-social-rss.svg?branch=master)](https://travis-ci.org/andr-andreev/php-social-rss)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/andr-andreev/php-social-rss/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/andr-andreev/php-social-rss/?branch=master)
 [![Code Climate](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/gpa.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss)
 [![Issue Count](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/issue_count.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss)
 [![Test Coverage](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/coverage.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss/coverage)

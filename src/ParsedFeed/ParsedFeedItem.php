@@ -13,6 +13,7 @@ class ParsedFeedItem
     public $title;
     public $link;
     public $content;
+    public $quote;
     public $date;
     public $tags;
     /** @var ParsedFeedItemAuthor */

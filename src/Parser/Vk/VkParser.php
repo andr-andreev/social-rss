@@ -14,7 +14,7 @@ use SocialRss\Parser\FeedItem\FeedItemInterface;
  */
 class VkParser extends AbstractParser
 {
-    private $vkClient;
+    protected $vkClient;
 
     /**
      * VkParser constructor.

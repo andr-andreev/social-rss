@@ -15,11 +15,11 @@ use SocialRss\Parser\Client\ClientInterface;
  */
 class InstagramClient implements ClientInterface
 {
-    private $httpClient;
-    private $httpHeaders;
+    protected $httpClient;
+    protected $httpHeaders;
 
-    private $cookies;
-    private $config;
+    protected $cookies;
+    protected $config;
 
     /**
      * InstagramClient constructor.
@@ -55,7 +55,7 @@ class InstagramClient implements ClientInterface
         ]);
 
         // Make cookies array
-        $cookies = array_reduce($this->cookies->toArray(), function ($carry, $item) {
+        $cookiesArray = array_reduce($this->cookies->toArray(), function ($carry, $item) {
             $carry[$item['Name']] = $item['Value'];
 
             return $carry;
@@ -65,7 +65,7 @@ class InstagramClient implements ClientInterface
         $loginRequest = $this->httpClient->request('POST', '/accounts/login/ajax/', [
             'headers' => array_merge(
                 $this->httpHeaders,
-                ['X-CSRFToken' => $cookies['csrftoken']]
+                ['X-CSRFToken' => $cookiesArray['csrftoken']]
             ),
             'form_params' => [
                 'username' => $this->config['username'],

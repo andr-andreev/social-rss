@@ -8,7 +8,21 @@ namespace SocialRss\Parser\Twitter\Entity;
  * Interface EntityInterface
  * @package SocialRss\Parser\Twitter\Entity
  */
+/**
+ * Interface EntityInterface
+ * @package SocialRss\Parser\Twitter\Entity
+ */
 interface EntityInterface
 {
-    public function getParsedContent();
+
+    /**
+     * @param array $item
+     * @return bool
+     */
+    public static function isApplicable(array $item): bool;
+
+    /**
+     * @return string
+     */
+    public function getParsedContent(): string;
 }

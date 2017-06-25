@@ -29,8 +29,6 @@ class RssFormat implements FormatInterface
         $feed->setDescription($data->getTitle());
         $feed->setLink($data->getLink());
 
-//        $items = $this->processData($data);
-
         foreach ($data->getItems() as $item) {
             $entry = $feed->createEntry();
 
@@ -58,7 +56,7 @@ class RssFormat implements FormatInterface
      * @param ParsedFeedItem $item
      * @return string
      */
-    private function makeContent(ParsedFeedItem $item): string
+    protected function makeContent(ParsedFeedItem $item): string
     {
         $out = $item->getContent();
 

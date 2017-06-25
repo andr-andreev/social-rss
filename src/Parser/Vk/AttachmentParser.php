@@ -27,9 +27,9 @@ use SocialRss\Parser\Vk\Attachment\VideoAttachment;
  */
 class AttachmentParser
 {
-    private $item;
+    protected $item;
 
-    private $attachmentsMap = [
+    protected $attachmentsMap = [
         'photo' => PhotoAttachment::class,
         'posted_photo' => PostedPhotoAttachment::class,
         'video' => VideoAttachment::class,
@@ -77,7 +77,7 @@ class AttachmentParser
      * @param $attachment
      * @return AttachmentInterface
      */
-    private function createParser($attachment): AttachmentInterface
+    protected function createParser($attachment): AttachmentInterface
     {
         $map = $this->attachmentsMap;
         $type = $attachment['type'];
@@ -85,8 +85,6 @@ class AttachmentParser
         $className = $map[$type] ?? UnknownAttachment::class;
 
         /** @var Attachment\AttachmentInterface $attachmentParser */
-        $attachmentParser = new $className($attachment);
-
-        return $attachmentParser;
+        return new $className($attachment);
     }
 }

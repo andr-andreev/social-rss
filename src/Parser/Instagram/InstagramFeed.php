@@ -34,7 +34,7 @@ class InstagramFeed extends BaseFeed
      * @param $items
      * @return array
      */
-    private function processFeed(array $items): array
+    protected function processFeed(array $items): array
     {
         return array_map(function ($item) {
             $item['caption'] = $item['caption'] ?? '';
@@ -48,7 +48,7 @@ class InstagramFeed extends BaseFeed
      * @return array
      * @internal param $feed
      */
-    private function processFeedPage(): array
+    protected function processFeedPage(): array
     {
         $nodes = $this->feed['entry_data']['FeedPage'][0]['graphql']['user']['edge_web_feed_timeline']['edges'];
 
@@ -56,7 +56,7 @@ class InstagramFeed extends BaseFeed
             return isset($node['node']['shortcode']); // filter nodes without content
         });
 
-        $processedNodes = array_map(function ($node) {
+        return array_map(function ($node) {
             $nodeData = $node['node'];
             $newData = [
                 'date' => $nodeData['taken_at_timestamp'],
@@ -67,15 +67,13 @@ class InstagramFeed extends BaseFeed
 
             return array_merge($nodeData, $newData);
         }, $filteredNodes);
-
-        return $processedNodes;
     }
 
     /**
      * @return array
      * @internal param $feed
      */
-    private function processProfilePage(): array
+    protected function processProfilePage(): array
     {
         $items = $this->processFeed($this->feed['entry_data']['ProfilePage'][0]['user']['media']['nodes']);
 

@@ -14,7 +14,7 @@ use SocialRss\Parser\Vk\User\UserCollection;
  */
 class VkFeed extends BaseFeed
 {
-    private $users;
+    protected $users;
 
     /**
      * InstagramFeed constructor.
@@ -43,18 +43,16 @@ class VkFeed extends BaseFeed
         $feedItems = $feed['items'];
         $profiles = $this->users;
 
-        $processedFeedItems = array_map(function ($item) use ($profiles) {
+        return array_map(function ($item) use ($profiles) {
             return array_merge($item, ['profiles' => $profiles]);
         }, $feedItems);
-
-        return $processedFeedItems;
     }
 
     /**
      * @param $feed
      * @return array
      */
-    private function processFeed(array $feed): array
+    protected function processFeed(array $feed): array
     {
         $items = array_filter($feed['wall'], function ($item) {
             return is_array($item);

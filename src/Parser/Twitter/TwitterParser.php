@@ -13,7 +13,7 @@ use SocialRss\Parser\FeedItem\FeedItemInterface;
  */
 class TwitterParser extends AbstractParser
 {
-    private $twitterClient;
+    protected $twitterClient;
 
     /**
      * TwitterParser constructor.

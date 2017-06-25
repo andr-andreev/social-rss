@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 
 namespace SocialRss\Parser\Vk;
@@ -19,31 +19,67 @@ class Helper
      */
     public static function parseContent(string $text): string
     {
-        // Match URLs
-        $text = preg_replace(
+        $methodsList = [
+            'makeLinkableUrls',
+            'makeLinkableUserMentions',
+            'makeLinkableHashtags'
+        ];
+
+        return array_reduce($methodsList, function ($acc, $function) {
+            return call_user_func([Helper::class, $function], $acc);
+        }, $text);
+    }
+
+    /**
+     * Match URLs
+     *
+     * @param string $text
+     * @return string
+     */
+    public static function makeLinkableUrls(string $text): string
+    {
+        return preg_replace(
             '!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i',
             '<a href="$1">$1</a>',
             $text
         );
+    }
 
-        // Match user tags [id1|User]
+    /**
+     * Match user tags [id1|User]
+     *
+     * @param string $text
+     * @return string
+     */
+    public static function makeLinkableUserMentions(string $text): string
+    {
+        $out = $text;
+
         preg_match_all('/\\[(.*?)\\]/', $text, $matches);
         foreach ($matches[0] as $key => $match) {
             $list = explode('|', $matches[1][$key]);
             if (count($list) === 2) {
                 list($userId, $tag) = $list;
-                $text = str_replace($match, Html::link(VkParser::getUrl() . $userId, $tag), $text);
+                $out = str_replace($match, Html::link(VkParser::getUrl() . $userId, $tag), $text);
             }
         }
 
-        // Match #hashtags
-        $text = Html::parseByPattern(
+        return $out;
+    }
+
+    /**
+     * Match #hashtags
+     *
+     * @param string $text
+     * @return string
+     */
+    public static function makeLinkableHashtags(string $text): string
+    {
+        return Html::parseByPattern(
             '#',
             '<a href="https://vk.com/feed?section=search&q=%23{{string}}">#{{string}}</a>',
             $text
         );
-
-        return $text;
     }
 
     /**

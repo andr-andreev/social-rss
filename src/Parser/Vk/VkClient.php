@@ -24,7 +24,7 @@ class VkClient implements ClientInterface
         'access_token' => '',
     ];
 
-    private $vkClient;
+    protected $vkClient;
 
 
     /**
