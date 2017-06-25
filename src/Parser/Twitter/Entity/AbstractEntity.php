@@ -8,10 +8,21 @@ namespace SocialRss\Parser\Twitter\Entity;
  * Class AbstractEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-abstract class AbstractEntity
+abstract class AbstractEntity implements EntityInterface
 {
+    /**
+     * @var
+     */
     protected $item;
+    /**
+     * @var
+     */
     protected $text;
+
+    /**
+     * @var array
+     */
+    protected static $applicableTypes = [];
 
     /**
      * AbstractEntity constructor.
@@ -22,6 +33,15 @@ abstract class AbstractEntity
     {
         $this->item = $item;
         $this->text = $text;
+    }
+
+    /**
+     * @param array $item
+     * @return string
+     */
+    public static function getEntityType(array $item): string
+    {
+        return $item['entity_type'];
     }
 
     /**

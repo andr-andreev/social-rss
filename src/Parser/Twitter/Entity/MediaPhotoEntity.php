@@ -10,8 +10,17 @@ use SocialRss\Helper\Html;
  * Class MediaPhotoEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class MediaPhotoEntity extends AbstractEntity implements EntityInterface
+class MediaPhotoEntity extends AbstractEntity
 {
+    /**
+     * @param array $item
+     * @return bool
+     */
+    public static function isApplicable(array $item): bool
+    {
+        return static::getEntityType($item) === 'media_photo';
+    }
+
     /**
      * @return string
      */

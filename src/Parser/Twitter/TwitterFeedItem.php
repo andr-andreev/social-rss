@@ -6,8 +6,8 @@ namespace SocialRss\Parser\Twitter;
 
 use SocialRss\ParsedFeed\ParsedFeedItem;
 use SocialRss\Parser\FeedItem\FeedItemInterface;
+use SocialRss\Parser\Twitter\Entity\EntityInterface;
 use SocialRss\Parser\Twitter\Entity\HashtagsEntity;
-use SocialRss\Parser\Twitter\Entity\MediaAnimatedGifEntity;
 use SocialRss\Parser\Twitter\Entity\MediaPhotoEntity;
 use SocialRss\Parser\Twitter\Entity\MediaVideoEntity;
 use SocialRss\Parser\Twitter\Entity\SymbolsEntity;
@@ -78,24 +78,26 @@ class TwitterFeedItem implements FeedItemInterface
         $flatEntities = array_merge(...$processedEntities);
 
         $entitiesMap = [
-            'hashtags' => HashtagsEntity::class,
-            'user_mentions' => UserMentionsEntity::class,
-            'urls' => UrlsEntity::class,
-            'symbols' => SymbolsEntity::class,
-            'media_photo' => MediaPhotoEntity::class,
-            'media_video' => MediaVideoEntity::class,
-            'media_animated_gif' => MediaAnimatedGifEntity::class,
+            HashtagsEntity::class,
+            UserMentionsEntity::class,
+            UrlsEntity::class,
+            SymbolsEntity::class,
+            MediaPhotoEntity::class,
+            MediaVideoEntity::class,
+            UnknownEntity::class,
         ];
 
-        $processedText = array_reduce($flatEntities, function ($acc, $entity) use ($entitiesMap) {
-            $type = $entity['entity_type'];
-            $class = $entitiesMap[$type] ?? UnknownEntity::class;
+        $processedText = $this->tweet['full_text'];
+        foreach ($flatEntities as $entity) {
+            foreach ($entitiesMap as $entityItem) {
+                if ($entityItem::isApplicable($entity)) {
+                    /** @var EntityInterface $entityParser */
+                    $entityParser = new $entityItem($entity, $processedText);
 
-            /** @var \SocialRss\Parser\Twitter\Entity\EntityInterface $entityParser */
-            $entityParser = new $class($entity, $acc);
-
-            return $entityParser->getParsedContent();
-        }, $this->tweet['full_text']);
+                    $processedText = $entityParser->getParsedContent();
+                }
+            }
+        }
 
         return nl2br(trim($processedText));
     }

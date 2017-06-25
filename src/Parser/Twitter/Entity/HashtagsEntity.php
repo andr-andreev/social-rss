@@ -11,8 +11,17 @@ use SocialRss\Parser\Twitter\TwitterParser;
  * Class HashtagsEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class HashtagsEntity extends AbstractEntity implements EntityInterface
+class HashtagsEntity extends AbstractEntity
 {
+    /**
+     * @param array $item
+     * @return bool
+     */
+    public static function isApplicable(array $item): bool
+    {
+        return static::getEntityType($item) === 'hashtags';
+    }
+
     /**
      * @return string
      */

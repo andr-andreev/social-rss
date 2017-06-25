@@ -10,8 +10,17 @@ use SocialRss\Helper\Html;
  * Class UrlsEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class UrlsEntity extends AbstractEntity implements EntityInterface
+class UrlsEntity extends AbstractEntity
 {
+    /**
+     * @param array $item
+     * @return bool
+     */
+    public static function isApplicable(array $item): bool
+    {
+        return static::getEntityType($item) === 'urls';
+    }
+    
     /**
      * @return string
      */
