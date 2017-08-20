@@ -86,7 +86,7 @@ class VkFeed extends BaseFeed
         foreach ($feed['profiles'] as $profile) {
             $user = new User(
                 $profile['uid'],
-                $profile['screen_name'],
+                $profile['screen_name'] ?: '',
                 "{$profile['first_name']} {$profile['last_name']}",
                 $profile['photo']
             );
