@@ -14,6 +14,8 @@ use SocialRss\Parser\FeedItem\FeedItemInterface;
  */
 class InstagramFeedItem implements FeedItemInterface
 {
+    const TYPE_CAROUSEL = 'GraphSidecar';
+
     protected $item;
 
     /**
@@ -39,11 +41,16 @@ class InstagramFeedItem implements FeedItemInterface
             $item['display_src']
         ) : Html::img($item['display_src']);
 
+        $caption = $item['caption'];
+        if ($this->isCarousel($item)) {
+            $caption = '[ carousel ]' . PHP_EOL . PHP_EOL . $caption;
+        }
+
         // Match #hashtags
         $caption = Html::parseByPattern(
             '#',
             '<a href="https://www.instagram.com/explore/tags/{{string}}/">#{{string}}</a>',
-            $item['caption']
+            $caption
         );
 
         // Match @mentions
@@ -125,8 +132,17 @@ class InstagramFeedItem implements FeedItemInterface
     /**
      * @return null|ParsedFeedItem
      */
-    public function getQuote():?ParsedFeedItem
+    public function getQuote(): ?ParsedFeedItem
     {
         return null;
+    }
+
+    /**
+     * @param array $item
+     * @return bool
+     */
+    protected function isCarousel(array $item): bool
+    {
+        return $item['__typename'] === self::TYPE_CAROUSEL;
     }
 }
