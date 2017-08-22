@@ -1,16 +1,17 @@
 <?php
-declare(strict_types=1);
 
+declare(strict_types=1);
 
 namespace SocialRss\Parser\Twitter\Entity;
 
 use SocialRss\Helper\Html;
+use SocialRss\Parser\Twitter\TwitterParser;
 
 /**
- * Class UrlsEntity
+ * Class HashtagEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class UrlsEntity extends AbstractEntity
+class HashtagEntity extends AbstractEntity
 {
     /**
      * @param array $item
@@ -18,9 +19,9 @@ class UrlsEntity extends AbstractEntity
      */
     public static function isApplicable(array $item): bool
     {
-        return static::getEntityType($item) === 'urls';
+        return static::getEntityType($item) === 'hashtags';
     }
-    
+
     /**
      * @return string
      */
@@ -28,8 +29,8 @@ class UrlsEntity extends AbstractEntity
     {
         return $this->replaceContent(
             $this->text,
-            $this->item['url'],
-            Html::link($this->item['expanded_url'], $this->item['display_url'])
+            "#{$this->item['text']}",
+            Html::link(TwitterParser::getUrl() . "hashtag/{$this->item['text']}", "#{$this->item['text']}")
         );
     }
 }

@@ -8,10 +8,10 @@ use SocialRss\Helper\Html;
 use SocialRss\Parser\Twitter\TwitterParser;
 
 /**
- * Class HashtagsEntity
+ * Class UserMentionEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class HashtagsEntity extends AbstractEntity
+class UserMentionEntity extends AbstractEntity
 {
     /**
      * @param array $item
@@ -19,7 +19,7 @@ class HashtagsEntity extends AbstractEntity
      */
     public static function isApplicable(array $item): bool
     {
-        return static::getEntityType($item) === 'hashtags';
+        return static::getEntityType($item) === 'user_mentions';
     }
 
     /**
@@ -29,8 +29,8 @@ class HashtagsEntity extends AbstractEntity
     {
         return $this->replaceContent(
             $this->text,
-            "#{$this->item['text']}",
-            Html::link(TwitterParser::getUrl() . "hashtag/{$this->item['text']}", "#{$this->item['text']}")
+            "@{$this->item['screen_name']}",
+            Html::link(TwitterParser::getUrl() . $this->item['screen_name'], "@{$this->item['screen_name']}")
         );
     }
 }

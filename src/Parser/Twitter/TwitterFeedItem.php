@@ -7,13 +7,13 @@ namespace SocialRss\Parser\Twitter;
 use SocialRss\ParsedFeed\ParsedFeedItem;
 use SocialRss\Parser\FeedItem\FeedItemInterface;
 use SocialRss\Parser\Twitter\Entity\EntityInterface;
-use SocialRss\Parser\Twitter\Entity\HashtagsEntity;
+use SocialRss\Parser\Twitter\Entity\HashtagEntity;
 use SocialRss\Parser\Twitter\Entity\MediaPhotoEntity;
 use SocialRss\Parser\Twitter\Entity\MediaVideoEntity;
-use SocialRss\Parser\Twitter\Entity\SymbolsEntity;
+use SocialRss\Parser\Twitter\Entity\SymbolEntity;
 use SocialRss\Parser\Twitter\Entity\UnknownEntity;
-use SocialRss\Parser\Twitter\Entity\UrlsEntity;
-use SocialRss\Parser\Twitter\Entity\UserMentionsEntity;
+use SocialRss\Parser\Twitter\Entity\UrlEntity;
+use SocialRss\Parser\Twitter\Entity\UserMentionEntity;
 
 /**
  * Class TwitterFeedItem
@@ -30,9 +30,7 @@ class TwitterFeedItem implements FeedItemInterface
      */
     public function __construct(array $item)
     {
-        $tweet = $item['retweeted_status'] ?? $item;
-
-        $this->tweet = $tweet;
+        $this->tweet = $item['retweeted_status'] ?? $item;
         $this->originalTweet = $item;
     }
 
@@ -62,30 +60,8 @@ class TwitterFeedItem implements FeedItemInterface
      */
     public function getContent(): string
     {
-        $tweetEntities = array_merge(
-            $this->tweet['entities'],
-            $this->tweet['extended_entities'] ?? []
-        );
-
-        $processedEntities = array_map(function ($type, $typeArray) {
-            return array_map(function ($entity) use ($type) {
-                $entity['entity_type'] = isset($entity['type']) ? "{$type}_{$entity['type']}" : $type;
-
-                return $entity;
-            }, $typeArray);
-        }, array_keys($tweetEntities), $tweetEntities);
-
-        $flatEntities = array_merge(...$processedEntities);
-
-        $entitiesMap = [
-            HashtagsEntity::class,
-            UserMentionsEntity::class,
-            UrlsEntity::class,
-            SymbolsEntity::class,
-            MediaPhotoEntity::class,
-            MediaVideoEntity::class,
-            UnknownEntity::class,
-        ];
+        $flatEntities = $this->getEntities();
+        $entitiesMap = $this->getEntitiesMap();
 
         $processedText = $this->tweet['full_text'];
         foreach ($flatEntities as $entity) {
@@ -172,6 +148,37 @@ class TwitterFeedItem implements FeedItemInterface
             $feedItem->getLink(),
             $feedItem->getContent()
         );
+    }
+
+    protected function getEntities()
+    {
+        $tweetEntities = array_merge(
+            $this->tweet['entities'],
+            $this->tweet['extended_entities'] ?? []
+        );
+
+        $processedEntities = array_map(function ($type, $typeArray) {
+            return array_map(function ($entity) use ($type) {
+                $entity['entity_type'] = isset($entity['type']) ? "{$type}_{$entity['type']}" : $type;
+
+                return $entity;
+            }, $typeArray);
+        }, array_keys($tweetEntities), $tweetEntities);
+
+        return array_merge(...$processedEntities);
+    }
+
+    protected function getEntitiesMap(): array
+    {
+        return [
+            HashtagEntity::class,
+            UserMentionEntity::class,
+            UrlEntity::class,
+            SymbolEntity::class,
+            MediaPhotoEntity::class,
+            MediaVideoEntity::class,
+            UnknownEntity::class,
+        ];
     }
 
     /**
