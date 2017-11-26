@@ -80,7 +80,7 @@ class VkFeed extends BaseFeed
 
         // Get groups array
         foreach ($feed['groups'] as $group) {
-            $this->users->addUser(new User($group['gid'], $group['screen_name'], $group['name'], $group['photo']));
+            $this->users->addUser(new User($group['gid'], $group['screen_name'], $group['name'], $group['photo'] ?: ''));
         }
 
         foreach ($feed['profiles'] as $profile) {
