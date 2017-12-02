@@ -8,10 +8,10 @@ use SocialRss\Helper\Html;
 use SocialRss\Parser\Twitter\TwitterParser;
 
 /**
- * Class SymbolsEntity
+ * Class SymbolEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class SymbolsEntity extends AbstractEntity
+class SymbolEntity extends AbstractEntity
 {
     /**
      * @param array $item

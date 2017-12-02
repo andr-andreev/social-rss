@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace SocialRss\Parser\Twitter\Entity;
 
 use SocialRss\Helper\Html;
-use SocialRss\Parser\Twitter\TwitterParser;
 
 /**
- * Class UserMentionsEntity
+ * Class UrlsEntity
  * @package SocialRss\Parser\Twitter\Entity
  */
-class UserMentionsEntity extends AbstractEntity
+class UrlEntity extends AbstractEntity
 {
     /**
      * @param array $item
@@ -19,9 +18,9 @@ class UserMentionsEntity extends AbstractEntity
      */
     public static function isApplicable(array $item): bool
     {
-        return static::getEntityType($item) === 'user_mentions';
+        return static::getEntityType($item) === 'urls';
     }
-
+    
     /**
      * @return string
      */
@@ -29,8 +28,8 @@ class UserMentionsEntity extends AbstractEntity
     {
         return $this->replaceContent(
             $this->text,
-            "@{$this->item['screen_name']}",
-            Html::link(TwitterParser::getUrl() . $this->item['screen_name'], "@{$this->item['screen_name']}")
+            $this->item['url'],
+            Html::link($this->item['expanded_url'], $this->item['display_url'])
         );
     }
 }

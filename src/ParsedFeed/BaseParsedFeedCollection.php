@@ -94,7 +94,8 @@ class BaseParsedFeedCollection extends \ArrayObject
             ];
         };
 
-        return ['title' => $this->getTitle(),
+        return [
+            'title' => $this->getTitle(),
             'link' => $this->getLink(),
             'items' => array_map(function (ParsedFeedItem $item) use ($itemToArray) {
                 $quoteOut = [];

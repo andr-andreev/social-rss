@@ -17,7 +17,7 @@ class VkFeed extends BaseFeed
     protected $users;
 
     /**
-     * InstagramFeed constructor.
+     * VkFeed constructor.
      * @param $feed
      */
     public function __construct(array $feed)
@@ -80,13 +80,20 @@ class VkFeed extends BaseFeed
 
         // Get groups array
         foreach ($feed['groups'] as $group) {
-            $this->users->addUser(new User($group['gid'], $group['screen_name'], $group['name'], $group['photo']));
+            $this->users->addUser(
+                new User(
+                    $group['gid'],
+                    $group['screen_name'],
+                    $group['name'],
+                    $group['photo'] ?: ''
+                )
+            );
         }
 
         foreach ($feed['profiles'] as $profile) {
             $user = new User(
                 $profile['uid'],
-                $profile['screen_name'],
+                $profile['screen_name'] ?: '',
                 "{$profile['first_name']} {$profile['last_name']}",
                 $profile['photo']
             );
