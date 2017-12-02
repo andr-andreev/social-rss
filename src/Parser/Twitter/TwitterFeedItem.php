@@ -137,7 +137,7 @@ class TwitterFeedItem implements FeedItemInterface
      */
     public function getQuote():?ParsedFeedItem
     {
-        if (!$this->isQuotedStatus()) {
+        if (!$this->hasQuote()) {
             return null;
         }
 
@@ -184,7 +184,7 @@ class TwitterFeedItem implements FeedItemInterface
     /**
      * @return bool
      */
-    protected function isQuotedStatus(): bool
+    protected function hasQuote(): bool
     {
         return isset($this->tweet['quoted_status']);
     }
