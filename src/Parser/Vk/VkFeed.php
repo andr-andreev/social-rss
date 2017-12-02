@@ -17,7 +17,7 @@ class VkFeed extends BaseFeed
     protected $users;
 
     /**
-     * InstagramFeed constructor.
+     * VkFeed constructor.
      * @param $feed
      */
     public function __construct(array $feed)
