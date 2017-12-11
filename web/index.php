@@ -77,6 +77,10 @@ $app->get('/', function (Request $request, Response $response, $args) {
     ]);
 })->setName('index');
 
+$app->get('/favicon.ico', function (Request $request, Response $response, $args) {
+    return $response->withStatus(404);
+})->setName('favicon');
+
 $app->get('/feed/{source}', function (Request $request, Response $response) {
     $source = $request->getAttribute('source');
     $params = $request->getQueryParams();
