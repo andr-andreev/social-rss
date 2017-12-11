@@ -77,7 +77,7 @@ $app->get('/', function (Request $request, Response $response, $args) {
     ]);
 })->setName('index');
 
-$app->get('/{source}', function (Request $request, Response $response) {
+$app->get('/feed/{source}', function (Request $request, Response $response) {
     $source = $request->getAttribute('source');
     $params = $request->getQueryParams();
 
