@@ -68,15 +68,15 @@ This script uses embedded JSON data from Instagram web page.
 
 To view your own timeline in default (RSS) format:
 ```
-http://example.com/{source}
+http://example.com/feed/{source}
 ```
 To view user timeline in default (RSS) format:
 ```
-http://example.com/{source}?username={username}
+http://example.com/feed/{source}?username={username}
 ```
 To specify another format:
 ```
-http://example.com/{source}?output={format}
+http://example.com/feed/{source}?output={format}
 ```
 where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss`, `json` or `yaml`
 
