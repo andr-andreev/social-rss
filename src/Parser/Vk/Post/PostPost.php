@@ -46,12 +46,14 @@ class PostPost extends AbstractPost
      */
     public function getQuote(): ?ParsedFeedItem
     {
-        if (!isset($this->item['copy_owner_id'])) {
+        if (!isset($this->item['copy_history'][0])) {
             return parent::getQuote();
         }
 
-        $content = isset($this->item['copy_text']) ? Helper::parseContent($this->item['copy_text']) : '';
-        $copyOwner = $this->users->getUserById($this->item['copy_owner_id']);
+        $content = isset($this->item['copy_history'][0]['text'])
+            ? Helper::parseContent($this->item['copy_history'][0]['text'])
+            : '';
+        $copyOwner = $this->users->getUserById(abs($this->item['copy_history'][0]['owner_id']));
 
         return new ParsedFeedItem(
             $copyOwner->getName(),

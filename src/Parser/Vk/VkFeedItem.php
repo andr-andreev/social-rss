@@ -77,28 +77,14 @@ class VkFeedItem implements FeedItemInterface
         $attachments = $attachmentParser->getAttachmentsOutput();
 
         if ($quote) {
-            // Swap user and repost contents
-            $tmp = $quote->getContent();
-            $quote->setContent($content);
-            $content = $tmp;
+            $quoteAttachmentParser = new AttachmentParser($this->item['copy_history'][0]);
+            $quoteAttachments = $quoteAttachmentParser->getAttachmentsOutput();
+
+            $newQuoteContent = nl2br(trim($quote->getContent() . PHP_EOL . $quoteAttachments));
+            $quote->setContent($newQuoteContent);
         }
 
-        $contentAddition = '';
-        $quoteContentAddition = '';
-
-        if (!empty($quote)) {
-            $quoteContentAddition = $attachments;
-        } else {
-            $contentAddition = $attachments;
-        }
-
-        $content .= PHP_EOL . $contentAddition;
-        $content = nl2br(trim($content));
-
-        if ($quote && $quote->getContent()) {
-            $quote->setContent($quote->getContent() . PHP_EOL . $quoteContentAddition);
-            $quote->setContent(nl2br(trim($quote->getContent())));
-        }
+        $content = nl2br(trim($content . PHP_EOL . $attachments));
 
         return ['content' => $content, 'quote' => $quote];
     }
