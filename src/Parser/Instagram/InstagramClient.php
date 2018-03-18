@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SocialRss\Parser\Instagram;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\FileCookieJar;
 use SocialRss\Exception\SocialRssException;
 use SocialRss\Parser\Client\ClientInterface;
 
@@ -28,7 +28,9 @@ class InstagramClient implements ClientInterface
      */
     public function __construct(array $config)
     {
-        $this->cookies = new CookieJar;
+        $cookieFile = dirname(__DIR__, 3) . '/instagramCookie';
+
+        $this->cookies = new FileCookieJar($cookieFile);
         $this->httpClient = new Client(['base_uri' => InstagramParser::getUrl(), 'cookies' => $this->cookies]);
         $this->httpHeaders = [
             'Referer' => InstagramParser::getUrl(),
@@ -50,10 +52,46 @@ class InstagramClient implements ClientInterface
         // https://www.instagram.com/developer/changelog/
 
         // Open instagram homepage
-        $this->httpClient->request('GET', '/', [
+        $homepageRequest = $this->httpClient->request('GET', '/', [
             'headers' => $this->httpHeaders,
         ]);
 
+        $instagramJson = $this->findEmbeddedData((string)$homepageRequest->getBody());
+        if (!empty($instagramJson['entry_data']['LandingPage'])) {
+            $this->login();
+        }
+
+        $url = empty($username) ? '/' : '/' . $username;
+        // Open URL with data as a logged in user
+        $feedRequest = $this->httpClient->request('GET', $url, [
+            'headers' => $this->httpHeaders
+        ]);
+
+        // Find JSON data in the script tag
+        $instagramJson = $this->findEmbeddedData((string)$feedRequest->getBody());
+        if (!$instagramJson) {
+            throw new SocialRssException('Failed to find data');
+        }
+
+        return $instagramJson;
+    }
+
+    protected function findEmbeddedData(string $text): ?array
+    {
+        $reResult = preg_match(
+            "/<script.*>window\\._sharedData = (.*?);<\\/script>/",
+            $text,
+            $matches
+        );
+        if ($reResult === 0) {
+            return null;
+        }
+
+        return json_decode($matches[1], true);
+    }
+
+    protected function login()
+    {
         // Make cookies array
         $cookiesArray = array_reduce($this->cookies->toArray(), function ($carry, $item) {
             $carry[$item['Name']] = $item['Value'];
@@ -77,24 +115,5 @@ class InstagramClient implements ClientInterface
         if ($loginBody['authenticated'] === false) {
             throw new SocialRssException('Failed to login');
         }
-
-        $url = empty($username) ? '/' : '/' . $username;
-        // Open URL with data as a logged in user
-        $feedRequest = $this->httpClient->request('GET', $url, [
-            'headers' => $this->httpHeaders
-        ]);
-
-        // Find JSON data in the script tag
-        $reResult = preg_match(
-            "/<script.*>window\\._sharedData = (.*?);<\\/script>/",
-            (string)$feedRequest->getBody(),
-            $matches
-        );
-        if ($reResult === 0) {
-            throw new SocialRssException('Failed to find data');
-        }
-        $instagramJson = $matches[1];
-
-        return json_decode($instagramJson, true);
     }
 }

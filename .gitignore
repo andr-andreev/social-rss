@@ -3,3 +3,4 @@ vendor/
 .env
 /nbproject/private/
 /build/
+/instagramCookie
