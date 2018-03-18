@@ -1,5 +1,5 @@
 ## php-social-rss
-Read your social networks timeline in different formats (RSS, JSON, YAML).
+Read your social networks timeline in different formats (RSS, JSON).
 
 PHP-social-rss fully parses API data including avatars, quotes, photos, videos, hashtags, user mentions and urls.
 
@@ -26,7 +26,6 @@ Screenshots made in [NewsBlur](https://newsblur.com/) RSS reader.
 ### Output formats
 * RSS 2.0
 * JSON
-* YAML
 
 ### Requirements
 * PHP >= 7.1
@@ -78,7 +77,7 @@ To specify another format:
 ```
 http://example.com/feed/{source}?output={format}
 ```
-where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss`, `json` or `yaml`
+where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss` or `json`
 
 ### Tests ###
 You can run the test suite:

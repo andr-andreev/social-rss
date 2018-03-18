@@ -13,7 +13,6 @@ abstract class FactoryMethod
     const FORMATS = [
         'rss' => RssFormat::class,
         'json' => JsonFormat::class,
-        'yaml' => YamlFormat::class,
     ];
 
     /**

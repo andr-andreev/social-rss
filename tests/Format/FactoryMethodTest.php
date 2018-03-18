@@ -28,14 +28,6 @@ class FactoryMethodTest extends TestCase
         $this->assertInstanceOf(RssFormat::class, $result);
     }
 
-    public function testCanCreateYamlFormat()
-    {
-        $factory = new FormatFactory();
-        $result = $factory->create('yaml');
-
-        $this->assertInstanceOf(YamlFormat::class, $result);
-    }
-
     public function testUnknownType()
     {
         $this->expectException(\InvalidArgumentException::class);
