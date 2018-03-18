@@ -16,6 +16,10 @@ class PollAttachment extends AbstractAttachment
      */
     public function getAttachmentOutput(): string
     {
-        return "Опрос: {$this->attachment['poll']['question']}";
+        $answers = array_map(function (array $answer) {
+            return "{$answer['text']} - {$answer['votes']} ({$answer['rate']}%)";
+        }, $this->attachment['poll']['answers']);
+
+        return "Вопрос: {$this->attachment['poll']['question']}" . PHP_EOL . implode(PHP_EOL, $answers);
     }
 }

@@ -23,6 +23,7 @@ class PostParser
         'copy' => Post\CopyPost::class,
         'photo' => Post\PhotoPost::class,
         'photo_tag' => Post\PhotoTagPost::class,
+        'wall_photo' => Post\WallPhotoPost::class,
         'friend' => Post\FriendPost::class,
         'note' => Post\NotePost::class,
         'audio' => Post\AudioPost::class,
@@ -47,7 +48,7 @@ class PostParser
     public function createParser(): PostInterface
     {
         $map = $this->typeMap;
-        $type = $this->item['type'];
+        $type = $this->item['type'] ?? $this->item['post_type'];
 
         $className = $map[$type] ?? DummyPost::class;
 

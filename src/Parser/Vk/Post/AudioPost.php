@@ -34,7 +34,7 @@ class AudioPost extends AbstractPost
      */
     public function getDescription(): string
     {
-        $audios = $this->item['audio'];
+        $audios = $this->item['audio']['items'];
 
         $audios = array_filter($audios, function ($audio) {
             return isset($audio['title']);

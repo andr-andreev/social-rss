@@ -7,6 +7,7 @@ namespace SocialRss\Parser\Vk;
 use SocialRss\Helper\Html;
 use SocialRss\ParsedFeed\ParsedFeedItem;
 use SocialRss\Parser\FeedItem\FeedItemInterface;
+use SocialRss\Parser\Vk\User\User;
 use SocialRss\Parser\Vk\User\UserCollection;
 
 /**
@@ -19,6 +20,9 @@ class VkFeedItem implements FeedItemInterface
 
     /** @var UserCollection */
     protected $users;
+
+    /** @var User|null */
+    protected $authorUser;
 
     protected $postParser;
 
@@ -33,6 +37,8 @@ class VkFeedItem implements FeedItemInterface
         $this->item = $item;
         $this->users = $users;
         $this->postParser = (new PostParser($item, $users))->createParser();
+
+        $this->authorUser = $this->getAuthorUser();
     }
 
     /**
@@ -118,7 +124,7 @@ class VkFeedItem implements FeedItemInterface
      */
     public function getAuthorName(): string
     {
-        return $this->users->getUserById($this->item['source_id'])->getName();
+        return $this->authorUser ? $this->authorUser->getName() : '';
     }
 
     /**
@@ -126,7 +132,7 @@ class VkFeedItem implements FeedItemInterface
      */
     public function getAuthorAvatar()
     {
-        return $this->users->getUserById($this->item['source_id'])->getPhotoUrl();
+        return $this->authorUser ? $this->authorUser->getPhotoUrl() : '';
     }
 
     /**
@@ -134,14 +140,21 @@ class VkFeedItem implements FeedItemInterface
      */
     public function getAuthorLink(): string
     {
-        return VkParser::getUrl() . $this->users->getUserById($this->item['source_id'])->getScreenName();
+        return $this->authorUser ? VkParser::getUrl() . $this->authorUser->getScreenName() : '';
     }
 
     /**
      * @return null|ParsedFeedItem
      */
-    public function getQuote():?ParsedFeedItem
+    public function getQuote(): ?ParsedFeedItem
     {
         return $this->getTexts()['quote'];
+    }
+
+    protected function getAuthorUser(): ?User
+    {
+        $id = $this->item['source_id'] ?? $this->item['from_id'];
+
+        return $this->users->getUserById($id);
     }
 }

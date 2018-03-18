@@ -35,7 +35,7 @@ class FactoryMethodTest extends TestCase
     public function testCanCreateVkParser()
     {
         $factory = new ParserFactory();
-        $result = $factory->create('vk', []);
+        $result = $factory->create('vk', ['access_token' => '']);
 
         $this->assertInstanceOf(VkParser::class, $result);
     }

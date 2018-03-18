@@ -14,7 +14,7 @@
     "slim/slim": "^3.0",
     "slim/php-view": "^2.2",
     "j7mbo/twitter-api-php": "1.*",
-    "vladkens/vk": "0.*",
+    "vkcom/vk-php-sdk": "^0.1.8",
     "guzzlehttp/guzzle": "~6.0",
     "zendframework/zend-feed": "^2.7",
     "monolog/monolog": "^1.22",

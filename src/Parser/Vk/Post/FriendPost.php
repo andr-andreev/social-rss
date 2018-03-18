@@ -41,14 +41,14 @@ class FriendPost extends AbstractPost
 
         $users = $this->users;
 
-        $friends = $this->item['friends'];
+        $friends = $this->item['friends']['items'];
 
         $friends = array_filter($friends, function ($friend) {
-            return $friend['uid'];
+            return $friend['user_id'];
         });
 
         $friends = array_map(function ($friend) use ($users) {
-            $user = $users->getUserById($friend['uid']);
+            $user = $users->getUserById($friend['user_id']);
 
             return Html::link(
                 VkParser::getUrl() . $user->getScreenName(),

@@ -12,12 +12,32 @@ use SocialRss\Helper\Html;
  */
 class PhotoAttachment extends AbstractAttachment
 {
+    protected const SIZES = [
+        'photo_75',
+        'photo_130',
+        'photo_604',
+        'photo_807',
+        'photo_1280',
+        'photo_2560',
+    ];
 
     /**
      * @return string
      */
     public function getAttachmentOutput(): string
     {
-        return Html::img($this->attachment['photo']['src_big']);
+        $photo = '';
+        foreach (array_reverse(self::SIZES) as $size) {
+            if (isset($this->attachment['photo'][$size])) {
+                $photo = $this->attachment['photo'][$size];
+                break;
+            }
+        }
+
+        if (!$photo) {
+            return '';
+        }
+
+        return Html::img($photo);
     }
 }

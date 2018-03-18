@@ -26,7 +26,7 @@ class VkParserTest extends TestCase
     public function setUp()
     {
         $this->parser = (new ParserFactory())
-            ->create('vk', []);
+            ->create('vk', ['access_token' => '']);
         $this->feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/vk.json'), true);
     }
 
@@ -47,7 +47,7 @@ class VkParserTest extends TestCase
             $this->assertNotEmpty($item->getDate());
             $this->assertInternalType('array', $item->getTags());
             $this->assertNotEmpty($item->getAuthor()->getName());
-            $this->assertContains('vk.', $item->getAuthor()->getAvatar());
+            $this->assertStringStartsWith('https://pp.userapi.com/', $item->getAuthor()->getAvatar());
             $this->assertStringStartsWith('https://vk.com/', $item->getAuthor()->getLink());
 
             if ($item->getQuote()) {
