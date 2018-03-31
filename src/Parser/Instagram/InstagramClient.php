@@ -90,7 +90,7 @@ class InstagramClient implements ClientInterface
         return json_decode($matches[1], true);
     }
 
-    protected function login()
+    protected function login(): void
     {
         // Make cookies array
         $cookiesArray = array_reduce($this->cookies->toArray(), function ($carry, $item) {
