@@ -28,7 +28,7 @@ class PostPost extends AbstractPost
      */
     public function getLink(): string
     {
-        $postId = $this->item['post_id'] ?? $this->item['from_id'];
+        $postId = $this->item['post_id'] ?? $this->item['id'];
 
         return VkParser::getUrl() . "wall{$this->getUser()->getId()}_{$postId}";
     }
