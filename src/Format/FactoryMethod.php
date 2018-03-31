@@ -10,7 +10,7 @@ namespace SocialRss\Format;
  */
 abstract class FactoryMethod
 {
-    const FORMATS = [
+    protected const FORMATS = [
         'rss' => RssFormat::class,
         'json' => JsonFormat::class,
     ];
