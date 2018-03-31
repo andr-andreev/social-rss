@@ -27,7 +27,7 @@ class NotePost extends AbstractPost
      */
     public function getLink(): string
     {
-        return VkParser::getUrl() . "{$this->getUser()->getScreenName()}";
+        return VkParser::getUrl() . $this->getUser()->getScreenName();
     }
 
     /**
