@@ -59,7 +59,7 @@ class Helper
         foreach ((array)$matches[0] as $key => $match) {
             $list = explode('|', $matches[1][$key]);
             if (count($list) === 2) {
-                list($userId, $tag) = $list;
+                [$userId, $tag] = $list;
                 $out = str_replace($match, Html::link(VkParser::getUrl() . $userId, $tag), $text);
             }
         }
