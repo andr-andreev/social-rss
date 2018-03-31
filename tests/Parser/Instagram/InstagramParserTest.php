@@ -36,7 +36,7 @@ class InstagramParserTest extends TestCase
         }, $this->fixtures);
     }
 
-    public function testParseFeed()
+    public function testParseFeed(): void
     {
         // test when no caption provided
         // unset($feed[0]['caption']);

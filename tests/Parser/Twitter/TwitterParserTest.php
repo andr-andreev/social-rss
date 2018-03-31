@@ -29,7 +29,7 @@ class TwitterParserTest extends TestCase
         $this->feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/twitter.json'), true);
     }
 
-    public function testParseFeed()
+    public function testParseFeed(): void
     {
         $parsedFeed = $this->parser->parseFeed($this->feed);
 

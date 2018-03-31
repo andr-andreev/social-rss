@@ -14,7 +14,7 @@ use SocialRss\Parser\ParserFactory;
  */
 class JsonFormatTest extends TestCase
 {
-    public function testJsonFormat()
+    public function testJsonFormat(): void
     {
         $parser = (new ParserFactory())->create('twitter', []);
         $writer = (new FormatFactory())->create('json');
