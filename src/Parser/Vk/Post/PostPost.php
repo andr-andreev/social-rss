@@ -54,11 +54,8 @@ class PostPost extends AbstractPost
             ? Helper::parseContent($this->item['copy_history'][0]['text'])
             : '';
         $copyOwner = $this->users->getUserById(abs($this->item['copy_history'][0]['owner_id']));
+        $link = VkParser::getUrl() . "wall{$this->item['copy_history'][0]['from_id']}_{$this->item['copy_history'][0]['id']}";
 
-        return new ParsedFeedItem(
-            $copyOwner->getName(),
-            VkParser::getUrl() . $copyOwner->getScreenName(),
-            $content
-        );
+        return new ParsedFeedItem($copyOwner->getName(), $link, $content);
     }
 }
