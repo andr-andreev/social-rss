@@ -42,6 +42,7 @@ class InstagramFeed extends BaseFeed
                 'code' => $item['node']['shortcode'],
                 'display_src' => $item['node']['display_url'] ?? '',
                 'caption' => $item['node']['edge_media_to_caption']['edges'][0]['node']['text'] ?? '',
+                'location' => ['name' => $item['node']['location']['name'] ?? ''],
             ]);
         }, $items);
     }
