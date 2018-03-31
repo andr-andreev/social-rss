@@ -79,7 +79,7 @@ class VkFeed extends BaseFeed
         $feed = $this->feed;
 
         // Get groups array
-        foreach ($feed['groups'] as $group) {
+        foreach ((array)$feed['groups'] as $group) {
             $this->users->addUser(
                 new User(
                     $group['id'],
@@ -90,7 +90,7 @@ class VkFeed extends BaseFeed
             );
         }
 
-        foreach ($feed['profiles'] as $profile) {
+        foreach ((array)$feed['profiles'] as $profile) {
             $user = new User(
                 $profile['id'],
                 $profile['screen_name'] ?: '',

@@ -24,6 +24,7 @@ $config = parse_ini_file('../.env', true, INI_SCANNER_TYPED);
 $app = new App(['settings' => $config]);
 
 // Retrieve container instance
+/** @var Container $container */
 $container = $app->getContainer();
 
 $container['view'] = function (Container $container) {
