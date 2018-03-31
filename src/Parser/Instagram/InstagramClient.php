@@ -29,7 +29,7 @@ class InstagramClient implements ClientInterface
      */
     public function __construct(array $config)
     {
-        $cookieFile = dirname(__DIR__, 3) . '/instagramCookie';
+        $cookieFile = dirname(__DIR__, 3) . '/data/instagramCookie';
 
         $this->cookies = new FileCookieJar($cookieFile);
         $this->httpClient = new Client(['base_uri' => InstagramParser::getUrl(), 'cookies' => $this->cookies]);
