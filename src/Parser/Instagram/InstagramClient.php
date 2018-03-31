@@ -25,6 +25,7 @@ class InstagramClient implements ClientInterface
      * InstagramClient constructor.
      *
      * @param $config
+     * @throws \RuntimeException
      */
     public function __construct(array $config)
     {
@@ -41,9 +42,10 @@ class InstagramClient implements ClientInterface
     }
 
     /**
-     * @param $username
+     * @param string $username
      * @return array
      * @throws SocialRssException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getFeed(string $username): array
     {
@@ -76,6 +78,10 @@ class InstagramClient implements ClientInterface
         return $instagramJson;
     }
 
+    /**
+     * @param string $text
+     * @return array|null
+     */
     protected function findEmbeddedData(string $text): ?array
     {
         $reResult = preg_match(

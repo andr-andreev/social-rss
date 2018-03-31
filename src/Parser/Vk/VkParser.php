@@ -30,6 +30,7 @@ class VkParser extends AbstractParser
      * @param string $username
      * @return array
      * @throws \SocialRss\Exception\SocialRssException
+     * @throws \VK\Exceptions\VKClientException
      */
     public function getFeed(string $username): array
     {

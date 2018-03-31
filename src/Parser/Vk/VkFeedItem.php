@@ -137,6 +137,9 @@ class VkFeedItem implements FeedItemInterface
         return $this->getTexts()['quote'];
     }
 
+    /**
+     * @return null|User
+     */
     protected function getAuthorUser(): ?User
     {
         $id = $this->item['source_id'] ?? $this->item['from_id'];

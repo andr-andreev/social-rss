@@ -19,6 +19,7 @@ class InstagramParser extends AbstractParser
     /**
      * InstagramParser constructor.
      * @param array $config
+     * @throws \RuntimeException
      */
     public function __construct(array $config)
     {
@@ -28,6 +29,7 @@ class InstagramParser extends AbstractParser
     /**
      * @param string $username
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \SocialRss\Exception\SocialRssException
      */
     public function getFeed(string $username): array

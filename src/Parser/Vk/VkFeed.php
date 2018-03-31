@@ -71,7 +71,7 @@ class VkFeed extends BaseFeed
 
 
     /**
-     * @return array
+     * @return void
      * @internal param $feed
      */
     public function populateUsers(): void
