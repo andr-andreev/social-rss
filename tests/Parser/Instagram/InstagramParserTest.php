@@ -55,7 +55,6 @@ class InstagramParserTest extends TestCase
                 $this->assertStringStartsWith('https://www.instagram.com/', $item->getLink());
                 $this->assertNotEmpty($item->getContent());
                 $this->assertNotEmpty($item->getDate());
-                $this->assertInternalType('array', $item->getTags());
                 $this->assertNotEmpty($item->getAuthor()->getName());
                 $this->assertStringEndsWith('.jpg', $item->getAuthor()->getAvatar());
                 $this->assertStringStartsWith('https://www.instagram.com/', $item->getAuthor()->getLink());

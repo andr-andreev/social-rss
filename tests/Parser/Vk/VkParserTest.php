@@ -45,7 +45,6 @@ class VkParserTest extends TestCase
             $this->assertStringStartsWith('https://vk.com/', $item->getLink());
             $this->assertNotEmpty($item->getContent());
             $this->assertNotEmpty($item->getDate());
-            $this->assertInternalType('array', $item->getTags());
             $this->assertNotEmpty($item->getAuthor()->getName());
             $this->assertStringStartsWith('https://pp.userapi.com/', $item->getAuthor()->getAvatar());
             $this->assertStringStartsWith('https://vk.com/', $item->getAuthor()->getLink());
