@@ -14,6 +14,8 @@ use SocialRss\Parser\FeedItem\FeedItemInterface;
  */
 class InstagramFeedItem implements FeedItemInterface
 {
+    const TYPE_IMAGE = 'GraphImage';
+    const TYPE_VIDEO = 'GraphVideo';
     const TYPE_CAROUSEL = 'GraphSidecar';
 
     protected $item;

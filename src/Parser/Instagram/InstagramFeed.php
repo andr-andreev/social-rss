@@ -52,8 +52,13 @@ class InstagramFeed extends BaseFeed
     {
         $nodes = $this->feed['entry_data']['FeedPage'][0]['graphql']['user']['edge_web_feed_timeline']['edges'];
 
+        // filter nodes without content
         $filteredNodes = array_filter($nodes, function ($node) {
-            return isset($node['node']['shortcode']); // filter nodes without content
+            return in_array($node['node']['__typename'], [
+                InstagramFeedItem::TYPE_IMAGE,
+                InstagramFeedItem::TYPE_VIDEO,
+                InstagramFeedItem::TYPE_CAROUSEL,
+            ], true);
         });
 
         return array_map(function ($node) {
