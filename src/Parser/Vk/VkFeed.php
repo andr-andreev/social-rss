@@ -82,7 +82,7 @@ class VkFeed extends BaseFeed
         foreach ((array)$feed['groups'] as $group) {
             $this->users->addUser(
                 new User(
-                    $group['id'],
+                    -$group['id'],
                     $group['screen_name'],
                     $group['name'],
                     $group['photo_100'] ?: ''

@@ -27,8 +27,6 @@ class UserCollection extends \ArrayObject
      */
     public function getUserById($userId): User
     {
-        $normalizedUserId = User::normalizeId($userId);
-
-        return $this->users[$normalizedUserId];
+        return $this->users[$userId];
     }
 }

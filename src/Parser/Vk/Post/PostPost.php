@@ -53,7 +53,7 @@ class PostPost extends AbstractPost
         $content = isset($this->item['copy_history'][0]['text'])
             ? Helper::parseContent($this->item['copy_history'][0]['text'])
             : '';
-        $copyOwner = $this->users->getUserById(abs($this->item['copy_history'][0]['owner_id']));
+        $copyOwner = $this->users->getUserById($this->item['copy_history'][0]['owner_id']);
         $link = VkParser::getUrl() . "wall{$this->item['copy_history'][0]['from_id']}_{$this->item['copy_history'][0]['id']}";
 
         return new ParsedFeedItem($copyOwner->getName(), $link, $content);
