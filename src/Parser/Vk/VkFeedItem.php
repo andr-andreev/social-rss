@@ -84,7 +84,12 @@ class VkFeedItem implements FeedItemInterface
             $quote->setContent($newQuoteContent);
         }
 
-        $content = nl2br(trim($content . PHP_EOL . $attachments));
+        $geoPlace = '';
+        if (isset($this->item['geo']['place']['title'])) {
+            $geoPlace = 'Место: ' . $this->item['geo']['place']['title'];
+        }
+
+        $content = nl2br(trim($content . PHP_EOL . $attachments . PHP_EOL . $geoPlace));
 
         return ['content' => $content, 'quote' => $quote];
     }
