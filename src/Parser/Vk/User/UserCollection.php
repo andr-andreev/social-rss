@@ -15,7 +15,7 @@ class UserCollection extends \ArrayObject
     /**
      * @param User $user
      */
-    public function addUser(User $user)
+    public function addUser(User $user): void
     {
         $userId = $user->getId();
         $this->users[$userId] = $user;
@@ -23,16 +23,10 @@ class UserCollection extends \ArrayObject
 
     /**
      * @param $userId
-     * @return null|User
+     * @return User
      */
-    public function getUserById($userId): ?User
+    public function getUserById($userId): User
     {
-        $normalizedUserId = User::normalizeId($userId);
-
-        if (!isset($this->users[$normalizedUserId])) {
-            return null;
-        }
-
-        return $this->users[$normalizedUserId];
+        return $this->users[$userId];
     }
 }

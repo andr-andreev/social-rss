@@ -1,5 +1,5 @@
 ## php-social-rss
-Read your social networks timeline in different formats (RSS, JSON, YAML).
+Read your social networks timeline in different formats (RSS, JSON).
 
 PHP-social-rss fully parses API data including avatars, quotes, photos, videos, hashtags, user mentions and urls.
 
@@ -26,7 +26,6 @@ Screenshots made in [NewsBlur](https://newsblur.com/) RSS reader.
 ### Output formats
 * RSS 2.0
 * JSON
-* YAML
 
 ### Requirements
 * PHP >= 7.1
@@ -59,9 +58,8 @@ This script uses embedded JSON data from Instagram web page.
 #### VK
 1. Create an standalone application: https://vk.com/editapp?act=create
 2. Go to `Settings` tab
-3. Save `Application ID` and `Secure key` to `.env`
-4. Open https://oauth.vk.com/authorize?client_id={APP_ID}&scope=wall,friends,offline&redirect_uri=http://oauth.vk.com/blank.html&response_type=code and allow access to your account. You will be redirected to https://oauth.vk.com/blank.html#code={CODE}
-5. Open https://oauth.vk.com/access_token?client_id={APP_ID}&client_secret={API_SECRET}&code={CODE}&redirect_uri=http://oauth.vk.com/blank.html. Save `access_token` to `.env`
+3. Open https://oauth.vk.com/authorize?client_id={APP_ID}&scope=wall,friends,offline&redirect_uri=http://oauth.vk.com/blank.html&response_type=code and allow access to your account. You will be redirected to https://oauth.vk.com/blank.html#code={CODE}
+4. Open https://oauth.vk.com/access_token?client_id={APP_ID}&client_secret={API_SECRET}&code={CODE}&redirect_uri=http://oauth.vk.com/blank.html. Save `access_token` to `.env`
 
 ### Usage ###
 [Configure your webserver](https://www.slimframework.com/docs/start/web-servers.html), assuming `./web/` is public-accessible directory.
@@ -78,7 +76,7 @@ To specify another format:
 ```
 http://example.com/feed/{source}?output={format}
 ```
-where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss`, `json` or `yaml`
+where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss` or `json`
 
 ### Tests ###
 You can run the test suite:

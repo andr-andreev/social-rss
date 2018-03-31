@@ -20,7 +20,6 @@ class VkParser extends AbstractParser
      * VkParser constructor.
      *
      * @param $config
-     * @throws \VK\VKException
      */
     public function __construct(array $config)
     {
@@ -31,6 +30,7 @@ class VkParser extends AbstractParser
      * @param string $username
      * @return array
      * @throws \SocialRss\Exception\SocialRssException
+     * @throws \VK\Exceptions\VKClientException
      */
     public function getFeed(string $username): array
     {

@@ -37,10 +37,13 @@ class InstagramFeed extends BaseFeed
     protected function processFeed(array $items): array
     {
         return array_map(function ($item) {
-            $item['caption'] = $item['caption'] ?? '';
-            $item['location']['name'] = $item['location']['name'] ?? '';
-
-            return $item;
+            return array_merge($item['node'], [
+                'date' => $item['node']['taken_at_timestamp'],
+                'code' => $item['node']['shortcode'],
+                'display_src' => $item['node']['display_url'] ?? '',
+                'caption' => $item['node']['edge_media_to_caption']['edges'][0]['node']['text'] ?? '',
+                'location' => ['name' => $item['node']['location']['name'] ?? ''],
+            ]);
         }, $items);
     }
 
@@ -52,21 +55,16 @@ class InstagramFeed extends BaseFeed
     {
         $nodes = $this->feed['entry_data']['FeedPage'][0]['graphql']['user']['edge_web_feed_timeline']['edges'];
 
+        // filter nodes without content
         $filteredNodes = array_filter($nodes, function ($node) {
-            return isset($node['node']['shortcode']); // filter nodes without content
+            return in_array($node['node']['__typename'], [
+                InstagramFeedItem::TYPE_IMAGE,
+                InstagramFeedItem::TYPE_VIDEO,
+                InstagramFeedItem::TYPE_CAROUSEL,
+            ], true);
         });
 
-        return array_map(function ($node) {
-            $nodeData = $node['node'];
-            $newData = [
-                'date' => $nodeData['taken_at_timestamp'],
-                'code' => $nodeData['shortcode'],
-                'display_src' => $nodeData['display_url'] ?? '',
-                'caption' => $nodeData['edge_media_to_caption']['edges'][0]['node']['text'] ?? '',
-            ];
-
-            return array_merge($nodeData, $newData);
-        }, $filteredNodes);
+        return $this->processFeed($filteredNodes);
     }
 
     /**
@@ -75,9 +73,11 @@ class InstagramFeed extends BaseFeed
      */
     protected function processProfilePage(): array
     {
-        $items = $this->processFeed($this->feed['entry_data']['ProfilePage'][0]['user']['media']['nodes']);
+        $items = $this->processFeed(
+            $this->feed['entry_data']['ProfilePage'][0]['graphql']['user']['edge_owner_to_timeline_media']['edges']
+        );
 
-        $user = $this->feed['entry_data']['ProfilePage'][0]['user'];
+        $user = $this->feed['entry_data']['ProfilePage'][0]['graphql']['user'];
 
         return array_map(function ($item) use ($user) {
             $item['owner'] = $user;

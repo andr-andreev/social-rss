@@ -29,7 +29,7 @@ class TwitterParserTest extends TestCase
         $this->feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/twitter.json'), true);
     }
 
-    public function testParseFeed()
+    public function testParseFeed(): void
     {
         $parsedFeed = $this->parser->parseFeed($this->feed);
 
@@ -44,7 +44,6 @@ class TwitterParserTest extends TestCase
             $this->assertStringStartsWith('https://twitter.com/', $item->getLink());
             $this->assertNotEmpty($item->getContent());
             $this->assertNotEmpty($item->getDate());
-            $this->assertInternalType('array', $item->getTags());
             $this->assertNotEmpty($item->getAuthor()->getName());
             $this->assertStringStartsWith('https://pbs.twimg.com/profile_images/', $item->getAuthor()->getAvatar());
             $this->assertStringStartsWith('https://twitter.com/', $item->getAuthor()->getLink());

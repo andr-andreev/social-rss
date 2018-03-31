@@ -56,10 +56,10 @@ class Helper
         $out = $text;
 
         preg_match_all('/\\[(.*?)\\]/', $text, $matches);
-        foreach ($matches[0] as $key => $match) {
+        foreach ((array)$matches[0] as $key => $match) {
             $list = explode('|', $matches[1][$key]);
             if (count($list) === 2) {
-                list($userId, $tag) = $list;
+                [$userId, $tag] = $list;
                 $out = str_replace($match, Html::link(VkParser::getUrl() . $userId, $tag), $text);
             }
         }
@@ -108,10 +108,10 @@ class Helper
      */
     public static function makeVideoTrait(array $attachment): string
     {
-        $videoLink = VkParser::getUrl() . "video{$attachment['owner_id']}_{$attachment['vid']}";
+        $videoLink = VkParser::getUrl() . "video{$attachment['owner_id']}_{$attachment['id']}";
         $videoTitle = $attachment['title'];
 
-        $imagePreview = Html::img($attachment['image']);
+        $imagePreview = Html::img($attachment['photo_640'] ?? $attachment['photo_130']);
         $linkToVideo = Html::link($videoLink, $videoTitle);
         $videoDuration = gmdate('H:i:s', $attachment['duration']);
 

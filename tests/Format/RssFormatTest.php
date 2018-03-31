@@ -14,7 +14,7 @@ use SocialRss\Parser\ParserFactory;
  */
 class RssFormatTest extends TestCase
 {
-    public function testRssFormat()
+    public function testRssFormat(): void
     {
         $parser = (new ParserFactory())->create('twitter', []);
         $writer = (new FormatFactory())->create('rss');

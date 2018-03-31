@@ -150,7 +150,10 @@ class TwitterFeedItem implements FeedItemInterface
         );
     }
 
-    protected function getEntities()
+    /**
+     * @return array
+     */
+    protected function getEntities(): array
     {
         $tweetEntities = array_merge(
             $this->tweet['entities'],
@@ -168,6 +171,9 @@ class TwitterFeedItem implements FeedItemInterface
         return array_merge(...$processedEntities);
     }
 
+    /**
+     * @return array
+     */
     protected function getEntitiesMap(): array
     {
         return [

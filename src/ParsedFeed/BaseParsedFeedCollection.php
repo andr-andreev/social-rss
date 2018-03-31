@@ -28,7 +28,7 @@ class BaseParsedFeedCollection extends \ArrayObject
     /**
      * @param null|ParsedFeedItem $item
      */
-    public function addItem(?ParsedFeedItem $item)
+    public function addItem(?ParsedFeedItem $item): void
     {
         if (null === $item) {
             return;

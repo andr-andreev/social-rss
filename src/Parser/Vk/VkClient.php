@@ -6,7 +6,9 @@ namespace SocialRss\Parser\Vk;
 
 use SocialRss\Exception\SocialRssException;
 use SocialRss\Parser\Client\ClientInterface;
-use VK\VK;
+use VK\Client\VKApiClient;
+use VK\Exceptions\VKApiException;
+use VK\Exceptions\VKClientException;
 
 /**
  * Class VkClient
@@ -14,51 +16,44 @@ use VK\VK;
  */
 class VkClient implements ClientInterface
 {
-    const API_METHOD_HOME = 'newsfeed.get';
-    const API_METHOD_USER = 'wall.get';
-    const API_PARAMETERS = ['count' => 100, 'extended' => 1];
-
-    const CONFIG_DEFAULT = [
-        'app_id' => '',
-        'api_secret' => '',
-        'access_token' => '',
+    protected const API_PARAMETERS = [
+        'count' => 100,
+        'extended' => 1,
     ];
 
     protected $vkClient;
-
+    protected $token;
 
     /**
      * InstagramClient constructor.
      *
-     * @param $config
-     * @throws \VK\VKException
+     * @param array $config
      */
     public function __construct(array $config)
     {
-        $vkConfig = array_merge(self::CONFIG_DEFAULT, $config);
-        $this->vkClient = new VK($vkConfig['app_id'], $vkConfig['api_secret'], $vkConfig['access_token']);
+        $this->vkClient = new VKApiClient('5.73');
+        $this->token = $config['access_token'];
     }
 
     /**
      * @param $username
      * @return array
-     * @throws SocialRssException
+     * @throws VKClientException|SocialRssException
      */
     public function getFeed(string $username): array
     {
-        if (empty($username)) {
-            $method = self::API_METHOD_HOME;
-            $parameters = self::API_PARAMETERS;
-        } else {
-            $method = self::API_METHOD_USER;
-            $parameters = array_merge(self::API_PARAMETERS, ['domain' => $username]);
-        }
-        $socialFeed = $this->vkClient->api($method, $parameters);
+        try {
+            if (empty($username)) {
+                $socialFeed = $this->vkClient->newsfeed()->get($this->token, self::API_PARAMETERS);
+            } else {
+                $parameters = array_merge(self::API_PARAMETERS, ['domain' => $username]);
 
-        if (isset($socialFeed['error'])) {
-            throw new SocialRssException($socialFeed['error']['error_msg']);
+                $socialFeed = $this->vkClient->wall()->get($this->token, $parameters);
+            }
+        } catch (VKApiException $e) {
+            throw new SocialRssException($e->getMessage());
         }
 
-        return $socialFeed['response'];
+        return $socialFeed;
     }
 }

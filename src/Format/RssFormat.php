@@ -32,17 +32,19 @@ class RssFormat implements FormatInterface
         foreach ($data->getItems() as $item) {
             $entry = $feed->createEntry();
 
+            $author = $item->getAuthor();
+
             $entry->setTitle($item->getTitle());
             $entry->setLink($item->getLink());
             $entry->addAuthor([
-                'name' => $item->getAuthor()->getName(),
+                'name' => $author ? $author->getName() : '',
             ]);
             $entry->addCategories(array_map(function ($tag) {
                 return ['term' => $tag];
             }, $item->getTags()));
             $entry->setDateCreated($item->getDate());
             $entry->setDescription(Html::makeBlock(
-                Html::makeAvatar($item->getAuthor()->getAvatar(), $item->getAuthor()->getLink()),
+                $author ? Html::makeAvatar($author->getAvatar(), $author->getLink()) : '',
                 $this->makeContent($item)
             ));
 
@@ -63,9 +65,11 @@ class RssFormat implements FormatInterface
         if ($item->getQuote()) {
             $quote = $item->getQuote();
 
-            $quoteAuthorLink = Html::link($quote->getLink(), $quote->getTitle());
-            $quoteContent = $quote->getContent();
-            $out .= Html::blockquote("{$quoteAuthorLink}<br>{$quoteContent}");
+            if ($quote) {
+                $quoteAuthorLink = Html::link($quote->getLink(), $quote->getTitle());
+                $quoteContent = $quote->getContent();
+                $out .= Html::blockquote("{$quoteAuthorLink}<br>{$quoteContent}");
+            }
         }
 
         return $out;

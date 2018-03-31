@@ -13,11 +13,11 @@ use SocialRss\Parser\Client\ClientInterface;
  */
 class TwitterClient implements ClientInterface
 {
-    const API_URL_HOME = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
-    const API_URL_USER = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
-    const API_PARAMETERS = ['count' => 100, 'tweet_mode' => 'extended', 'exclude_replies' => 'true'];
+    protected const API_URL_HOME = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
+    protected const API_URL_USER = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
+    protected const API_PARAMETERS = ['count' => 100, 'tweet_mode' => 'extended', 'exclude_replies' => 'true'];
 
-    const CONFIG_DEFAULT = [
+    protected const CONFIG_DEFAULT = [
         'consumer_key' => '',
         'consumer_secret' => '',
         'oauth_access_token' => '',

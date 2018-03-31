@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
  */
 class FactoryMethodTest extends TestCase
 {
-    public function testCanCreateJsonFormat()
+    public function testCanCreateJsonFormat(): void
     {
         $factory = new FormatFactory();
         $result = $factory->create('json');
@@ -20,7 +20,7 @@ class FactoryMethodTest extends TestCase
         $this->assertInstanceOf(JsonFormat::class, $result);
     }
 
-    public function testCanCreateRssFormat()
+    public function testCanCreateRssFormat(): void
     {
         $factory = new FormatFactory();
         $result = $factory->create('rss');
@@ -28,15 +28,7 @@ class FactoryMethodTest extends TestCase
         $this->assertInstanceOf(RssFormat::class, $result);
     }
 
-    public function testCanCreateYamlFormat()
-    {
-        $factory = new FormatFactory();
-        $result = $factory->create('yaml');
-
-        $this->assertInstanceOf(YamlFormat::class, $result);
-    }
-
-    public function testUnknownType()
+    public function testUnknownType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

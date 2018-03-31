@@ -67,7 +67,7 @@ class ParsedFeedItem
     /**
      * @param string $title
      */
-    public function setTitle(string $title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
@@ -83,7 +83,7 @@ class ParsedFeedItem
     /**
      * @param string $link
      */
-    public function setLink(string $link)
+    public function setLink(string $link): void
     {
         $this->link = $link;
     }
@@ -99,7 +99,7 @@ class ParsedFeedItem
     /**
      * @param string $content
      */
-    public function setContent(string $content)
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }
@@ -115,7 +115,7 @@ class ParsedFeedItem
     /**
      * @param \DateTime $date
      */
-    public function setDate(\DateTime $date)
+    public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }
@@ -131,7 +131,7 @@ class ParsedFeedItem
     /**
      * @param array $tags
      */
-    public function setTags(array $tags)
+    public function setTags(array $tags): void
     {
         $this->tags = $tags;
     }
@@ -147,7 +147,7 @@ class ParsedFeedItem
     /**
      * @param mixed $author
      */
-    public function setAuthor(?ParsedFeedItemAuthor $author)
+    public function setAuthor(?ParsedFeedItemAuthor $author): void
     {
         $this->author = $author;
     }

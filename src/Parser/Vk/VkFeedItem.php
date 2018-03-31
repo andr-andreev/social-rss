@@ -7,6 +7,7 @@ namespace SocialRss\Parser\Vk;
 use SocialRss\Helper\Html;
 use SocialRss\ParsedFeed\ParsedFeedItem;
 use SocialRss\Parser\FeedItem\FeedItemInterface;
+use SocialRss\Parser\Vk\User\User;
 use SocialRss\Parser\Vk\User\UserCollection;
 
 /**
@@ -19,6 +20,9 @@ class VkFeedItem implements FeedItemInterface
 
     /** @var UserCollection */
     protected $users;
+
+    /** @var User|null */
+    protected $authorUser;
 
     protected $postParser;
 
@@ -33,6 +37,8 @@ class VkFeedItem implements FeedItemInterface
         $this->item = $item;
         $this->users = $users;
         $this->postParser = (new PostParser($item, $users))->createParser();
+
+        $this->authorUser = $this->getAuthorUser();
     }
 
     /**
@@ -71,28 +77,19 @@ class VkFeedItem implements FeedItemInterface
         $attachments = $attachmentParser->getAttachmentsOutput();
 
         if ($quote) {
-            // Swap user and repost contents
-            $tmp = $quote->getContent();
-            $quote->setContent($content);
-            $content = $tmp;
+            $quoteAttachmentParser = new AttachmentParser($this->item['copy_history'][0]);
+            $quoteAttachments = $quoteAttachmentParser->getAttachmentsOutput();
+
+            $newQuoteContent = nl2br(trim($quote->getContent() . PHP_EOL . $quoteAttachments));
+            $quote->setContent($newQuoteContent);
         }
 
-        $contentAddition = '';
-        $quoteContentAddition = '';
-
-        if (!empty($quote)) {
-            $quoteContentAddition = $attachments;
-        } else {
-            $contentAddition = $attachments;
+        $geoPlace = '';
+        if (isset($this->item['geo']['place']['title'])) {
+            $geoPlace = 'Место: ' . $this->item['geo']['place']['title'];
         }
 
-        $content .= PHP_EOL . $contentAddition;
-        $content = nl2br(trim($content));
-
-        if ($quote && $quote->getContent()) {
-            $quote->setContent($quote->getContent() . PHP_EOL . $quoteContentAddition);
-            $quote->setContent(nl2br(trim($quote->getContent())));
-        }
+        $content = nl2br(trim($content . PHP_EOL . $attachments . PHP_EOL . $geoPlace));
 
         return ['content' => $content, 'quote' => $quote];
     }
@@ -118,7 +115,7 @@ class VkFeedItem implements FeedItemInterface
      */
     public function getAuthorName(): string
     {
-        return $this->users->getUserById($this->item['source_id'])->getName();
+        return $this->authorUser ? $this->authorUser->getName() : '';
     }
 
     /**
@@ -126,7 +123,7 @@ class VkFeedItem implements FeedItemInterface
      */
     public function getAuthorAvatar()
     {
-        return $this->users->getUserById($this->item['source_id'])->getPhotoUrl();
+        return $this->authorUser ? $this->authorUser->getPhotoUrl() : '';
     }
 
     /**
@@ -134,14 +131,24 @@ class VkFeedItem implements FeedItemInterface
      */
     public function getAuthorLink(): string
     {
-        return VkParser::getUrl() . $this->users->getUserById($this->item['source_id'])->getScreenName();
+        return $this->authorUser ? VkParser::getUrl() . $this->authorUser->getScreenName() : '';
     }
 
     /**
      * @return null|ParsedFeedItem
      */
-    public function getQuote():?ParsedFeedItem
+    public function getQuote(): ?ParsedFeedItem
     {
         return $this->getTexts()['quote'];
+    }
+
+    /**
+     * @return null|User
+     */
+    protected function getAuthorUser(): ?User
+    {
+        $id = $this->item['source_id'] ?? $this->item['from_id'];
+
+        return $this->users->getUserById($id);
     }
 }

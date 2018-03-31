@@ -83,10 +83,12 @@ class Html
      */
     public static function makeBlock(string $avatar, string $content): string
     {
-        return "<div style='display: flex;'>" .
-            "<div style='width: 50px; margin-right: 10px;'>{$avatar}</div>" .
-            "<div>{$content}</div>" .
-            "</div>";
+        return <<<HTML
+<div style="display: flex; flex-direction: row-reverse;">
+    <div>{$content}</div>
+    <div style="max-width: 50px; margin-right: 10px;">{$avatar}</div>
+</div>
+HTML;
     }
 
     /**

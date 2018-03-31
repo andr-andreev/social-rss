@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 
 namespace SocialRss\Parser\Vk\Post;
@@ -8,18 +8,18 @@ use SocialRss\Helper\Html;
 use SocialRss\Parser\Vk\VkParser;
 
 /**
- * Class NotePost
+ * Class PostPost
  *
  * @package SocialRss\Parser\Vk\Post
  */
-class NotePost extends AbstractPost
+class WallPhotoPost extends AbstractPost
 {
     /**
-     * @return string
+     * @return mixed
      */
     public function getTitle(): string
     {
-        return $this->getUserName() . ': новая заметка';
+        return $this->getUserName() . ': фото на стене';
     }
 
     /**
@@ -31,16 +31,14 @@ class NotePost extends AbstractPost
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getDescription(): string
     {
-        $notes = $this->item['notes'];
+        $photos = array_map(function (array $photo) {
+            return Html::img($photo['photo_604']);
+        }, $this->item['photos']['items']);
 
-        $notes = array_map(function ($note) {
-            return 'Заметка: ' . Html::link($note['view_url'], $note['title']);
-        }, $notes);
-
-        return implode(PHP_EOL, $notes);
+        return implode(PHP_EOL, $photos);
     }
 }

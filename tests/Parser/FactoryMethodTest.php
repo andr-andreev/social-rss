@@ -16,7 +16,7 @@ use SocialRss\Parser\Vk\VkParser;
  */
 class FactoryMethodTest extends TestCase
 {
-    public function testCanCreateInstagramParser()
+    public function testCanCreateInstagramParser(): void
     {
         $factory = new ParserFactory();
         $result = $factory->create('instagram', []);
@@ -24,7 +24,7 @@ class FactoryMethodTest extends TestCase
         $this->assertInstanceOf(InstagramParser::class, $result);
     }
 
-    public function testCanCreateTwitterParser()
+    public function testCanCreateTwitterParser(): void
     {
         $factory = new ParserFactory();
         $result = $factory->create('twitter', []);
@@ -32,15 +32,15 @@ class FactoryMethodTest extends TestCase
         $this->assertInstanceOf(TwitterParser::class, $result);
     }
 
-    public function testCanCreateVkParser()
+    public function testCanCreateVkParser(): void
     {
         $factory = new ParserFactory();
-        $result = $factory->create('vk', []);
+        $result = $factory->create('vk', ['access_token' => '']);
 
         $this->assertInstanceOf(VkParser::class, $result);
     }
 
-    public function testUnknownType()
+    public function testUnknownType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

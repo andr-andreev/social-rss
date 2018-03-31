@@ -25,11 +25,10 @@ class LinkAttachment extends AbstractAttachment
 
         $description = $this->attachment['link']['description'];
 
-        if (isset($this->attachment['link']['image_src'])) {
-            $preview = $this->attachment['link']['image_src'];
-            $url = $this->attachment['link']['url'];
+        if (isset($this->attachment['link']['photo']['photo_604'])) {
+            $preview = $this->attachment['link']['photo']['photo_604'];
 
-            $description = Html::img($preview, $url) . PHP_EOL . $description;
+            $description = Html::img($preview, $linkUrl) . PHP_EOL . $description;
         }
 
         return PHP_EOL . 'Ссылка: ' . $link . PHP_EOL . $description;

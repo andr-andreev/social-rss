@@ -51,7 +51,7 @@ abstract class AbstractPost implements PostInterface
      */
     protected function getUser(): User
     {
-        $userId = $this->item['source_id'];
+        $userId = $this->item['source_id'] ?? $this->item['from_id'];
 
         return $this->users->getUserById($userId);
     }

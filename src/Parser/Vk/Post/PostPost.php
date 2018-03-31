@@ -28,7 +28,9 @@ class PostPost extends AbstractPost
      */
     public function getLink(): string
     {
-        return VkParser::getUrl() . "wall{$this->getUser()->getId()}_{$this->item['post_id']}";
+        $postId = $this->item['post_id'] ?? $this->item['id'];
+
+        return VkParser::getUrl() . "wall{$this->getUser()->getId()}_{$postId}";
     }
 
     /**
@@ -44,17 +46,17 @@ class PostPost extends AbstractPost
      */
     public function getQuote(): ?ParsedFeedItem
     {
-        if (!isset($this->item['copy_owner_id'])) {
+        if (!isset($this->item['copy_history'][0])) {
             return parent::getQuote();
         }
 
-        $content = isset($this->item['copy_text']) ? Helper::parseContent($this->item['copy_text']) : '';
-        $copyOwner = $this->users->getUserById($this->item['copy_owner_id']);
+        $content = isset($this->item['copy_history'][0]['text'])
+            ? Helper::parseContent($this->item['copy_history'][0]['text'])
+            : '';
+        $copyOwner = $this->users->getUserById($this->item['copy_history'][0]['owner_id']);
+        $link = VkParser::getUrl()
+            . "wall{$this->item['copy_history'][0]['from_id']}_{$this->item['copy_history'][0]['id']}";
 
-        return new ParsedFeedItem(
-            $copyOwner->getName(),
-            VkParser::getUrl() . $copyOwner->getScreenName(),
-            $content
-        );
+        return new ParsedFeedItem($copyOwner->getName(), $link, $content);
     }
 }

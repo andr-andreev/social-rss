@@ -71,31 +71,31 @@ class VkFeed extends BaseFeed
 
 
     /**
-     * @return array
+     * @return void
      * @internal param $feed
      */
-    public function populateUsers()
+    public function populateUsers(): void
     {
         $feed = $this->feed;
 
         // Get groups array
-        foreach ($feed['groups'] as $group) {
+        foreach ((array)$feed['groups'] as $group) {
             $this->users->addUser(
                 new User(
-                    $group['gid'],
+                    -$group['id'],
                     $group['screen_name'],
                     $group['name'],
-                    $group['photo'] ?: ''
+                    $group['photo_100'] ?: ''
                 )
             );
         }
 
-        foreach ($feed['profiles'] as $profile) {
+        foreach ((array)$feed['profiles'] as $profile) {
             $user = new User(
-                $profile['uid'],
+                $profile['id'],
                 $profile['screen_name'] ?: '',
                 "{$profile['first_name']} {$profile['last_name']}",
-                $profile['photo']
+                $profile['photo_100']
             );
             $this->users->addUser($user);
         }
