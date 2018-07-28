@@ -29,7 +29,7 @@ class SymbolEntity extends AbstractEntity
     {
         $symbol = $this->item['text'];
         $quotedSymbol = preg_quote($symbol, '/');
-        $pattern = '/\$' . $quotedSymbol . '\b/m';
+        $pattern = '/\$' . $quotedSymbol . '\b/mi';
 
         return preg_replace_callback($pattern, function ($matches) use ($symbol) {
             $href = TwitterParser::getUrl() . "search?q=%24{$symbol}";

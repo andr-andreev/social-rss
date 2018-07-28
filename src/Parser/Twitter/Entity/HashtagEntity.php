@@ -29,7 +29,7 @@ class HashtagEntity extends AbstractEntity
     {
         $hashtag = $this->item['text'];
         $quotedHashtag = preg_quote($hashtag, '/');
-        $pattern = '/#' . $quotedHashtag . '\b/m';
+        $pattern = '/#' . $quotedHashtag . '\b/mi';
 
         return preg_replace_callback($pattern, function ($matches) use ($hashtag) {
             $href = TwitterParser::getUrl() . "hashtag/{$hashtag}";

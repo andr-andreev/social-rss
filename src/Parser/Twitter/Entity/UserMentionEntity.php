@@ -29,7 +29,7 @@ class UserMentionEntity extends AbstractEntity
     {
         $userName = $this->item['screen_name'];
         $quotedUserName = preg_quote($userName, '/');
-        $pattern = '/@' . $quotedUserName . '\b/m';
+        $pattern = '/@' . $quotedUserName . '\b/mi';
 
         return preg_replace_callback($pattern, function ($matches) use ($userName) {
             $href = TwitterParser::getUrl() . $userName;
