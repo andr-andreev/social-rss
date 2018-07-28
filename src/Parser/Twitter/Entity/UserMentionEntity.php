@@ -27,10 +27,15 @@ class UserMentionEntity extends AbstractEntity
      */
     public function getParsedContent(): string
     {
-        return $this->replaceContent(
-            $this->text,
-            "@{$this->item['screen_name']}",
-            Html::link(TwitterParser::getUrl() . $this->item['screen_name'], "@{$this->item['screen_name']}")
-        );
+        $userName = $this->item['screen_name'];
+        $quotedUserName = preg_quote($userName, '/');
+        $pattern = '/@' . $quotedUserName . '\b/m';
+
+        return preg_replace_callback($pattern, function ($matches) use ($userName) {
+            $href = TwitterParser::getUrl() . $userName;
+            $text = $matches[0];
+
+            return Html::link($href, $text);
+        }, $this->text);
     }
 }
