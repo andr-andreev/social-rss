@@ -32,7 +32,7 @@ class Html
      */
     public static function video(string $video, string $poster = ''): string
     {
-        return "<video src='$video' poster='$poster' controls></video>";
+        return "<video src='$video' poster='$poster' controls autoplay muted></video>";
     }
 
     /**
