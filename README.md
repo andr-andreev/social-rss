@@ -13,13 +13,13 @@ You can read your own timeline as well as user's timelines.
 
 ### Supported networks / screenshots
 #### Instagram ([source post](https://www.instagram.com/p/BKtyKb8BNSW/))
-![Instagram](screenshots/instagram.png?raw=true "Instagram")
+![Instagram](docs/screenshots/instagram.png?raw=true "Instagram")
 
 #### Twitter ([source post](https://twitter.com/TwitterData/status/767372163431018496))
-![Twitter](screenshots/twitter.png?raw=true "Twitter")
+![Twitter](docs/screenshots/twitter.png?raw=true "Twitter")
 
 #### VK ([source post](https://vk.com/wall-32295218_365558))
-![VK](screenshots/vk.png?raw=true "VK")
+![VK](docs/screenshots/vk.png?raw=true "VK")
 
 Screenshots made in [NewsBlur](https://newsblur.com/) RSS reader.
 

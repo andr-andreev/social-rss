@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace SocialRssApp\Handler;
+namespace SocialRss\Handler;
 
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface as Response;
