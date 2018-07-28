@@ -83,7 +83,7 @@ class VkFeed extends BaseFeed
             $this->users->addUser(
                 new User(
                     -$group['id'],
-                    $group['screen_name'],
+                    $group['screen_name'] ?? '',
                     $group['name'],
                     $group['photo_100'] ?: ''
                 )
@@ -93,7 +93,7 @@ class VkFeed extends BaseFeed
         foreach ((array)$feed['profiles'] as $profile) {
             $user = new User(
                 $profile['id'],
-                $profile['screen_name'] ?: '',
+                $profile['screen_name'] ?? '',
                 "{$profile['first_name']} {$profile['last_name']}",
                 $profile['photo_100']
             );
