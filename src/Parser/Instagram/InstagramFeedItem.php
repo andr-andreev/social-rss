@@ -51,14 +51,14 @@ class InstagramFeedItem implements FeedItemInterface
         // Match #hashtags
         $caption = Html::parseByPattern(
             '#',
-            '<a href="https://www.instagram.com/explore/tags/{{string}}/">#{{string}}</a>',
+            'https://www.instagram.com/explore/tags/{{string}}/',
             $caption
         );
 
         // Match @mentions
         $caption = Html::parseByPattern(
             '@',
-            '<a href="https://www.instagram.com/{{string}}/">@{{string}}</a>',
+            'https://www.instagram.com/{{string}}/',
             $caption
         );
 

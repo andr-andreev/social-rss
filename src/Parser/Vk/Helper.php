@@ -33,16 +33,16 @@ class Helper
     /**
      * Match URLs
      *
-     * @param string $text
+     * @param string $subject
      * @return string
      */
-    public static function makeLinkableUrls(string $text): string
+    public static function makeLinkableUrls(string $subject): string
     {
-        return preg_replace(
-            '!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i',
-            '<a href="$1">$1</a>',
-            $text
-        );
+        return preg_replace_callback('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', function ($matches) {
+            $url = $matches[0];
+
+            return Html::link($url, $url);
+        }, $subject);
     }
 
     /**
@@ -77,7 +77,7 @@ class Helper
     {
         return Html::parseByPattern(
             '#',
-            '<a href="https://vk.com/feed?section=search&q=%23{{string}}">#{{string}}</a>',
+            'https://vk.com/feed?section=search&q=%23{{string}}',
             $text
         );
     }

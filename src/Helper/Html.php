@@ -42,7 +42,7 @@ class Html
      */
     public static function link(string $href, string $text): string
     {
-        return "<a href='{$href}'>$text</a>";
+        return "<a href='{$href}' rel='noopener noreferrer' referrerpolicy='no-referrer'>$text</a>";
     }
 
 
@@ -60,18 +60,25 @@ class Html
     }
 
     /**
-     * @param $pattern
+     * @param $startsWith
      * @param $template
-     * @param $string
+     * @param $subject
      * @return mixed
      */
-    public static function parseByPattern(string $pattern, string $template, string $string): string
+    public static function parseByPattern(string $startsWith, string $template, string $subject): string
     {
-        $regex = str_replace('{{pattern}}', $pattern, self::$regex);
+        if (empty($subject)) {
+            return '';
+        }
 
-        $replacement = str_replace('{{string}}', '\2', $template);
+        $regex = str_replace('{{pattern}}', $startsWith, self::$regex);
 
-        $result = preg_replace($regex, $replacement, $string);
+        $result = preg_replace_callback($regex, function ($matches) use ($template) {
+            $href = str_replace('{{string}}', $matches[2], $template);
+            $text = $matches[0];
+
+            return Html::link($href, $text);
+        }, $subject);
 
         return $result ?: '';
     }
