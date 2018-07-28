@@ -12,7 +12,6 @@ use SocialRss\Exception\SocialRssException;
 use SocialRss\Format\FormatFactory;
 use SocialRss\Parser\ParserFactory;
 
-
 class SiteController
 {
     /** @var array */
