@@ -12,7 +12,6 @@
   "require": {
     "php": "^7.1",
     "ext-pcre": "*",
-    "guzzlehttp/guzzle": "~6.0",
     "j7mbo/twitter-api-php": "1.*",
     "monolog/monolog": "^1.23",
     "slim/php-view": "^2.2",

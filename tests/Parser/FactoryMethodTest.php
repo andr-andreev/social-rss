@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace SocialRss\Parser;
 
 use PHPUnit\Framework\TestCase;
-use SocialRss\Parser\Instagram\InstagramParser;
 use SocialRss\Parser\Twitter\TwitterParser;
 use SocialRss\Parser\Vk\VkParser;
 
@@ -16,14 +15,6 @@ use SocialRss\Parser\Vk\VkParser;
  */
 class FactoryMethodTest extends TestCase
 {
-    public function testCanCreateInstagramParser(): void
-    {
-        $factory = new ParserFactory();
-        $result = $factory->create('instagram', []);
-
-        $this->assertInstanceOf(InstagramParser::class, $result);
-    }
-
     public function testCanCreateTwitterParser(): void
     {
         $factory = new ParserFactory();
