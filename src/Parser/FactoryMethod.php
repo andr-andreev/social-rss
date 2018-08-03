@@ -11,7 +11,6 @@ namespace SocialRss\Parser;
 abstract class FactoryMethod
 {
     protected const PARSERS = [
-        'instagram' => Instagram\InstagramParser::class,
         'twitter' => Twitter\TwitterParser::class,
         'vk' => Vk\VkParser::class,
     ];

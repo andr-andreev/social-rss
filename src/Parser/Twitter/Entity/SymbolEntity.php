@@ -27,10 +27,15 @@ class SymbolEntity extends AbstractEntity
      */
     public function getParsedContent(): string
     {
-        return $this->replaceContent(
-            $this->text,
-            '$' . $this->item['text'],
-            Html::link(TwitterParser::getUrl() . "search?q=%24{$this->item['text']}", '$' . $this->item['text'])
-        );
+        $symbol = $this->item['text'];
+        $quotedSymbol = preg_quote($symbol, '/');
+        $pattern = '/\$' . $quotedSymbol . '\b/mi';
+
+        return preg_replace_callback($pattern, function ($matches) use ($symbol) {
+            $href = TwitterParser::getUrl() . "search?q=%24{$symbol}";
+            $text = $matches[0];
+
+            return Html::link($href, $text);
+        }, $this->text);
     }
 }

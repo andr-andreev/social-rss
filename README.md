@@ -12,14 +12,11 @@ You can read your own timeline as well as user's timelines.
 [![Test Coverage](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/coverage.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss/coverage)
 
 ### Supported networks / screenshots
-#### Instagram ([source post](https://www.instagram.com/p/BKtyKb8BNSW/))
-![Instagram](screenshots/instagram.png?raw=true "Instagram")
-
 #### Twitter ([source post](https://twitter.com/TwitterData/status/767372163431018496))
-![Twitter](screenshots/twitter.png?raw=true "Twitter")
+![Twitter](docs/screenshots/twitter.png?raw=true "Twitter")
 
 #### VK ([source post](https://vk.com/wall-32295218_365558))
-![VK](screenshots/vk.png?raw=true "VK")
+![VK](docs/screenshots/vk.png?raw=true "VK")
 
 Screenshots made in [NewsBlur](https://newsblur.com/) RSS reader.
 
@@ -43,12 +40,6 @@ Copy `.env.example` to `.env` and configure it as seen below.
 ```bash
 $ cp .env.example .env
 ```
-#### Instagram
-Due to [new Instagram API update](https://www.instagram.com/developer/changelog/) there is no ability to get users feed via the API (deprecation of `/users/self/feed` endpoint).
-
-This script uses embedded JSON data from Instagram web page.
-
-1. Save Instagram account `Username` and `Password` to `.env`
 
 #### Twitter
 1. Create an application: https://apps.twitter.com/app/new
@@ -76,7 +67,7 @@ To specify another format:
 ```
 http://example.com/feed/{source}?output={format}
 ```
-where `{source}` is `instagram`, `twitter` or `vk` and `{format}` is `rss` or `json`
+where `{source}` is `twitter` or `vk` and `{format}` is `rss` or `json`
 
 ### Tests ###
 You can run the test suite:

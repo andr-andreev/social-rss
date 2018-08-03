@@ -25,7 +25,7 @@ class VkClient implements ClientInterface
     protected $token;
 
     /**
-     * InstagramClient constructor.
+     * VkClient constructor.
      *
      * @param array $config
      */
