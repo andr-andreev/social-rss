@@ -30,7 +30,7 @@ class BaseParsedFeedCollection extends \ArrayObject
      */
     public function addItem(?ParsedFeedItem $item): void
     {
-        if (null === $item) {
+        if ($item === null) {
             return;
         }
 
