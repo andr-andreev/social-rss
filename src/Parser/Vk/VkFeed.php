@@ -54,9 +54,7 @@ class VkFeed extends BaseFeed
      */
     protected function processFeed(array $feed): array
     {
-        $items = array_filter($feed['wall'], function ($item) {
-            return is_array($item);
-        });
+        $items = array_filter($feed['wall'], 'is_array');
 
         $processedItems = array_map(function ($item) {
             $item['type'] = $item['post_type'];
