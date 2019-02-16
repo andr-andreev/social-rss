@@ -3,18 +3,8 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
-/**
- * Class FormatFactory
- *
- * @package SocialRss\Format
- */
 class FormatFactory extends FactoryMethod
 {
-    /**
-     * @param string $type
-     * @return FormatInterface
-     * @throws \InvalidArgumentException
-     */
     protected function createFormat(string $type): FormatInterface
     {
         $map = parent::FORMATS;

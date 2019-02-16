@@ -7,32 +7,18 @@ namespace SocialRss\Parser\Vk\Post;
 use SocialRss\Helper\Html;
 use SocialRss\Parser\Vk\VkParser;
 
-/**
- * Class FriendPost
- *
- * @package SocialRss\Parser\Vk\Post
- */
-class FriendPost extends AbstractPost
+class FriendPost extends AbstractVkPost
 {
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->getUserName() . ': новые друзья';
     }
 
-    /**
-     * @return string
-     */
     public function getLink(): string
     {
         return VkParser::getUrl() . "friends?id={$this->getUser()->getId()}";
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         if (!isset($this->item['friends'])) {

@@ -4,13 +4,8 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
-use SocialRss\ParsedFeed\BaseParsedFeedCollection;
+use SocialRss\Data\FeedData;
 
-/**
- * Class JsonFormat
- *
- * @package SocialRss\Format
- */
 class JsonFormat implements FormatInterface
 {
 

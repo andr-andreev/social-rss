@@ -20,11 +20,6 @@ use SocialRss\Parser\Vk\Attachment\PostedPhotoAttachment;
 use SocialRss\Parser\Vk\Attachment\UnknownAttachment;
 use SocialRss\Parser\Vk\Attachment\VideoAttachment;
 
-/**
- * Class AttachmentParser
- *
- * @package SocialRss\Parser\Vk
- */
 class AttachmentParser
 {
     protected $item;
@@ -55,9 +50,6 @@ class AttachmentParser
         $this->item = $item;
     }
 
-    /**
-     * @return string
-     */
     public function getAttachmentsOutput(): string
     {
         if (!isset($this->item['attachments'])) {
@@ -73,18 +65,13 @@ class AttachmentParser
         return implode(PHP_EOL, $attachments);
     }
 
-    /**
-     * @param $attachment
-     * @return AttachmentInterface
-     */
-    protected function createParser($attachment): AttachmentInterface
+    protected function createParser(array $attachment): AttachmentInterface
     {
         $map = $this->attachmentsMap;
         $type = $attachment['type'];
 
         $className = $map[$type] ?? UnknownAttachment::class;
 
-        /** @var Attachment\AttachmentInterface $attachmentParser */
         return new $className($attachment);
     }
 }

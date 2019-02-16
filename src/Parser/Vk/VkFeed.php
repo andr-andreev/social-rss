@@ -8,18 +8,10 @@ use SocialRss\Parser\Feed\BaseFeed;
 use SocialRss\Parser\Vk\User\User;
 use SocialRss\Parser\Vk\User\UserCollection;
 
-/**
- * Class VkFeed
- * @package SocialRss\Parser\Vk
- */
 class VkFeed extends BaseFeed
 {
     protected $users;
 
-    /**
-     * VkFeed constructor.
-     * @param $feed
-     */
     public function __construct(array $feed)
     {
         parent::__construct($feed);
@@ -28,9 +20,6 @@ class VkFeed extends BaseFeed
         $this->populateUsers();
     }
 
-    /**
-     * @return array
-     */
     public function getItems(): array
     {
         $feed = $this->feed;
@@ -48,10 +37,6 @@ class VkFeed extends BaseFeed
         }, $feedItems);
     }
 
-    /**
-     * @param $feed
-     * @return array
-     */
     protected function processFeed(array $feed): array
     {
         $items = array_filter($feed['wall'], 'is_array');
@@ -67,11 +52,6 @@ class VkFeed extends BaseFeed
         return array_merge($feed, ['items' => $processedItems]);
     }
 
-
-    /**
-     * @return void
-     * @internal param $feed
-     */
     public function populateUsers(): void
     {
         $feed = $this->feed;

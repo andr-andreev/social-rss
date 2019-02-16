@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Twitter\Entity;
 
-/**
- * Class AbstractEntity
- * @package SocialRss\Parser\Twitter\Entity
- */
 abstract class AbstractEntity implements EntityInterface
 {
     /**
@@ -35,21 +31,11 @@ abstract class AbstractEntity implements EntityInterface
         $this->text = $text;
     }
 
-    /**
-     * @param array $item
-     * @return string
-     */
     public static function getEntityType(array $item): string
     {
         return $item['entity_type'];
     }
 
-    /**
-     * @param $text
-     * @param $search
-     * @param $replace
-     * @return string
-     */
     protected function replaceContent(string $text, string $search, string $replace): string
     {
         $quotedSearch = preg_quote($search, '/');

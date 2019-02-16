@@ -4,16 +4,8 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser;
 
-use SocialRss\ParsedFeed\BaseParsedFeedCollection;
-use SocialRss\ParsedFeed\ParsedFeedItem;
-use SocialRss\ParsedFeed\ParsedFeedItemAuthor;
-use SocialRss\Parser\Feed\BaseFeed;
-use SocialRss\Parser\Feed\FeedInterface;
+use SocialRss\Data\FeedData;
 
-/**
- * Class AbstractParser
- * @package SocialRss\Parser
- */
 abstract class AbstractParser implements ParserInterface
 {
     /**

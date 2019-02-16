@@ -4,16 +4,11 @@ declare(strict_types = 1);
 
 namespace SocialRss\Format;
 
+use SocialRss\Data\FeedData;
+use SocialRss\Data\PostData;
 use SocialRss\Helper\Html;
-use SocialRss\ParsedFeed\BaseParsedFeedCollection;
-use SocialRss\ParsedFeed\ParsedFeedItem;
 use Zend\Feed\Writer\Feed;
 
-/**
- * Class RssFormat
- *
- * @package SocialRss\Format
- */
 class RssFormat implements FormatInterface
 {
     /**

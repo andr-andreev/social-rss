@@ -26,10 +26,6 @@ class VkFeedItem implements FeedItemInterface
 
     protected $postParser;
 
-    /**
-     * VkFeedItem constructor.
-     * @param array $item
-     */
     public function __construct(array $item)
     {
         $users = $item['profiles'];
@@ -41,25 +37,16 @@ class VkFeedItem implements FeedItemInterface
         $this->authorUser = $this->getAuthorUser();
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->postParser->getTitle();
     }
 
-    /**
-     * @return string
-     */
     public function getLink(): string
     {
         return $this->postParser->getLink();
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->getTexts()['content'];
@@ -94,25 +81,16 @@ class VkFeedItem implements FeedItemInterface
         return ['content' => $content, 'quote' => $quote];
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getDate(): \DateTime
     {
         return \DateTime::createFromFormat('U', (string)$this->item['date']);
     }
 
-    /**
-     * @return array
-     */
     public function getTags(): array
     {
         return Html::getParsedByPattern('#{string}', $this->getContent());
     }
 
-    /**
-     * @return string
-     */
     public function getAuthorName(): string
     {
         return $this->authorUser ? $this->authorUser->getName() : '';
@@ -126,9 +104,6 @@ class VkFeedItem implements FeedItemInterface
         return $this->authorUser ? $this->authorUser->getPhotoUrl() : '';
     }
 
-    /**
-     * @return string
-     */
     public function getAuthorLink(): string
     {
         return $this->authorUser ? VkParser::getUrl() . $this->authorUser->getScreenName() : '';
@@ -142,9 +117,6 @@ class VkFeedItem implements FeedItemInterface
         return $this->getTexts()['quote'];
     }
 
-    /**
-     * @return null|User
-     */
     protected function getAuthorUser(): ?User
     {
         $id = $this->item['source_id'] ?? $this->item['from_id'];

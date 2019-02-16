@@ -3,22 +3,15 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Twitter;
 
+use SocialRss\Data\PostData;
 use SocialRss\Parser\AbstractParser;
-use SocialRss\Parser\FeedItem\FeedItemInterface;
+use SocialRss\Parser\Feed\FeedInterface;
 
-/**
- * Class TwitterParser
- *
- * @package SocialRss\Parser\Twitter
- */
 class TwitterParser extends AbstractParser
 {
     protected $twitterClient;
 
     /**
-     * TwitterParser constructor.
-     *
-     * @param $config
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      */
@@ -28,8 +21,6 @@ class TwitterParser extends AbstractParser
     }
 
     /**
-     * @param string $username
-     * @return array
      * @throws \SocialRss\Exception\SocialRssException
      */
     public function getFeed(string $username): array
@@ -37,17 +28,11 @@ class TwitterParser extends AbstractParser
         return $this->twitterClient->getFeed($username);
     }
 
-    /**
-     * @return string
-     */
     public static function getName(): string
     {
         return 'Twitter';
     }
 
-    /**
-     * @return string
-     */
     public static function getUrl(): string
     {
         return 'https://twitter.com/';

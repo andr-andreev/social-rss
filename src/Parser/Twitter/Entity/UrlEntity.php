@@ -6,24 +6,13 @@ namespace SocialRss\Parser\Twitter\Entity;
 
 use SocialRss\Helper\Html;
 
-/**
- * Class UrlsEntity
- * @package SocialRss\Parser\Twitter\Entity
- */
 class UrlEntity extends AbstractEntity
 {
-    /**
-     * @param array $item
-     * @return bool
-     */
     public static function isApplicable(array $item): bool
     {
         return static::getEntityType($item) === 'urls';
     }
-    
-    /**
-     * @return string
-     */
+
     public function getParsedContent(): string
     {
         return $this->replaceContent(

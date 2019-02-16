@@ -7,32 +7,18 @@ namespace SocialRss\Parser\Vk\Post;
 use SocialRss\Parser\Vk\Helper;
 use SocialRss\Parser\Vk\VkParser;
 
-/**
- * Class VideoPost
- *
- * @package SocialRss\Parser\Vk\Post
- */
-class VideoPost extends AbstractPost
+class VideoPost extends AbstractVkPost
 {
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->getUserName() . ': новые видеозаписи';
     }
 
-    /**
-     * @return string
-     */
     public function getLink(): string
     {
         return VkParser::getUrl() . "videos{$this->getUser()->getId()}";
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         $videos = $this->item['video'];

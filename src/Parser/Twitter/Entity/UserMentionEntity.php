@@ -7,24 +7,13 @@ namespace SocialRss\Parser\Twitter\Entity;
 use SocialRss\Helper\Html;
 use SocialRss\Parser\Twitter\TwitterParser;
 
-/**
- * Class UserMentionEntity
- * @package SocialRss\Parser\Twitter\Entity
- */
 class UserMentionEntity extends AbstractEntity
 {
-    /**
-     * @param array $item
-     * @return bool
-     */
     public static function isApplicable(array $item): bool
     {
         return static::getEntityType($item) === 'user_mentions';
     }
 
-    /**
-     * @return string
-     */
     public function getParsedContent(): string
     {
         $userName = $this->item['screen_name'];

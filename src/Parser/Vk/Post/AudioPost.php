@@ -6,32 +6,18 @@ namespace SocialRss\Parser\Vk\Post;
 
 use SocialRss\Parser\Vk\VkParser;
 
-/**
- * Class AudioPost
- *
- * @package SocialRss\Parser\Vk\Post
- */
-class AudioPost extends AbstractPost
+class AudioPost extends AbstractVkPost
 {
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->getUserName() . ': новые аудиозаписи';
     }
 
-    /**
-     * @return string
-     */
     public function getLink(): string
     {
         return VkParser::getUrl() . "audios{$this->getUser()->getId()}";
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         $audios = $this->item['audio']['items'];
