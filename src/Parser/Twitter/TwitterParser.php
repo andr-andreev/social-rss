@@ -39,6 +39,10 @@ class TwitterParser extends AbstractParser
         return 'https://twitter.com/';
     }
 
+    public function getFeedParser(array $feed): FeedInterface
+    {
+        return new TwitterFeed($feed);
+    }
 
     public function parsePost(array $item): PostData
     {
