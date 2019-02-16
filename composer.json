@@ -17,6 +17,7 @@
     "monolog/monolog": "^1.23",
     "slim/php-view": "^2.2",
     "slim/slim": "^3.0",
+    "spatie/data-transfer-object": "^1.6",
     "vkcom/vk-php-sdk": "^5.0",
     "zendframework/zend-feed": "^2.7"
   },
