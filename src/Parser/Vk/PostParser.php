@@ -35,10 +35,7 @@ class PostParser
         $this->users = $users;
     }
 
-    /**
-     * @return PostInterface
-     */
-    public function createParser(): PostInterface
+    public function createParser(): VkPostInterface
     {
         $map = $this->typeMap;
         $type = $this->item['type'] ?? $this->item['post_type'];
