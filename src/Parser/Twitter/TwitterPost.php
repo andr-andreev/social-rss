@@ -21,7 +21,10 @@ use SocialRss\Parser\Twitter\Entity\UserMentionEntity;
  */
 class TwitterFeedItem implements FeedItemInterface
 {
+    /** @var array */
     protected $tweet;
+
+    /** @var array */
     protected $originalTweet;
 
     public function __construct(array $item)

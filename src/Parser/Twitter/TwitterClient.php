@@ -20,6 +20,7 @@ class TwitterClient implements ClientInterface
         'oauth_access_token_secret' => '',
     ];
 
+    /** @var \TwitterAPIExchange */
     protected $twitterClient;
 
     public function __construct(array $config)

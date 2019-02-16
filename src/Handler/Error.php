@@ -9,9 +9,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 final class Error extends \Slim\Handlers\Error
 {
-    /**
-     * @var Logger
-     */
+    /** @var Logger */
     protected $logger;
 
     public function __construct(Logger $logger, bool $displayErrorDetails)

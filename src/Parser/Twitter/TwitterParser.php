@@ -9,6 +9,7 @@ use SocialRss\Parser\Feed\FeedInterface;
 
 class TwitterParser extends AbstractParser
 {
+    /** @var TwitterClient */
     protected $twitterClient;
 
     /**

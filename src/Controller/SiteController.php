@@ -8,6 +8,7 @@ namespace SocialRss\Controller;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Views\PhpRenderer;
 use SocialRss\Exception\SocialRssException;
 use SocialRss\Format\FormatFactory;
 use SocialRss\Parser\ParserFactory;
@@ -23,6 +24,7 @@ class SiteController
     /** @var FormatFactory */
     protected $formatFactory;
 
+    /** @var PhpRenderer */
     protected $view;
 
     public function __construct(ContainerInterface $container)

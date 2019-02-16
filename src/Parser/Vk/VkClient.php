@@ -17,7 +17,10 @@ class VkClient implements ClientInterface
         'extended' => 1,
     ];
 
+    /** @var VKApiClient */
     protected $vkClient;
+
+    /** @var string */
     protected $token;
 
     public function __construct(array $config)

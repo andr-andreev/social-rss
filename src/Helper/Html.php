@@ -6,6 +6,7 @@ namespace SocialRss\Helper;
 
 class Html
 {
+    /** @var string */
     private static $regex = '/(^|){{pattern}}(\w*[[:alnum:]\@\.]+\w*)/u';
 
     /**

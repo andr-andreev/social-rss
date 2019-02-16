@@ -10,6 +10,7 @@ use SocialRss\Parser\Vk\User\UserCollection;
 
 class VkFeed extends BaseFeed
 {
+    /** @var UserCollection */
     protected $users;
 
     public function __construct(array $feed)

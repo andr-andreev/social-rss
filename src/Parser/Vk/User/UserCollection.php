@@ -6,6 +6,7 @@ namespace SocialRss\Parser\Vk\User;
 
 class UserCollection extends \ArrayObject
 {
+    /** @var array */
     protected $users = [];
 
     public function addUser(User $user): void

@@ -10,7 +10,10 @@ use SocialRss\Parser\Vk\User\UserCollection;
 
 abstract class AbstractVkPost implements VkPostInterface
 {
+    /** @var array */
     protected $item;
+
+    /** @var UserCollection */
     public $users;
 
     public function __construct(array $item, UserCollection $users)

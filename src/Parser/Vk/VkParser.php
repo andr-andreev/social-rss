@@ -9,6 +9,7 @@ use SocialRss\Parser\Feed\FeedInterface;
 
 class VkParser extends AbstractParser
 {
+    /** @var VkClient */
     protected $vkClient;
 
     public function __construct(array $config)

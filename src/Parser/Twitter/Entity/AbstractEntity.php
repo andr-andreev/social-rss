@@ -6,18 +6,13 @@ namespace SocialRss\Parser\Twitter\Entity;
 
 abstract class AbstractEntity implements EntityInterface
 {
-    /**
-     * @var
-     */
+    /** @var array */
     protected $item;
-    /**
-     * @var
-     */
+
+    /** @var string */
     protected $text;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected static $applicableTypes = [];
 
     /**

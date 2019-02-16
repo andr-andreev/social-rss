@@ -12,6 +12,7 @@ use SocialRss\Parser\Vk\User\UserCollection;
 
 class VkPost implements PostInterface
 {
+    /** @var array */
     protected $item;
 
     /** @var UserCollection */
@@ -20,6 +21,7 @@ class VkPost implements PostInterface
     /** @var User|null */
     protected $authorUser;
 
+    /** @var PostInterface */
     protected $postParser;
 
     public function __construct(array $item)

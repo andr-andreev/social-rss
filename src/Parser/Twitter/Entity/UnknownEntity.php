@@ -6,9 +6,7 @@ namespace SocialRss\Parser\Twitter\Entity;
 
 class UnknownEntity extends AbstractEntity
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected static $knownTypes = [
         'hashtags',
         'user_mentions',

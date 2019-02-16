@@ -10,9 +10,13 @@ use SocialRss\Parser\Vk\User\UserCollection;
 
 class PostParser
 {
+    /** @var array */
     protected $item;
+
+    /** @var UserCollection */
     protected $users;
 
+    /** @var array */
     protected $typeMap = [
         'post' => Post\PostPost::class,
         'copy' => Post\CopyPost::class,

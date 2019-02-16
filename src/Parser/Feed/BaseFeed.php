@@ -10,6 +10,7 @@ namespace SocialRss\Parser\Feed;
  */
 class BaseFeed implements FeedInterface
 {
+    /** @var array */
     protected $feed;
 
     public function __construct(array $feed)

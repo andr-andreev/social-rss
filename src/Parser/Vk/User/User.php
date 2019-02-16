@@ -6,9 +6,16 @@ namespace SocialRss\Parser\Vk\User;
 
 class User
 {
+    /** @var int */
     protected $id;
+
+    /** @var string */
     protected $screenName;
+
+    /** @var string */
     protected $name;
+
+    /** @var string */
     protected $photoUrl;
 
     public function __construct(int $id, string $screenName, string $name, string $photoUrl)
