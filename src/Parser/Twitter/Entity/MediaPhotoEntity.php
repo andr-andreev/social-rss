@@ -17,6 +17,6 @@ class MediaPhotoEntity extends AbstractEntity
     {
         return $this->replaceContent($this->text, $this->item['url'], '') .
             PHP_EOL .
-            Html::img($this->item['media_url_https'], $this->item['expanded_url']);
+            Html::img($this->item['media_url_https'], $this->item['media_url_https']);
     }
 }
