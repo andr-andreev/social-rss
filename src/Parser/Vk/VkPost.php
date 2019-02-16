@@ -77,10 +77,7 @@ class VkPost implements PostInterface
         return $this->authorUser ? $this->authorUser->getName() : '';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAuthorAvatar()
+    public function getAuthorAvatar(): string
     {
         return $this->authorUser ? $this->authorUser->getPhotoUrl() : '';
     }
