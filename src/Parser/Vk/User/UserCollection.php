@@ -11,8 +11,7 @@ class UserCollection extends \ArrayObject
 
     public function addUser(User $user): void
     {
-        $userId = $user->getId();
-        $this->users[$userId] = $user;
+        $this->users[$user->getId()] = $user;
     }
 
     public function getUserById($userId): User
