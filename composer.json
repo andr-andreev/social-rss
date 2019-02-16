@@ -1,8 +1,8 @@
 {
-  "name": "andr-andreev/php-social-rss",
+  "name": "andr-andreev/social-rss",
   "type": "project",
-  "description": "PHP Social RSS",
-  "homepage": "https://github.com/andr-andreev/php-social-rss",
+  "description": "Social RSS",
+  "homepage": "https://github.com/andr-andreev/social-rss",
   "license": "MIT",
   "authors": [
     {
