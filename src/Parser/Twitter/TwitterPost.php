@@ -106,12 +106,12 @@ class TwitterPost implements PostInterface
             return null;
         }
 
-        $feedItem = new self($this->tweet['quoted_status']);
+        $post = new self($this->tweet['quoted_status']);
 
         return new PostData([
-            'title' => $feedItem->getTitle(),
-            'link' => $feedItem->getLink(),
-            'content' => $feedItem->getContent(),
+            'title' => $post->getTitle(),
+            'link' => $post->getLink(),
+            'content' => $post->getContent(),
         ]);
     }
 
