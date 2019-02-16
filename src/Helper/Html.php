@@ -4,53 +4,30 @@ declare(strict_types=1);
 
 namespace SocialRss\Helper;
 
-/**
- * Class Html
- *
- * @package SocialRss\Parser
- */
 class Html
 {
+    /** @var string */
     private static $regex = '/(^|){{pattern}}(\w*[[:alnum:]\@\.]+\w*)/u';
 
-    /**
-     * @param string $img
-     * @param string $link
-     * @return string
-     */
-    public static function img(string $img, string $link = ''): string
+    public static function img(string $img, string $link = null): string
     {
         $middlePart = "<img src='{$img}'>";
 
-        return empty($link) ? $middlePart : self::link($link, $middlePart);
+        return $link
+            ? self::link($link, $middlePart)
+            : $middlePart;
     }
 
-    /**
-     * @param $video
-     * @param string $poster
-     * @return string
-     */
-    public static function video(string $video, string $poster = ''): string
+    public static function video(string $video, string $poster = null): string
     {
         return "<video src='$video' poster='$poster' controls autoplay muted></video>";
     }
 
-    /**
-     * @param $href
-     * @param $text
-     * @return string
-     */
     public static function link(string $href, string $text): string
     {
         return "<a href='{$href}' rel='noopener noreferrer' referrerpolicy='no-referrer'>$text</a>";
     }
 
-
-    /**
-     * @param $pattern
-     * @param $string
-     * @return mixed
-     */
     public static function getParsedByPattern(string $pattern, string $string): array
     {
         $symbol = str_replace('{string}', '', $pattern);
@@ -59,12 +36,6 @@ class Html
         return $out[2];
     }
 
-    /**
-     * @param $startsWith
-     * @param $template
-     * @param $subject
-     * @return mixed
-     */
     public static function parseByPattern(string $startsWith, string $template, string $subject): string
     {
         if (empty($subject)) {
@@ -83,11 +54,6 @@ class Html
         return $result ?: '';
     }
 
-    /**
-     * @param $avatar
-     * @param $content
-     * @return string
-     */
     public static function makeBlock(string $avatar, string $content): string
     {
         return <<<HTML
@@ -98,21 +64,11 @@ class Html
 HTML;
     }
 
-    /**
-     * @param string $avatarImgSrc
-     * @param string $avatarImgLink
-     * @return string
-     * @internal param $item
-     */
     public static function makeAvatar(string $avatarImgSrc, string $avatarImgLink): string
     {
-        return Html::img($avatarImgSrc, $avatarImgLink);
+        return self::img($avatarImgSrc, $avatarImgLink);
     }
 
-    /**
-     * @param $html
-     * @return string
-     */
     public static function blockquote($html): string
     {
         return "<blockquote>{$html}</blockquote>";

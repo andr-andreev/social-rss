@@ -26,6 +26,6 @@ class RssFormatTest extends TestCase
 
         $lines = explode("\n", $out);
 
-        $this->assertContains('rss version="2.0"', $lines[1]);
+        $this->assertStringContainsString('rss version="2.0"', $lines[1]);
     }
 }

@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace SocialRss\Parser\Vk;
 
 use SocialRss\Parser\Vk\Post\DummyPost;
-use SocialRss\Parser\Vk\Post\PostInterface;
+use SocialRss\Parser\Vk\Post\VkPostInterface;
 use SocialRss\Parser\Vk\User\UserCollection;
 
-/**
- * Class PostParser
- *
- * @package SocialRss\Parser\Vk
- */
 class PostParser
 {
+    /** @var array */
     protected $item;
+
+    /** @var UserCollection */
     protected $users;
 
+    /** @var array */
     protected $typeMap = [
         'post' => Post\PostPost::class,
         'copy' => Post\CopyPost::class,
@@ -30,22 +29,13 @@ class PostParser
         'video' => Post\VideoPost::class,
     ];
 
-    /**
-     * PostParser constructor.
-     *
-     * @param $item
-     * @param $users
-     */
     public function __construct(array $item, UserCollection $users)
     {
         $this->item = $item;
         $this->users = $users;
     }
 
-    /**
-     * @return PostInterface
-     */
-    public function createParser(): PostInterface
+    public function createParser(): VkPostInterface
     {
         $map = $this->typeMap;
         $type = $this->item['type'] ?? $this->item['post_type'];

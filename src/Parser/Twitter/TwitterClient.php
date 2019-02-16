@@ -7,10 +7,6 @@ namespace SocialRss\Parser\Twitter;
 use SocialRss\Exception\SocialRssException;
 use SocialRss\Parser\Client\ClientInterface;
 
-/**
- * Class TwitterClient
- * @package SocialRss\Parser\Twitter
- */
 class TwitterClient implements ClientInterface
 {
     protected const API_URL_HOME = 'https://api.twitter.com/1.1/statuses/home_timeline.json';
@@ -24,14 +20,9 @@ class TwitterClient implements ClientInterface
         'oauth_access_token_secret' => '',
     ];
 
+    /** @var \TwitterAPIExchange */
     protected $twitterClient;
 
-    /**
-     * TwitterClient constructor.
-     * @param array $config
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     */
     public function __construct(array $config)
     {
         $twitterConfig = array_merge(self::CONFIG_DEFAULT, $config);
@@ -39,10 +30,7 @@ class TwitterClient implements ClientInterface
         $this->twitterClient = new \TwitterAPIExchange($twitterConfig);
     }
 
-
     /**
-     * @param $username
-     * @return mixed
      * @throws \Exception
      * @throws SocialRssException
      */

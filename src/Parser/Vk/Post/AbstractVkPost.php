@@ -4,51 +4,34 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Vk\Post;
 
-use SocialRss\ParsedFeed\ParsedFeedItem;
+use SocialRss\Data\PostData;
 use SocialRss\Parser\Vk\User\User;
 use SocialRss\Parser\Vk\User\UserCollection;
 
-/**
- * Class AbstractPost
- *
- * @package SocialRss\Parser\Vk\Post
- */
-abstract class AbstractPost implements PostInterface
+abstract class AbstractVkPost implements VkPostInterface
 {
+    /** @var array */
     protected $item;
+
+    /** @var UserCollection */
     public $users;
 
-    /**
-     * AbstractPost constructor.
-     *
-     * @param $item
-     * @param $users
-     */
     public function __construct(array $item, UserCollection $users)
     {
         $this->item = $item;
         $this->users = $users;
     }
 
-    /**
-     * @return array|null|ParsedFeedItem
-     */
-    public function getQuote(): ?ParsedFeedItem
+    public function getQuote(): ?PostData
     {
         return null;
     }
 
-    /**
-     * @return mixed
-     */
     protected function getUserName(): string
     {
         return $this->getUser()->getName();
     }
 
-    /**
-     * @return User
-     */
     protected function getUser(): User
     {
         $userId = $this->item['source_id'] ?? $this->item['from_id'];

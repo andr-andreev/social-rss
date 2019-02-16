@@ -7,24 +7,13 @@ namespace SocialRss\Parser\Twitter\Entity;
 use SocialRss\Helper\Html;
 use SocialRss\Parser\Twitter\TwitterParser;
 
-/**
- * Class SymbolEntity
- * @package SocialRss\Parser\Twitter\Entity
- */
 class SymbolEntity extends AbstractEntity
 {
-    /**
-     * @param array $item
-     * @return bool
-     */
     public static function isApplicable(array $item): bool
     {
         return static::getEntityType($item) === 'symbols';
     }
 
-    /**
-     * @return string
-     */
     public function getParsedContent(): string
     {
         $symbol = $this->item['text'];

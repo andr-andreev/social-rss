@@ -23,7 +23,7 @@ class VkParserTest extends TestCase
      */
     private $feed;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->parser = (new ParserFactory())
             ->create('vk', ['access_token' => '']);
@@ -34,25 +34,15 @@ class VkParserTest extends TestCase
     {
         $parsedFeed = $this->parser->parseFeed($this->feed);
 
-        $this->assertNotEmpty($parsedFeed->getTitle());
-        $this->assertNotEmpty($parsedFeed->getLink());
-        $this->assertNotEmpty($parsedFeed->getItems());
+        $this->assertCount(count($this->feed['items']), $parsedFeed->posts);
 
-        // $this->assertCount(9, $parsedFeed['items']);
+        foreach ($parsedFeed->posts as $item) {
+            $this->assertStringStartsWith('https://vk.com/', $item->link);
+            $this->assertStringStartsWith('https://pp.userapi.com/', $item->author->avatar);
+            $this->assertStringStartsWith('https://vk.com/', $item->author->link);
 
-        foreach ($parsedFeed->getItems() as $item) {
-            $this->assertNotEmpty($item->getTitle());
-            $this->assertStringStartsWith('https://vk.com/', $item->getLink());
-            $this->assertNotEmpty($item->getContent());
-            $this->assertNotEmpty($item->getDate());
-            $this->assertNotEmpty($item->getAuthor()->getName());
-            $this->assertStringStartsWith('https://pp.userapi.com/', $item->getAuthor()->getAvatar());
-            $this->assertStringStartsWith('https://vk.com/', $item->getAuthor()->getLink());
-
-            if ($item->getQuote()) {
-                $this->assertNotEmpty($item->getQuote()->getTitle());
-                $this->assertStringStartsWith('https://vk.com/', $item->getQuote()->getLink());
-                $this->assertNotEmpty($item->getQuote()->getContent());
+            if ($item->quote) {
+                $this->assertStringStartsWith('https://vk.com/', $item->quote->link);
             }
         }
     }

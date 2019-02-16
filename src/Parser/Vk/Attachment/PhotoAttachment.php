@@ -6,10 +6,6 @@ namespace SocialRss\Parser\Vk\Attachment;
 
 use SocialRss\Helper\Html;
 
-/**
- * Class PhotoAttachment
- * @package SocialRss\Parser\Vk\Attachment
- */
 class PhotoAttachment extends AbstractAttachment
 {
     protected const SIZES = [
@@ -18,12 +14,9 @@ class PhotoAttachment extends AbstractAttachment
         'photo_604',
         'photo_807',
         'photo_1280',
-        'photo_2560',
+        // 'photo_2560',
     ];
 
-    /**
-     * @return string
-     */
     public function getAttachmentOutput(): string
     {
         $photo = '';

@@ -25,7 +25,7 @@ Screenshots made in [NewsBlur](https://newsblur.com/) RSS reader.
 * JSON
 
 ### Requirements
-* PHP >= 7.1
+* PHP >= 7.2
 * Composer
 
 ### Installation

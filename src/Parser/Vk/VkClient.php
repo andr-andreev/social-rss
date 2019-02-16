@@ -10,10 +10,6 @@ use VK\Client\VKApiClient;
 use VK\Exceptions\VKApiException;
 use VK\Exceptions\VKClientException;
 
-/**
- * Class VkClient
- * @package SocialRss\Parser\Vk
- */
 class VkClient implements ClientInterface
 {
     protected const API_PARAMETERS = [
@@ -21,14 +17,12 @@ class VkClient implements ClientInterface
         'extended' => 1,
     ];
 
+    /** @var VKApiClient */
     protected $vkClient;
+
+    /** @var string */
     protected $token;
 
-    /**
-     * VkClient constructor.
-     *
-     * @param array $config
-     */
     public function __construct(array $config)
     {
         $this->vkClient = new VKApiClient('5.73');
@@ -36,9 +30,8 @@ class VkClient implements ClientInterface
     }
 
     /**
-     * @param $username
-     * @return array
-     * @throws VKClientException|SocialRssException
+     * @throws VKClientException
+     * @throws SocialRssException
      */
     public function getFeed(string $username): array
     {

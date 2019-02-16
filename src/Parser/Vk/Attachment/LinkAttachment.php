@@ -6,16 +6,8 @@ namespace SocialRss\Parser\Vk\Attachment;
 
 use SocialRss\Helper\Html;
 
-/**
- * Class LinkAttachment
- * @package SocialRss\Parser\Vk\Attachment
- */
 class LinkAttachment extends AbstractAttachment
 {
-
-    /**
-     * @return string
-     */
     public function getAttachmentOutput(): string
     {
         $linkUrl = $this->attachment['link']['url'];

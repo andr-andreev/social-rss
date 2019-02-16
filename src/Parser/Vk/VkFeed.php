@@ -8,18 +8,11 @@ use SocialRss\Parser\Feed\BaseFeed;
 use SocialRss\Parser\Vk\User\User;
 use SocialRss\Parser\Vk\User\UserCollection;
 
-/**
- * Class VkFeed
- * @package SocialRss\Parser\Vk
- */
 class VkFeed extends BaseFeed
 {
+    /** @var UserCollection */
     protected $users;
 
-    /**
-     * VkFeed constructor.
-     * @param $feed
-     */
     public function __construct(array $feed)
     {
         parent::__construct($feed);
@@ -28,30 +21,20 @@ class VkFeed extends BaseFeed
         $this->populateUsers();
     }
 
-    /**
-     * @return array
-     */
     public function getItems(): array
     {
-        $feed = $this->feed;
+        $feed = parent::getItems();
 
         // Prepare user's wall
         if (isset($feed['wall'])) {
             $feed = $this->processFeed($feed);
         }
 
-        $feedItems = $feed['items'];
-        $profiles = $this->users;
-
-        return array_map(function ($item) use ($profiles) {
-            return array_merge($item, ['profiles' => $profiles]);
-        }, $feedItems);
+        return array_map(function ($item) {
+            return array_merge($item, ['profiles' => $this->users]);
+        }, $feed['items']);
     }
 
-    /**
-     * @param $feed
-     * @return array
-     */
     protected function processFeed(array $feed): array
     {
         $items = array_filter($feed['wall'], 'is_array');
@@ -67,11 +50,6 @@ class VkFeed extends BaseFeed
         return array_merge($feed, ['items' => $processedItems]);
     }
 
-
-    /**
-     * @return void
-     * @internal param $feed
-     */
     public function populateUsers(): void
     {
         $feed = $this->feed;
@@ -89,13 +67,14 @@ class VkFeed extends BaseFeed
         }
 
         foreach ((array)$feed['profiles'] as $profile) {
-            $user = new User(
-                $profile['id'],
-                $profile['screen_name'] ?? '',
-                "{$profile['first_name']} {$profile['last_name']}",
-                $profile['photo_100']
+            $this->users->addUser(
+                new User(
+                    $profile['id'],
+                    $profile['screen_name'] ?? '',
+                    sprintf('%s %s', $profile['first_name'], $profile['last_name']),
+                    $profile['photo_100']
+                )
             );
-            $this->users->addUser($user);
         }
     }
 }

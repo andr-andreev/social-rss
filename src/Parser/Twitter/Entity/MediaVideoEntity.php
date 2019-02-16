@@ -6,16 +6,8 @@ namespace SocialRss\Parser\Twitter\Entity;
 
 use SocialRss\Helper\Html;
 
-/**
- * Class MediaVideoEntity
- * @package SocialRss\Parser\Twitter\Entity
- */
 class MediaVideoEntity extends AbstractEntity
 {
-    /**
-     * @param array $item
-     * @return bool
-     */
     public static function isApplicable(array $item): bool
     {
         return in_array(static::getEntityType($item), [
@@ -24,9 +16,6 @@ class MediaVideoEntity extends AbstractEntity
         ], true);
     }
 
-    /**
-     * @return string
-     */
     public function getParsedContent(): string
     {
         $videoVariants = array_filter($this->item['video_info']['variants'], function ($variant) {

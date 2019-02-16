@@ -6,16 +6,8 @@ namespace SocialRss\Parser\Vk\Attachment;
 
 use SocialRss\Helper\Html;
 
-/**
- * Class NoteAttachment
- * @package SocialRss\Parser\Vk\Attachment
- */
 class NoteAttachment extends AbstractAttachment
 {
-
-    /**
-     * @return string
-     */
     public function getAttachmentOutput(): string
     {
         $noteLink = $this->attachment['note']['view_url'];

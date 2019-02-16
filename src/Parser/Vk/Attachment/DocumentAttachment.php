@@ -6,16 +6,8 @@ namespace SocialRss\Parser\Vk\Attachment;
 
 use SocialRss\Helper\Html;
 
-/**
- * Class DocumentAttachment
- * @package SocialRss\Parser\Vk\Attachment
- */
 class DocumentAttachment extends AbstractAttachment
 {
-
-    /**
-     * @return string
-     */
     public function getAttachmentOutput(): string
     {
         $preview = '';

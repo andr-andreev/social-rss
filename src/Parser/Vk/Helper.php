@@ -6,17 +6,8 @@ namespace SocialRss\Parser\Vk;
 
 use SocialRss\Helper\Html;
 
-/**
- * Class VkHelper
- *
- * @package SocialRss\Parser\Vk
- */
 class Helper
 {
-    /**
-     * @param $text
-     * @return string
-     */
     public static function parseContent(string $text): string
     {
         $methodsList = [
@@ -30,27 +21,15 @@ class Helper
         }, $text);
     }
 
-    /**
-     * Match URLs
-     *
-     * @param string $subject
-     * @return string
-     */
     public static function makeLinkableUrls(string $subject): string
     {
-        return preg_replace_callback('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', function ($matches) {
+        return preg_replace_callback('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!ui', function ($matches) {
             $url = $matches[0];
 
             return Html::link($url, $url);
         }, $subject);
     }
 
-    /**
-     * Match user tags [id1|User]
-     *
-     * @param string $text
-     * @return string
-     */
     public static function makeLinkableUserMentions(string $text): string
     {
         $out = $text;
@@ -67,12 +46,6 @@ class Helper
         return $out;
     }
 
-    /**
-     * Match #hashtags
-     *
-     * @param string $text
-     * @return string
-     */
     public static function makeLinkableHashtags(string $text): string
     {
         return Html::parseByPattern(
@@ -82,10 +55,6 @@ class Helper
         );
     }
 
-    /**
-     * @param $items
-     * @return string
-     */
     public static function makePhotos(array $items): string
     {
         $photos = array_filter($items, function ($photo) {
@@ -102,10 +71,6 @@ class Helper
         return implode(PHP_EOL, $photos);
     }
 
-    /**
-     * @param $attachment
-     * @return string
-     */
     public static function makeVideoTrait(array $attachment): string
     {
         $videoLink = VkParser::getUrl() . "video{$attachment['owner_id']}_{$attachment['id']}";
