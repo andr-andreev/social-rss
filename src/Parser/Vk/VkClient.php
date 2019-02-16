@@ -30,9 +30,8 @@ class VkClient implements ClientInterface
     }
 
     /**
-     * @param $username
-     * @return array
-     * @throws VKClientException|SocialRssException
+     * @throws VKClientException
+     * @throws SocialRssException
      */
     public function getFeed(string $username): array
     {
