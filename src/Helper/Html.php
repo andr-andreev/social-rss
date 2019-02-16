@@ -13,7 +13,9 @@ class Html
     {
         $middlePart = "<img src='{$img}'>";
 
-        return empty($link) ? $middlePart : self::link($link, $middlePart);
+        return $link
+            ? self::link($link, $middlePart)
+            : $middlePart;
     }
 
     public static function video(string $video, string $poster = null): string
@@ -64,7 +66,7 @@ HTML;
 
     public static function makeAvatar(string $avatarImgSrc, string $avatarImgLink): string
     {
-        return Html::img($avatarImgSrc, $avatarImgLink);
+        return self::img($avatarImgSrc, $avatarImgLink);
     }
 
     public static function blockquote($html): string
