@@ -101,10 +101,7 @@ class TwitterFeedItem implements FeedItemInterface
         return TwitterParser::getUrl() . $this->tweet['user']['screen_name'];
     }
 
-    /**
-     * @return null|ParsedFeedItem
-     */
-    public function getQuote():?ParsedFeedItem
+    public function getQuote(): ?PostData
     {
         if (!$this->hasQuote()) {
             return null;
@@ -112,11 +109,11 @@ class TwitterFeedItem implements FeedItemInterface
 
         $feedItem = new self($this->tweet['quoted_status']);
 
-        return new ParsedFeedItem(
-            $feedItem->getTitle(),
-            $feedItem->getLink(),
-            $feedItem->getContent()
-        );
+        return new PostData([
+            'title' => $feedItem->getTitle(),
+            'link' => $feedItem->getLink(),
+            'content' => $feedItem->getContent(),
+        ]);
     }
 
     protected function getEntities(): array

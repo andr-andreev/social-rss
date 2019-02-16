@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Vk;
 
+use SocialRss\Data\PostData;
 use SocialRss\Helper\Html;
-use SocialRss\ParsedFeed\ParsedFeedItem;
-use SocialRss\Parser\FeedItem\FeedItemInterface;
+use SocialRss\Parser\Post\PostInterface;
 use SocialRss\Parser\Vk\User\User;
 use SocialRss\Parser\Vk\User\UserCollection;
 
-/**
- * Class VkFeedItem
- * @package SocialRss\Parser\Vk
- */
-class VkFeedItem implements FeedItemInterface
+class VkPost implements PostInterface
 {
     protected $item;
 
@@ -109,10 +105,7 @@ class VkFeedItem implements FeedItemInterface
         return $this->authorUser ? VkParser::getUrl() . $this->authorUser->getScreenName() : '';
     }
 
-    /**
-     * @return null|ParsedFeedItem
-     */
-    public function getQuote(): ?ParsedFeedItem
+    public function getQuote(): ?PostData
     {
         return $this->getTexts()['quote'];
     }

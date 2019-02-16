@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Vk\Post;
 
-use SocialRss\ParsedFeed\ParsedFeedItem;
+use SocialRss\Data\PostData;
 use SocialRss\Parser\Vk\Helper;
 use SocialRss\Parser\Vk\VkParser;
 
-/**
- * Class PostPost
- *
- * @package SocialRss\Parser\Vk\Post
- */
-class PostPost extends AbstractPost
+class PostPost extends AbstractVkPost
 {
     public function getTitle(): string
     {
@@ -32,10 +27,7 @@ class PostPost extends AbstractPost
         return Helper::parseContent($this->item['text']);
     }
 
-    /**
-     * @return array|null|ParsedFeedItem
-     */
-    public function getQuote(): ?ParsedFeedItem
+    public function getQuote(): ?PostData
     {
         if (!isset($this->item['copy_history'][0])) {
             return parent::getQuote();
@@ -48,6 +40,10 @@ class PostPost extends AbstractPost
         $link = VkParser::getUrl()
             . "wall{$this->item['copy_history'][0]['from_id']}_{$this->item['copy_history'][0]['id']}";
 
-        return new ParsedFeedItem($copyOwner->getName(), $link, $content);
+        return new PostData([
+            'title' => $copyOwner->getName(),
+            'link' => $link,
+            'content' => $content,
+        ]);
     }
 }

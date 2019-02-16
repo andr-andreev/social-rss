@@ -39,12 +39,8 @@ class TwitterParser extends AbstractParser
     }
 
 
-    /**
-     * @param array $item
-     * @return FeedItemInterface
-     */
-    public function createFeedItemParser(array $item): FeedItemInterface
+    public function parsePost(array $item): PostData
     {
-        return new TwitterFeedItem($item);
+        return PostData::fromResponse(new TwitterPost($item));
     }
 }

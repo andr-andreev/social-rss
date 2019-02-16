@@ -11,35 +11,30 @@ use Zend\Feed\Writer\Feed;
 
 class RssFormat implements FormatInterface
 {
-    /**
-     * @param $data
-     * @return mixed
-     * @throws \Zend\Feed\Writer\Exception\InvalidArgumentException
-     */
-    public function format(BaseParsedFeedCollection $data): string
+    public function format(FeedData $data): string
     {
         $feed = new Feed;
 
-        $feed->setTitle($data->getTitle());
-        $feed->setDescription($data->getTitle());
-        $feed->setLink($data->getLink());
+        $feed->setTitle($data->title);
+        $feed->setDescription($data->title);
+        $feed->setLink($data->link);
 
-        foreach ($data->getItems() as $item) {
+        foreach ($data->posts as $item) {
             $entry = $feed->createEntry();
 
-            $author = $item->getAuthor();
-
-            $entry->setTitle($item->getTitle());
-            $entry->setLink($item->getLink());
+            $entry->setTitle($item->title);
+            $entry->setLink($item->link);
             $entry->addAuthor([
-                'name' => $author ? $author->getName() : '',
+                'name' => $item->author ? $item->author->name : ''
             ]);
             $entry->addCategories(array_map(function ($tag) {
                 return ['term' => $tag];
-            }, $item->getTags()));
-            $entry->setDateCreated($item->getDate());
+            }, $item->tags));
+            $entry->setDateCreated($item->date);
             $entry->setDescription(Html::makeBlock(
-                $author ? Html::makeAvatar($author->getAvatar(), $author->getLink()) : '',
+                $item->author
+                    ? Html::makeAvatar($item->author->avatar, $item->author->link)
+                    : '',
                 $this->makeContent($item)
             ));
 
@@ -49,22 +44,19 @@ class RssFormat implements FormatInterface
         return $feed->export('rss');
     }
 
-    /**
-     * @param ParsedFeedItem $item
-     * @return string
-     */
-    protected function makeContent(ParsedFeedItem $item): string
+    protected function makeContent(PostData $item): string
     {
-        $out = $item->getContent();
+        $out = $item->content;
 
-        if ($item->getQuote()) {
-            $quote = $item->getQuote();
+        if ($item->quote) {
+            $quoteAuthorLink = Html::link($item->quote->link, $item->quote->title);
+            $quoteContent = $item->quote->content;
 
-            if ($quote) {
-                $quoteAuthorLink = Html::link($quote->getLink(), $quote->getTitle());
-                $quoteContent = $quote->getContent();
-                $out .= Html::blockquote("{$quoteAuthorLink}<br>{$quoteContent}");
-            }
+            $out .= Html::blockquote(<<<HTML
+{$quoteAuthorLink}<br>
+{$quoteContent}
+HTML
+            );
         }
 
         return $out;

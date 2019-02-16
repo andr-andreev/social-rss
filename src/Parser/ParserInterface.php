@@ -13,11 +13,7 @@ interface ParserInterface
 
     public function getFeed(string $username): array;
 
-    /**
-     * @param $feed
-     * @return mixed
-     */
-    public function parseFeed(array $feed): BaseParsedFeedCollection;
+    public function parseFeed(array $feed): FeedData;
 
     public function getFeedParser(array $feed): FeedInterface;
 

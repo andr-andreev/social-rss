@@ -30,8 +30,5 @@ interface FeedItemInterface
 
     public function getAuthorLink(): string;
 
-    /**
-     * @return null|ParsedFeedItem
-     */
-    public function getQuote():?ParsedFeedItem;
+    public function getQuote(): ?PostData;
 }

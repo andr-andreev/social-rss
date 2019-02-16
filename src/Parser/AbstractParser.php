@@ -66,6 +66,10 @@ abstract class AbstractParser implements ParserInterface
      */
     public function getFeedParser(array $feed): FeedInterface
     {
-        return new BaseFeed($feed);
+        return new FeedData([
+            'title' => $title,
+            'link' => $link,
+            'posts' => [],
+        ]);
     }
 }

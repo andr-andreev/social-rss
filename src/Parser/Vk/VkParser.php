@@ -3,15 +3,10 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser\Vk;
 
+use SocialRss\Data\PostData;
 use SocialRss\Parser\AbstractParser;
 use SocialRss\Parser\Feed\FeedInterface;
-use SocialRss\Parser\FeedItem\FeedItemInterface;
 
-/**
- * Class VkParser
- *
- * @package SocialRss\Parser\Vk
- */
 class VkParser extends AbstractParser
 {
     protected $vkClient;
@@ -45,12 +40,8 @@ class VkParser extends AbstractParser
         return new VkFeed($feed);
     }
 
-    /**
-     * @param array $item
-     * @return FeedItemInterface
-     */
-    public function createFeedItemParser(array $item): FeedItemInterface
+    public function parsePost(array $item): PostData
     {
-        return new VkFeedItem($item);
+        return PostData::fromResponse(new VkPost($item));
     }
 }

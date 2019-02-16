@@ -4,14 +4,9 @@ declare(strict_types = 1);
 
 namespace SocialRss\Parser\Vk\Post;
 
-use SocialRss\ParsedFeed\ParsedFeedItem;
+use SocialRss\Data\PostData;
 
-/**
- * Interface PostInterface
- *
- * @package SocialRss\Parser\Vk\Post
- */
-interface PostInterface
+interface VkPostInterface
 {
     public function getTitle(): string;
 
@@ -19,8 +14,5 @@ interface PostInterface
 
     public function getDescription(): string;
 
-    /**
-     * @return array|null|ParsedFeedItem
-     */
-    public function getQuote(): ?ParsedFeedItem;
+    public function getQuote(): ?PostData;
 }
