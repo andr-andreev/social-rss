@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SocialRss\Parser\Twitter;
 
@@ -23,7 +23,7 @@ class TwitterParserTest extends TestCase
      */
     private $feed;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->parser = (new ParserFactory())->create('twitter', []);
         $this->feed = json_decode(file_get_contents(__DIR__ . '/../../fixtures/twitter.json'), true);
@@ -33,25 +33,15 @@ class TwitterParserTest extends TestCase
     {
         $parsedFeed = $this->parser->parseFeed($this->feed);
 
-        $this->assertNotEmpty($parsedFeed->getTitle());
-        $this->assertNotEmpty($parsedFeed->getLink());
-        $this->assertNotEmpty($parsedFeed->getItems());
+        $this->assertCount(count($this->feed), $parsedFeed->posts);
 
-        $this->assertCount(count($this->feed), $parsedFeed->getItems());
+        foreach ($parsedFeed->posts as $item) {
+            $this->assertStringStartsWith('https://twitter.com/', $item->link);
+            $this->assertStringStartsWith('https://pbs.twimg.com/profile_images/', $item->author->avatar);
+            $this->assertStringStartsWith('https://twitter.com/', $item->author->link);
 
-        foreach ($parsedFeed->getItems() as $item) {
-            $this->assertNotEmpty($item->getTitle());
-            $this->assertStringStartsWith('https://twitter.com/', $item->getLink());
-            $this->assertNotEmpty($item->getContent());
-            $this->assertNotEmpty($item->getDate());
-            $this->assertNotEmpty($item->getAuthor()->getName());
-            $this->assertStringStartsWith('https://pbs.twimg.com/profile_images/', $item->getAuthor()->getAvatar());
-            $this->assertStringStartsWith('https://twitter.com/', $item->getAuthor()->getLink());
-
-            if ($item->getQuote()) {
-                $this->assertNotEmpty($item->getQuote()->getTitle());
-                $this->assertStringStartsWith('https://twitter.com/', $item->getQuote()->getLink());
-                $this->assertNotEmpty($item->getQuote()->getContent());
+            if ($item->quote) {
+                $this->assertStringStartsWith('https://twitter.com/', $item->quote->link);
             }
         }
     }
