@@ -14,7 +14,7 @@ class PhotoAttachment extends AbstractAttachment
         'photo_604',
         'photo_807',
         'photo_1280',
-        'photo_2560',
+        // 'photo_2560',
     ];
 
     public function getAttachmentOutput(): string
