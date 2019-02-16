@@ -23,19 +23,16 @@ class VkFeed extends BaseFeed
 
     public function getItems(): array
     {
-        $feed = $this->feed;
+        $feed = parent::getItems();
 
         // Prepare user's wall
         if (isset($feed['wall'])) {
             $feed = $this->processFeed($feed);
         }
 
-        $feedItems = $feed['items'];
-        $profiles = $this->users;
-
-        return array_map(function ($item) use ($profiles) {
-            return array_merge($item, ['profiles' => $profiles]);
-        }, $feedItems);
+        return array_map(function ($item) {
+            return array_merge($item, ['profiles' => $this->users]);
+        }, $feed['items']);
     }
 
     protected function processFeed(array $feed): array
@@ -70,13 +67,14 @@ class VkFeed extends BaseFeed
         }
 
         foreach ((array)$feed['profiles'] as $profile) {
-            $user = new User(
-                $profile['id'],
-                $profile['screen_name'] ?? '',
-                "{$profile['first_name']} {$profile['last_name']}",
-                $profile['photo_100']
+            $this->users->addUser(
+                new User(
+                    $profile['id'],
+                    $profile['screen_name'] ?? '',
+                    sprintf('%s %s', $profile['first_name'], $profile['last_name']),
+                    $profile['photo_100']
+                )
             );
-            $this->users->addUser($user);
         }
     }
 }
