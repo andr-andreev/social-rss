@@ -26,7 +26,7 @@ interface FeedItemInterface
 
     public function getAuthorName(): string;
 
-    public function getAuthorAvatar();
+    public function getAuthorAvatar(): string;
 
     public function getAuthorLink(): string;
 

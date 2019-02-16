@@ -35,14 +35,17 @@ class SiteController
         $this->view = $container->get('view');
     }
 
-    public function index(Request $request, Response $response, $args)
+    public function index(Request $request, Response $response, $args): Response
     {
         return $this->view->render($response, 'index.php', [
             'parsers' => $this->parserFactory->getParsersList(),
         ]);
     }
 
-    public function feed(Request $request, Response $response)
+    /**
+     * @throws SocialRssException
+     */
+    public function feed(Request $request, Response $response): Response
     {
         $source = $request->getAttribute('source');
         $params = $request->getQueryParams();
@@ -65,7 +68,7 @@ class SiteController
         return $response;
     }
 
-    public function favicon(Request $request, Response $response, $args)
+    public function favicon(Request $request, Response $response, $args): Response
     {
         return $response->withStatus(404);
     }
