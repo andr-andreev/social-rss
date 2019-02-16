@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Feed;
 
-/**
- * Class BaseFeed
- * @package SocialRss\Parser\Feed
- */
-class BaseFeed implements FeedInterface
+abstract class BaseFeed implements FeedInterface
 {
     /** @var array */
     protected $feed;
