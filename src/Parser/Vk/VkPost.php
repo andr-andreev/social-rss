@@ -47,27 +47,10 @@ class VkPost implements PostInterface
 
     public function getContent(): string
     {
-        return $this->getTexts()['content'];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getTexts(): array
-    {
         $content = $this->postParser->getDescription();
-        $quote = $this->postParser->getQuote();
 
         $attachmentParser = new AttachmentParser($this->item);
         $attachments = $attachmentParser->getAttachmentsOutput();
-
-        if ($quote) {
-            $quoteAttachmentParser = new AttachmentParser($this->item['copy_history'][0]);
-            $quoteAttachments = $quoteAttachmentParser->getAttachmentsOutput();
-
-            $newQuoteContent = nl2br(trim($quote->getContent() . PHP_EOL . $quoteAttachments));
-            $quote->setContent($newQuoteContent);
-        }
 
         $geoPlace = '';
         if (isset($this->item['geo']['place']['title'])) {
@@ -76,7 +59,7 @@ class VkPost implements PostInterface
 
         $content = nl2br(trim($content . PHP_EOL . $attachments . PHP_EOL . $geoPlace));
 
-        return ['content' => $content, 'quote' => $quote];
+        return $content;
     }
 
     public function getDate(): \DateTime
@@ -109,7 +92,17 @@ class VkPost implements PostInterface
 
     public function getQuote(): ?PostData
     {
-        return $this->getTexts()['quote'];
+        $quote = $this->postParser->getQuote();
+
+        if ($quote) {
+            $quoteAttachmentParser = new AttachmentParser($this->item['copy_history'][0]);
+            $quoteAttachments = $quoteAttachmentParser->getAttachmentsOutput();
+
+            $newQuoteContent = nl2br(trim($quote->content . PHP_EOL . $quoteAttachments));
+            $quote->content = $newQuoteContent;
+        }
+
+        return $quote;
     }
 
     protected function getAuthorUser(): ?User
