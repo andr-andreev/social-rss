@@ -9,24 +9,14 @@ class Html
     /** @var string */
     private static $regex = '/(^|){{pattern}}(\w*[[:alnum:]\@\.]+\w*)/u';
 
-    /**
-     * @param string $img
-     * @param string $link
-     * @return string
-     */
-    public static function img(string $img, string $link = ''): string
+    public static function img(string $img, string $link = null): string
     {
         $middlePart = "<img src='{$img}'>";
 
         return empty($link) ? $middlePart : self::link($link, $middlePart);
     }
 
-    /**
-     * @param $video
-     * @param string $poster
-     * @return string
-     */
-    public static function video(string $video, string $poster = ''): string
+    public static function video(string $video, string $poster = null): string
     {
         return "<video src='$video' poster='$poster' controls autoplay muted></video>";
     }

@@ -42,12 +42,7 @@ class AttachmentParser
         'photos_list' => PhotosListAttachment::class,
     ];
 
-    /**
-     * AttachmentParser constructor.
-     *
-     * @param $item
-     */
-    public function __construct($item)
+    public function __construct(array $item)
     {
         $this->item = $item;
     }

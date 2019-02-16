@@ -15,12 +15,7 @@ abstract class AbstractEntity implements EntityInterface
     /** @var array */
     protected static $applicableTypes = [];
 
-    /**
-     * AbstractEntity constructor.
-     * @param $item
-     * @param $text
-     */
-    public function __construct($item, $text)
+    public function __construct(array $item, string $text)
     {
         $this->item = $item;
         $this->text = $text;
