@@ -8,10 +8,10 @@ declare(strict_types=1);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PHP Social RSS</title>
+    <title>Social RSS</title>
 </head>
 <body>
-<h1>Welcome to PHP Social RSS!</h1>
+<h1>Welcome to Social RSS!</h1>
 
 <h2>View <em>your</em> timeline as RSS</h2>
 <ul>
@@ -28,7 +28,7 @@ declare(strict_types=1);
 
 <h2>Change output format and view <em>any particular user</em> timeline</h2>
 <p>
-    See <a href="https://github.com/andr-andreev/php-social-rss/blob/master/README.md#usage">usage docs</a>.
+    See <a href="https://github.com/andr-andreev/social-rss/blob/master/README.md#usage">usage docs</a>.
 </p>
 
 </body>

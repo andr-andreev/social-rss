@@ -38,7 +38,7 @@ $container['logger'] = function ($c) {
     if ($config['logger']['enabled']) {
         $handler = new NativeMailerHandler(
             $config['logger']['email'],
-            'PHP Social RSS error',
+            'Social RSS error',
             $config['logger']['email']
         );
     }

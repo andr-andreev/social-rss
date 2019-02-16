@@ -1,15 +1,15 @@
-## php-social-rss
+## Social RSS
 Read your social networks timeline in different formats (RSS, JSON).
 
-PHP-social-rss fully parses API data including avatars, quotes, photos, videos, hashtags, user mentions and urls.
+Social RSS fully parses API data including avatars, quotes, photos, videos, hashtags, user mentions and urls.
 
 You can read your own timeline as well as user's timelines.
 
-[![Build Status](https://travis-ci.org/andr-andreev/php-social-rss.svg?branch=master)](https://travis-ci.org/andr-andreev/php-social-rss)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/andr-andreev/php-social-rss/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/andr-andreev/php-social-rss/?branch=master)
-[![Code Climate](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/gpa.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss)
-[![Issue Count](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/issue_count.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss)
-[![Test Coverage](https://codeclimate.com/github/andr-andreev/php-social-rss/badges/coverage.svg)](https://codeclimate.com/github/andr-andreev/php-social-rss/coverage)
+[![Build Status](https://travis-ci.org/andr-andreev/social-rss.svg?branch=master)](https://travis-ci.org/andr-andreev/social-rss)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/andr-andreev/social-rss/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/andr-andreev/social-rss/?branch=master)
+[![Code Climate](https://codeclimate.com/github/andr-andreev/social-rss/badges/gpa.svg)](https://codeclimate.com/github/andr-andreev/social-rss)
+[![Issue Count](https://codeclimate.com/github/andr-andreev/social-rss/badges/issue_count.svg)](https://codeclimate.com/github/andr-andreev/social-rss)
+[![Test Coverage](https://codeclimate.com/github/andr-andreev/social-rss/badges/coverage.svg)](https://codeclimate.com/github/andr-andreev/social-rss/coverage)
 
 ### Supported networks / screenshots
 #### Twitter ([source post](https://twitter.com/TwitterData/status/767372163431018496))
@@ -30,8 +30,8 @@ Screenshots made in [NewsBlur](https://newsblur.com/) RSS reader.
 
 ### Installation
 ```bash
-$ git clone https://github.com/andr-andreev/php-social-rss.git
-$ cd php-social-rss
+$ git clone https://github.com/andr-andreev/social-rss.git
+$ cd social-rss
 $ make install
 ```
 
