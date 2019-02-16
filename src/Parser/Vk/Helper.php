@@ -23,7 +23,7 @@ class Helper
 
     public static function makeLinkableUrls(string $subject): string
     {
-        return preg_replace_callback('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!i', function ($matches) {
+        return preg_replace_callback('!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;//=]+)!ui', function ($matches) {
             $url = $matches[0];
 
             return Html::link($url, $url);
