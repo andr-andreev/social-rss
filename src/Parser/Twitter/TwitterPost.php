@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace SocialRss\Parser\Twitter;
 
-use SocialRss\ParsedFeed\ParsedFeedItem;
-use SocialRss\Parser\FeedItem\FeedItemInterface;
+use SocialRss\Data\PostData;
+use SocialRss\Parser\Post\PostInterface;
 use SocialRss\Parser\Twitter\Entity\EntityInterface;
 use SocialRss\Parser\Twitter\Entity\HashtagEntity;
 use SocialRss\Parser\Twitter\Entity\MediaPhotoEntity;
@@ -15,11 +15,7 @@ use SocialRss\Parser\Twitter\Entity\UnknownEntity;
 use SocialRss\Parser\Twitter\Entity\UrlEntity;
 use SocialRss\Parser\Twitter\Entity\UserMentionEntity;
 
-/**
- * Class TwitterFeedItem
- * @package SocialRss\Parser\Twitter
- */
-class TwitterFeedItem implements FeedItemInterface
+class TwitterPost implements PostInterface
 {
     /** @var array */
     protected $tweet;

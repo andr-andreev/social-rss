@@ -2,15 +2,11 @@
 declare(strict_types=1);
 
 
-namespace SocialRss\Parser\FeedItem;
+namespace SocialRss\Parser\Post;
 
-use SocialRss\ParsedFeed\ParsedFeedItem;
+use SocialRss\Data\PostData;
 
-/**
- * Interface FeedItemInterface
- * @package SocialRss\Parser\FeedItem
- */
-interface FeedItemInterface
+interface PostInterface
 {
     public function __construct(array $item);
 
